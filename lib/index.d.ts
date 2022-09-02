@@ -1,1 +1,2 @@
-export declare const GiveMeMap: (test: string) => string;
+/// <reference types="react" />
+export declare const GiveMeMap: (test: string) => JSX.Element;
