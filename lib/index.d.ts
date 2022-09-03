@@ -3,6 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import { MapboxEvent, ViewStateChangeEvent } from 'react-map-gl';
 import { EMapStyle, IViewportExtended } from './IWorld';
 interface IProps {
+    accessToken: string;
     viewport?: IViewportExtended;
     onMapClick?: (e: mapboxgl.MapLayerMouseEvent) => void;
     onMapLoad?: (e: MapboxEvent<undefined>) => void;

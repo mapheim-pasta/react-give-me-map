@@ -1,17 +1,16 @@
 import mapboxgl from 'mapbox-gl';
 import React, { useEffect, useRef } from 'react';
 // import ReactMapGL from 'react-map-gl';
-import ReactMapGL, { MapboxEvent, MapRef, ViewStateChangeEvent } from 'react-map-gl';
+import ReactMapGL, { MapboxEvent, MapRef, Marker, ViewStateChangeEvent } from 'react-map-gl';
 import { EMapStyle, IViewportExtended } from './IWorld';
 import { useTest } from './useTest';
-(mapboxgl as any).accessToken =
-    'pk.eyJ1Ijoia291ZGVsa2EiLCJhIjoiY2tzdGN6MHF2MTRvZjMyb2RvZDZ5bDdiayJ9.dEv0FPgOoGA_oOZwXNtWww';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (mapboxgl as any).workerClass =
     require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
 interface IProps {
+    accessToken: string;
     viewport?: IViewportExtended;
     onMapClick?: (e: mapboxgl.MapLayerMouseEvent) => void;
     onMapLoad?: (e: MapboxEvent<undefined>) => void;
@@ -28,7 +27,7 @@ export const GiveMeMap = (props: IProps): JSX.Element => {
     const test = useTest();
 
     useEffect(() => {
-        console.log('Test1', test.test);
+        (mapboxgl as any).accessToken = props.accessToken;
     }, []);
 
     return (
@@ -52,7 +51,11 @@ export const GiveMeMap = (props: IProps): JSX.Element => {
                 dragPan={props.dragPan}
                 scrollZoom={props.scrollZoom}
                 doubleClickZoom={props.doubleClickZoom}
-            ></ReactMapGL>
+            >
+                <Marker latitude={55.15} longitude={15.02}>
+                    <div style={{ width: 20, height: 20, backgroundColor: 'red' }} />
+                </Marker>
+            </ReactMapGL>
         </>
     );
 };
