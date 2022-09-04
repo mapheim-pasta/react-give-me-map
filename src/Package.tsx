@@ -1,9 +1,8 @@
-import React, { useReducer } from 'react';
-import { ContextProvider } from './context/provider';
-import { reducer } from './context/reducer';
-import { initialState } from './context/state';
+import React, { useRef } from 'react';
+import { MapRef } from 'react-map-gl';
+import { GlobalCallbackContextProvider, ICallbacks } from './context/GlobalCallbacksContext';
+import { MapRefContextProvider } from './context/MapRefContext';
 import { IMapProps, Map } from './map/Map';
-import { ICallbacks, RegisterCallbacks } from './map/RegisterCallbacks';
 
 interface IProps {
     map: IMapProps;
@@ -12,14 +11,15 @@ interface IProps {
 }
 
 export const Package = (props: IProps): JSX.Element => {
-    const [state, dispatch] = useReducer(reducer, initialState);
+
+    const mapRef = useRef<MapRef>(null);
 
     return (
         <>
-            <ContextProvider reducer={{ state, dispatch }}>
-                <RegisterCallbacks {...props.callbacks} />
-                <Map map={props.map}>{props.children}</Map>
-            </ContextProvider>
+            <GlobalCallbackContextProvider callbacks={props.callbacks ?? {}}>
+            <MapRefContextProvider mapRef={mapRef}>
+                <Map mapRef={mapRef} map={props.map}>{props.children}</Map>
+            </GlobalCallbackContextProvider>
         </>
     );
 };

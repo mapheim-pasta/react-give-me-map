@@ -1,7 +1,6 @@
-import React, { Ref, useRef } from 'react';
+import React from 'react';
 import ReactMapGL, { MapboxEvent, MapRef, Marker, ViewStateChangeEvent } from 'react-map-gl';
-import { useActions } from '../context/actions';
-import { useCtx } from '../context/provider';
+import { useGlobalCallbacks } from '../context/GlobalCallbacksContext';
 import { EMapStyle, IViewportExtended } from '../interface/IWorld';
 
 export interface IMapProps {
@@ -10,7 +9,7 @@ export interface IMapProps {
     onMapClick?: (e: mapboxgl.MapLayerMouseEvent) => void;
     onMapLoad?: (
         e: MapboxEvent<undefined>,
-        mapRef: React.MutableRefObject<MapRef | undefined>
+        mapRef: React.RefObject<MapRef | undefined>
     ) => void;
     mapStyle?: EMapStyle;
     onMapMove?: (e: ViewStateChangeEvent) => void;
@@ -22,29 +21,25 @@ export interface IMapProps {
 
 interface IProps {
     map: IMapProps;
+    mapRef: React.RefObject<MapRef>;
     children?: React.ReactNode;
 }
 
 export const Map = (props: IProps): JSX.Element => {
-    const { state } = useCtx();
-    const actions = useActions();
-    const mapRef = useRef<MapRef>();
-
-    console.log('State', state);
+    const callbacks = useGlobalCallbacks();
 
     return (
         <>
             <ReactMapGL
                 {...props.map.viewport}
-                ref={mapRef as Ref<MapRef>}
+                ref={props.mapRef}
                 style={{
                     width: '100%',
                     height: '100%'
                 }}
                 onClick={props.map.onMapClick}
                 onLoad={(e) => {
-                    actions.setMapRef({ mapRef: mapRef.current });
-                    props.map.onMapLoad?.(e, mapRef);
+                    props.map.onMapLoad?.(e, props.mapRef);
                 }}
                 reuseMaps={true}
                 mapStyle={props.map.mapStyle ?? EMapStyle.WORLD}
@@ -58,25 +53,23 @@ export const Map = (props: IProps): JSX.Element => {
                 doubleClickZoom={props.map.doubleClickZoom}
                 mapboxAccessToken={props.map.accessToken}
             >
-                {props.children}
-                <Marker
-                    latitude={55.15}
-                    longitude={15.02}
-                    onClick={() => {
-                        if (state.callbacks?.onMarkersSelected) {
-                            state.callbacks.onMarkersSelected(['aaaa 1']);
-                        }
-                    }}
-                >
-                    <div
-                        style={{
-                            width: 100,
-                            height: 100,
-                            backgroundColor: 'pink',
-                            borderRadius: 100
+                    {props.children}
+                    <Marker
+                        latitude={55.15}
+                        longitude={15.02}
+                        onClick={() => {
+                            callbacks.onMarkersSelected(['aaaa 1']);
                         }}
-                    />
-                </Marker>
+                    >
+                        <div
+                            style={{
+                                width: 100,
+                                height: 100,
+                                backgroundColor: 'pink',
+                                borderRadius: 100
+                            }}
+                        />
+                    </Marker>
             </ReactMapGL>
         </>
     );
