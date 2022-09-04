@@ -1,13 +1,13 @@
 /// <reference types="mapbox-gl" />
 import React from 'react';
-import { MapboxEvent, ViewStateChangeEvent } from 'react-map-gl';
+import { MapboxEvent, MapRef, ViewStateChangeEvent } from 'react-map-gl';
 import { EMapStyle, IViewportExtended } from '../interface/IWorld';
 interface IProps {
     map: {
         accessToken: string;
         viewport?: IViewportExtended;
         onMapClick?: (e: mapboxgl.MapLayerMouseEvent) => void;
-        onMapLoad?: (e: MapboxEvent<undefined>) => void;
+        onMapLoad?: (e: MapboxEvent<undefined>, mapRef: React.MutableRefObject<MapRef | undefined>) => void;
         mapStyle?: EMapStyle;
         onMapMove?: (e: ViewStateChangeEvent) => void;
         interactiveLayerIds?: string[];
