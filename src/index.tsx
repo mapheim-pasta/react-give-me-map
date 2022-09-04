@@ -1,13 +1,7 @@
 import mapboxgl from 'mapbox-gl';
 import React, { useEffect, useRef } from 'react';
-// import ReactMapGL from 'react-map-gl';
 import ReactMapGL, { MapboxEvent, MapRef, Marker, ViewStateChangeEvent } from 'react-map-gl';
 import { EMapStyle, IViewportExtended } from './IWorld';
-import { useTest } from './useTest';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(mapboxgl as any).workerClass =
-    require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
 interface IProps {
     accessToken: string;
@@ -24,7 +18,6 @@ interface IProps {
 
 export const GiveMeMap = (props: IProps): JSX.Element => {
     const mapRef = useRef<MapRef>();
-    const test = useTest();
 
     useEffect(() => {
         (mapboxgl as any).accessToken = props.accessToken;
@@ -59,3 +52,5 @@ export const GiveMeMap = (props: IProps): JSX.Element => {
         </>
     );
 };
+
+export { EMapStyle } from './IWorld';
