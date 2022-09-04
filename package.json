@@ -1,6 +1,6 @@
 {
     "name": "react-give-me-map",
-    "version": "1.0.23",
+    "version": "1.0.25",
     "description": "React wrapper for Mapbox with predefined markers and other quick actions",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -13,7 +13,8 @@
         "prepublishOnly": "npm test && npm run lint",
         "preversion": "npm run lint",
         "version": "npm run format && git add -A src",
-        "postversion": "git push && git push --tags"
+        "postversion": "git push && git push --tags",
+        "give": "tsc && yalc push"
     },
     "repository": {
         "type": "git",
@@ -36,7 +37,8 @@
     },
     "peerDependencies": {
         "react": "^18.2.0",
-        "react-dom": "^18.2.0"
+        "react-dom": "^18.2.0",
+        "react-map-gl": "^7.0.19"
     },
     "keywords": [
         "react",
@@ -45,9 +47,7 @@
         "interactive",
         "mapheim"
     ],
-    "dependencies": {
-        "react-map-gl": "^7.0.19"
-    },
+    "dependencies": {},
     "browser": {
         "[module-name]": false
     }

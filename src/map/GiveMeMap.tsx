@@ -50,7 +50,7 @@ export const GiveMeMap = (props: IProps): JSX.Element => {
                         style={{
                             width: 20,
                             height: 20,
-                            backgroundColor: 'red',
+                            backgroundColor: 'green',
                             borderRadius: 100
                         }}
                     />
