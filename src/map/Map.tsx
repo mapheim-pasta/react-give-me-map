@@ -1,6 +1,8 @@
-import { EMapStyle, IViewportExtended } from 'interface/IWorld';
 import React, { Ref, useRef } from 'react';
 import ReactMapGL, { MapboxEvent, MapRef, Marker, ViewStateChangeEvent } from 'react-map-gl';
+import { useActions } from '../context/actions';
+import { useCtx } from '../context/provider';
+import { EMapStyle, IViewportExtended } from '../interface/IWorld';
 
 export interface IMapProps {
     accessToken: string;
@@ -24,7 +26,11 @@ interface IProps {
 }
 
 export const Map = (props: IProps): JSX.Element => {
+    const { state } = useCtx();
+    const actions = useActions();
     const mapRef = useRef<MapRef>();
+
+    console.log('State', state);
 
     return (
         <>
@@ -37,6 +43,7 @@ export const Map = (props: IProps): JSX.Element => {
                 }}
                 onClick={props.map.onMapClick}
                 onLoad={(e) => {
+                    actions.setMapRef({ mapRef: mapRef.current });
                     props.map.onMapLoad?.(e, mapRef);
                 }}
                 reuseMaps={true}
@@ -52,7 +59,15 @@ export const Map = (props: IProps): JSX.Element => {
                 mapboxAccessToken={props.map.accessToken}
             >
                 {props.children}
-                <Marker latitude={55.15} longitude={15.02}>
+                <Marker
+                    latitude={55.15}
+                    longitude={15.02}
+                    onClick={() => {
+                        if (state.callbacks?.onMarkersSelected) {
+                            state.callbacks.onMarkersSelected(['aaaa 1']);
+                        }
+                    }}
+                >
                     <div
                         style={{
                             width: 100,
