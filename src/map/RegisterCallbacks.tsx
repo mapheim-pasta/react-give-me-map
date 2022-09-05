@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useActions } from '../context/actions';
+import { useActions } from '../context/dynamic/actions';
 
 export interface ICallbacks {
     onMarkersSelected?: (ids: string[]) => void;

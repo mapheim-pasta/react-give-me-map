@@ -1,7 +1,15 @@
 import { MapRef } from 'react-map-gl';
 import { useCtx } from './provider';
 
-export type Actions = 'SET_MAP_REF' | 'SET_CALLBACKS';
+export type Actions =
+    | {
+          type: 'SET_MAP_REF';
+          value: ISetMapRef;
+      }
+    | {
+          type: 'SET_CALLBACKS';
+          value: ISetCallbacks;
+      };
 
 export const useActions = (): IReturnUseActions => {
     const { dispatch } = useCtx();

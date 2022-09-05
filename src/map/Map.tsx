@@ -1,7 +1,8 @@
 import React, { Ref, useRef } from 'react';
 import ReactMapGL, { MapboxEvent, MapRef, Marker, ViewStateChangeEvent } from 'react-map-gl';
-import { useActions } from '../context/actions';
-import { useCtx } from '../context/provider';
+import { useActions } from '../context/dynamic/actions';
+import { useCtx } from '../context/dynamic/provider';
+
 import { EMapStyle, IViewportExtended } from '../interface/IWorld';
 
 export interface IMapProps {
@@ -29,8 +30,6 @@ export const Map = (props: IProps): JSX.Element => {
     const { state } = useCtx();
     const actions = useActions();
     const mapRef = useRef<MapRef>();
-
-    console.log('State', state);
 
     return (
         <>

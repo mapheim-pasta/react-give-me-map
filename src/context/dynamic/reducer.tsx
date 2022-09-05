@@ -1,7 +1,7 @@
 import { Actions, ISetCallbacks, ISetMapRef } from './actions';
 import { IState } from './state';
 
-export const reducer = (state: IState, action: { type: Actions; value: unknown }): IState => {
+export const reducer = (state: IState, action: Actions): IState => {
     const value = action.value;
     switch (action.type) {
         case 'SET_MAP_REF':

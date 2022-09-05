@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
-import { ContextProvider } from './context/provider';
-import { reducer } from './context/reducer';
-import { initialState } from './context/state';
+import { ContextProvider } from './context/dynamic/provider';
+import { reducer } from './context/dynamic/reducer';
+import { initialState } from './context/dynamic/state';
 import { IMapProps, Map } from './map/Map';
 import { ICallbacks, RegisterCallbacks } from './map/RegisterCallbacks';
 
