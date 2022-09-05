@@ -1,15 +1,16 @@
-import { Actions, ISetCallbacks, ISetMapRef } from './actions';
+import { Actions } from './actions';
+import { ISetCallbacks, ISetMapRef } from './interfaces';
 import { IState } from './state';
 
-export const reducer = (state: IState, action: Actions): IState => {
+export const reducer = (state: IState, action: { type: Actions; value: unknown }): IState => {
     const value = action.value;
     switch (action.type) {
-        case 'SET_MAP_REF':
+        case Actions.SET_MAP_REF:
             return {
                 ...state,
                 mapRef: (value as ISetMapRef).mapRef
             };
-        case 'SET_CALLBACKS':
+        case Actions.SET_CALLBACKS:
             return {
                 ...state,
                 callbacks: (value as ISetCallbacks).callbacks
