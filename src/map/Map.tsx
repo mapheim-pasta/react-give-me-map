@@ -1,7 +1,6 @@
 import React, { Ref, useRef } from 'react';
 import ReactMapGL, { MapRef } from 'react-map-gl';
 import { WorldMarkers } from '../components/WorldMarkers';
-import { useActions } from '../context/dynamic/actions';
 import { EMapStyle, IMapProps } from '../utils/map/mapTypes';
 
 import { IWorldMarker } from '../utils/world/worldTypes';
@@ -13,7 +12,6 @@ interface IProps {
 }
 
 export const Map = (props: IProps): JSX.Element => {
-    const actions = useActions();
     const mapRef = useRef<MapRef>();
 
     return (
@@ -27,7 +25,6 @@ export const Map = (props: IProps): JSX.Element => {
                 }}
                 onClick={props.map.onMapClick}
                 onLoad={(e) => {
-                    actions.setMapRef({ mapRef: mapRef.current });
                     props.map.onMapLoad?.(e, mapRef);
                 }}
                 reuseMaps={true}

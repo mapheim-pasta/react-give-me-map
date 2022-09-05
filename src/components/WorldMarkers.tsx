@@ -37,11 +37,11 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
     useEffect(() => {
         setMarkers(props.markers);
         const newOrder = props.markers.map((marker) => marker.order);
-        console.log('Order', order, newOrder);
+        // console.log('Order', order, newOrder);
         for (let i = 0; i < order.length; i++) {
             if (order[i] !== newOrder[i]) {
                 setMarkers([], () => {
-                    console.log('Reordered');
+                    // console.log('Reordered');
                     setMarkers(props.markers);
                     setOrder(newOrder);
                 });
