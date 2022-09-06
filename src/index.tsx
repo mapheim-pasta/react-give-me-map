@@ -1,5 +1,6 @@
 // import ReactMapGL from 'react-map-gl';
 
+export { ImageWorld } from './items/ImageWorld';
 export { Package as GiveMeMap } from './Package';
 export { EMapStyle, ICoordinates, IViewportExtended } from './utils/map/mapTypes';
 export {

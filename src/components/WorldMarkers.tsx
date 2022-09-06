@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Marker } from 'react-map-gl';
+import { useCtx } from '../context/dynamic/provider';
 import { useStateCallback } from '../hooks/general/useStateCallback';
 import { DirectionWorld } from '../items/DirectionWorld';
 import { DrawWorld } from '../items/DrawWorld';
@@ -11,7 +12,7 @@ import { RouteWorld } from '../items/RouteWorld';
 import { TextWorld } from '../items/TextWorld';
 import { YoutubeWorld } from '../items/YoutubeWorld';
 import { IViewportExtended } from '../utils/map/mapTypes';
-import { isMarkerClickableByDimension, isMarkerElement } from '../utils/marker/markerUtils';
+import { isMarkerElement } from '../utils/marker/markerUtils';
 import { ORIGIN_ZOOM } from '../utils/world/worldConfig';
 import {
     IDrawWorld,
@@ -33,6 +34,7 @@ export interface IProps {
 export const WorldMarkers = (props: IProps): JSX.Element => {
     const [markers, setMarkers] = useStateCallback<IWorldMarker[]>([]);
     const [order, setOrder] = useState<number[]>([]);
+    const { state } = useCtx();
 
     useEffect(() => {
         setMarkers(props.markers);
@@ -67,20 +69,12 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                             longitude={marker.lng}
                             latitude={marker.lat}
                             style={{
-                                pointerEvents: 'none'
-                                //Includes multiselect
-                                // opacity: state.selectedMarkers.includes(marker.id) ? 0.25 : 1
+                                pointerEvents: 'none',
+                                opacity: state.selectedIds.includes(marker.id) ? 0.25 : 1
                             }}
                         >
                             <div
                                 ref={marker.ref}
-                                onClick={() => {
-                                    if (isMarkerClickableByDimension(marker.elementType)) {
-                                        //select
-                                        // dispatch(setSelectedMarkers([marker.id]));
-                                        // dispatch(setWorldAction(EWorldAction.SELECT));
-                                    }
-                                }}
                                 style={{
                                     transform: `scale(${adjustedScale}) rotate(${marker.rotate}deg)`,
                                     pointerEvents: marker.elementType === 'draw' ? 'none' : 'all'
@@ -99,23 +93,11 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                     />
                                 )}
                                 {marker.elementType === 'draw' && (
-                                    <DrawWorld
-                                        elementData={marker.elementData as IDrawWorld}
-                                        onSelected={() => {
-                                            //select
-                                            // dispatch(setSelectedMarkers([marker.id]));
-                                            // dispatch(setWorldAction(EWorldAction.SELECT));
-                                        }}
-                                    />
+                                    <DrawWorld elementData={marker.elementData as IDrawWorld} />
                                 )}
                                 {marker.elementType === 'polygon' && (
                                     <PolygonWorld
                                         elementData={marker.elementData as IPolygonWorld}
-                                        onSelected={() => {
-                                            //select
-                                            // dispatch(setSelectedMarkers([marker.id]));
-                                            // dispatch(setWorldAction(EWorldAction.SELECT));
-                                        }}
                                         adjustedScale={adjustedScale}
                                     />
                                 )}
@@ -130,7 +112,15 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                 } else if (marker.elementType === 'route') {
                     return <RouteWorld key={marker.id} marker={marker} />;
                 } else if (marker.elementType === 'direction') {
-                    return <DirectionWorld key={marker.id} marker={marker} />;
+                    return (
+                        <DirectionWorld
+                            key={marker.id}
+                            marker={marker}
+                            onSelected={() => {
+                                state.callbacks.onMarkersSelected?.([marker.id]);
+                            }}
+                        />
+                    );
                 }
             })}
         </>

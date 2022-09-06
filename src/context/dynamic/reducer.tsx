@@ -10,6 +10,11 @@ export const reducer = (state: IState, action: { type: Actions; value: unknown }
                 ...state,
                 callbacks: (value as ISetCallbacks).callbacks
             };
+        case Actions.SET_SELECTED_IDS:
+            return {
+                ...state,
+                selectedIds: value as string[]
+            };
         default:
             return state;
     }

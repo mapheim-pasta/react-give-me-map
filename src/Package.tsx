@@ -12,6 +12,7 @@ interface IProps {
     markers?: IWorldMarker[];
     children?: React.ReactNode;
     callbacks?: ICallbacks;
+    selectedIds?: string[];
 }
 
 export const Package = (props: IProps): JSX.Element => {
@@ -19,14 +20,16 @@ export const Package = (props: IProps): JSX.Element => {
 
     const markers = props.markers ?? [];
     for (const marker of markers) {
-        marker.ref = React.createRef<HTMLDivElement>();
+        if (!marker.ref) {
+            marker.ref = React.createRef<HTMLDivElement>();
+        }
     }
 
     return (
         <>
             <ContextProvider reducer={{ state, dispatch }}>
                 <RegisterCallbacks {...props.callbacks} />
-                <Map map={props.map} markers={markers}>
+                <Map map={props.map} markers={markers} selectedIds={props.selectedIds ?? []}>
                     {props.children}
                 </Map>
             </ContextProvider>

@@ -29,7 +29,7 @@ export const YoutubeWorld = (props: Props): JSX.Element => {
         videoId = videoId.split('&t=')[0];
     }
 
-    console.log('Playing', playing);
+    // console.log('Playing', playing);
 
     useEffect(() => {
         if (videoElement.current) {
@@ -201,10 +201,10 @@ const S_YoutubeWorld = (styled.div as any).attrs(() => ({
                 color: white;
                 display: flex;
                 svg {
-                    width: 30px;
+                    width: 50px;
                     fill: white;
                     pointer-events: all;
-                    margin: 0 0 0 15px;
+                    margin: 0 0 0 20px;
                     filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.8))
                         drop-shadow(1px 1px 5px rgba(0, 0, 0, 0.8));
                 }

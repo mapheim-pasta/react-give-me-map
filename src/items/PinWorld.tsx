@@ -59,7 +59,9 @@ const S_PinWorldLabel = (styled.span as any).attrs(() => ({}))`
         } else {
             return css`
                 color: '#000000';
-                text-shadow: 1px 1px 0px #ffffff99;
+                /* text-shadow: 1px 1px 0px #ffffff99; */
+                text-shadow: -1px -1px 1px #fff, 1px -1px 1px #fff, -1px 1px 1px #fff,
+                    1px 1px 1px #fff;
             `;
         }
     }}

@@ -1,16 +1,19 @@
 import React from 'react';
 import { Marker } from 'react-map-gl';
+import { useCtx } from '../context/dynamic/provider';
 import { IDirectionWorld, IWorldMarker } from '../utils/world/worldTypes';
 import { FeatureRoute } from './geojson/FeatureRoute';
 import { S_DotPin } from './PinWorld';
 
 interface Props {
     marker: IWorldMarker;
+    onSelected?: () => void;
 }
 
 export const DirectionWorld = (props: Props): JSX.Element => {
     const id = props.marker.id;
     const elementData = props.marker.elementData as IDirectionWorld;
+    const { state } = useCtx();
 
     return (
         <>
@@ -21,6 +24,11 @@ export const DirectionWorld = (props: Props): JSX.Element => {
                     //select
                     // dispatch(setSelectedMarkers([id]));
                     // dispatch(setWorldAction(EWorldAction.SELECT));
+                    // state.callbacks.onMarkersSelected?.([id]);
+                    props.onSelected?.();
+                }}
+                style={{
+                    opacity: state.selectedIds.includes(id) ? 0.25 : 1
                 }}
             >
                 <S_DotPin dotColor={elementData.lineColor} />
@@ -43,6 +51,11 @@ export const DirectionWorld = (props: Props): JSX.Element => {
                     //select
                     // dispatch(setSelectedMarkers([id]));
                     // dispatch(setWorldAction(EWorldAction.SELECT));
+                    // state.callbacks.onMarkersSelected?.([id]);
+                    props.onSelected?.();
+                }}
+                style={{
+                    opacity: state.selectedIds.includes(id) ? 0.25 : 1
                 }}
             >
                 <S_DotPin dotColor={elementData.lineColor} />
