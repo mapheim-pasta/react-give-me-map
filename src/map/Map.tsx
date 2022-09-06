@@ -31,6 +31,16 @@ export const Map = (props: IProps): JSX.Element => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.selectedIds]);
 
+    const layerIds: any = props.markers
+        .map((marker) => {
+            if (marker.elementType === 'route' || marker.elementType === 'direction') {
+                return marker.id + '|line-click';
+            }
+        })
+        .filter(function (val) {
+            return val !== undefined;
+        });
+
     return (
         <>
             <ReactMapGL
@@ -40,7 +50,12 @@ export const Map = (props: IProps): JSX.Element => {
                     width: '100%',
                     height: '100%'
                 }}
-                onClick={props.map.onMapClick}
+                onClick={(e: any) => {
+                    if (e.features?.length > 0) {
+                        state.callbacks.onMarkersSelected?.([e.features[0].source]);
+                    }
+                    props.map.onMapClick?.(e);
+                }}
                 onLoad={(e) => {
                     setLoaded(true);
                     props.map.onMapLoad?.(e, mapRef);
@@ -51,7 +66,7 @@ export const Map = (props: IProps): JSX.Element => {
                 onRender={(event) => event.target.resize()}
                 dragRotate={false}
                 boxZoom={false}
-                interactiveLayerIds={props.map.interactiveLayerIds}
+                interactiveLayerIds={layerIds ?? []}
                 dragPan={props.map.dragPan ?? true}
                 scrollZoom={props.map.scrollZoom ?? true}
                 doubleClickZoom={props.map.doubleClickZoom ?? true}

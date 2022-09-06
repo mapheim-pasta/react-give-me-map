@@ -10,7 +10,6 @@ export interface IMapProps {
         mapRef: React.MutableRefObject<MapRef | undefined>
     ) => void;
     onMapMove: (e: ViewStateChangeEvent) => void;
-    interactiveLayerIds?: string[];
     dragPan?: boolean;
     scrollZoom?: boolean;
     doubleClickZoom?: boolean;

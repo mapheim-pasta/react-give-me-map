@@ -79,6 +79,10 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                     transform: `scale(${adjustedScale}) rotate(${marker.rotate}deg)`,
                                     pointerEvents: marker.elementType === 'draw' ? 'none' : 'all'
                                 }}
+                                onClick={() => {
+                                    console.log('aaaaaaaaaaaaaaa');
+                                    state.callbacks.onMarkersSelected?.([marker.id]);
+                                }}
                             >
                                 {marker.elementType === 'text' && (
                                     <TextWorld elementData={marker.elementData as ITextWorld} />

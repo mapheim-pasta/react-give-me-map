@@ -27,13 +27,7 @@ export const PolygonWorld = (props: Props): JSX.Element => {
             }}
         >
             <S_SVG>
-                <path
-                    style={style as any}
-                    onClick={() => {
-                        props.onSelected?.();
-                    }}
-                    d={elementData.path}
-                />
+                <path style={style as any} d={elementData.path} />
             </S_SVG>
             {elementData.fill && (
                 <S_SVG>
@@ -42,9 +36,6 @@ export const PolygonWorld = (props: Props): JSX.Element => {
                             fillOpacity: 0.15,
                             fill: '#' + elementData.color,
                             pointerEvents: 'painted'
-                        }}
-                        onClick={() => {
-                            props.onSelected?.();
                         }}
                         d={elementData.path}
                     />
