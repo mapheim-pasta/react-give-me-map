@@ -1,8 +1,8 @@
+import { ICallbacks } from '../../map/RegisterCallbacks';
+
 export interface IState {
     selectedIds: string[];
-    callbacks: {
-        onMarkersSelected?: (ids: string[]) => void;
-    };
+    callbacks: ICallbacks;
 }
 
 export const initialState: IState = {

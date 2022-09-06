@@ -4,7 +4,7 @@ import { reducer } from './context/dynamic/reducer';
 import { initialState } from './context/dynamic/state';
 import { Map } from './map/Map';
 import { ICallbacks, RegisterCallbacks } from './map/RegisterCallbacks';
-import { IMapProps } from './utils/map/mapTypes';
+import { EMapStyle, IMapProps } from './utils/map/mapTypes';
 import { IWorldMarker } from './utils/world/worldTypes';
 
 interface IProps {
@@ -13,6 +13,7 @@ interface IProps {
     children?: React.ReactNode;
     callbacks?: ICallbacks;
     selectedIds?: string[];
+    selectedMapStyle?: EMapStyle;
 }
 
 export const Package = (props: IProps): JSX.Element => {
@@ -29,7 +30,12 @@ export const Package = (props: IProps): JSX.Element => {
         <>
             <ContextProvider reducer={{ state, dispatch }}>
                 <RegisterCallbacks {...props.callbacks} />
-                <Map map={props.map} markers={markers} selectedIds={props.selectedIds ?? []}>
+                <Map
+                    map={props.map}
+                    markers={markers}
+                    selectedIds={props.selectedIds ?? []}
+                    selectedMapStyle={props.selectedMapStyle ?? EMapStyle.WORLD}
+                >
                     {props.children}
                 </Map>
             </ContextProvider>

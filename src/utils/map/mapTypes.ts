@@ -9,7 +9,6 @@ export interface IMapProps {
         e: MapboxEvent<undefined>,
         mapRef: React.MutableRefObject<MapRef | undefined>
     ) => void;
-    mapStyle?: EMapStyle;
     onMapMove: (e: ViewStateChangeEvent) => void;
     interactiveLayerIds?: string[];
     dragPan?: boolean;
