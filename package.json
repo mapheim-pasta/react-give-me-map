@@ -1,6 +1,6 @@
 {
     "name": "react-give-me-map",
-    "version": "1.0.26",
+    "version": "1.0.27",
     "description": "React wrapper for Mapbox with predefined markers and other quick actions",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -18,14 +18,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/kondulak10/givememap.git"
+        "url": "git+https://github.com/kondulak10/react-give-me-map.git"
     },
     "author": "Mapheim.com",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/kondulak10/givememap/issues"
+        "url": "https://github.com/kondulak10/react-give-me-map/issues"
     },
-    "homepage": "https://github.com/kondulak10/givememap#readme",
+    "homepage": "https://github.com/kondulak10/react-give-me-map#readme",
     "devDependencies": {
         "@types/lodash": "^4.14.184",
         "@types/node": "^18.7.14",
