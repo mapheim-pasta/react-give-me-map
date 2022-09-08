@@ -5,12 +5,7 @@ export { ImageWorld } from './items/ImageWorld';
 export { PinWorld, S_DotPin } from './items/PinWorld';
 export { Package as GiveMeMap } from './Package';
 export { EMapStyle, ICoordinates, IViewportExtended } from './utils/map/mapTypes';
-export {
-    isControllableElement,
-    isMarkerClickableByDimension,
-    isMarkerElement,
-    isScalableElement
-} from './utils/marker/markerUtils';
+export { isMarkerElement } from './utils/marker/markerUtils';
 export {
     MAX_ZOOM,
     ORIGIN_ZOOM,
