@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 import { ALMOST_BLACK, EWorldColor } from '../libs/worldVariables';
 import { TEXT_BORDER_RADIUS } from '../utils/world/worldConfig';
@@ -9,15 +9,6 @@ export interface ITextWorldProps {
 }
 
 export const TextWorld = (props: ITextWorldProps): JSX.Element => {
-    const [value, setValue] = useState<string>(props.elementData?.text);
-
-    useEffect(() => {
-        if (props.elementData?.text !== value) {
-            setValue(props.elementData?.text);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.elementData?.text]);
-
     return (
         <S_TextWorld
             fill={props.elementData.fill.toString()}
@@ -28,7 +19,7 @@ export const TextWorld = (props: ITextWorldProps): JSX.Element => {
             borderColor={props.elementData.borderColor}
             dropShadowCombined={props.elementData.dropShadowCombined}
         >
-            <pre>{value + ' '}</pre>
+            <pre>{props.elementData?.text + ' '}</pre>
         </S_TextWorld>
     );
 };
@@ -77,7 +68,6 @@ const S_TextWorld = styled.div<any>`
     > pre {
         font-size: 14px;
         background-color: unset;
-        resize: none;
         width: 100%;
         padding: 0;
         margin: 0;

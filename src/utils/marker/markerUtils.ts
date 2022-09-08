@@ -7,6 +7,7 @@ export function isMarkerElement(type: WorldElements): boolean {
         type === 'draw' ||
         type === 'pin' ||
         type === 'polygon' ||
-        type === 'youtube'
+        type === 'youtube' ||
+        type === 'link'
     );
 }

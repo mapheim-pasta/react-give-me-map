@@ -6,6 +6,7 @@ import { useStateCallback } from '../hooks/general/useStateCallback';
 import { DirectionWorld } from '../items/DirectionWorld';
 import { DrawWorld } from '../items/DrawWorld';
 import { ImageWorld } from '../items/ImageWorld';
+import { LinkWorld } from '../items/LinkWorld';
 import { PinWorld } from '../items/PinWorld';
 import { PolygonWorld } from '../items/PolygonWorld';
 import { RouteWorld } from '../items/RouteWorld';
@@ -17,6 +18,7 @@ import { ORIGIN_ZOOM } from '../utils/world/worldConfig';
 import {
     IDrawWorld,
     IImageWorld,
+    ILinkWorld,
     IPinWorld,
     IPolygonWorld,
     ITextWorld,
@@ -86,6 +88,9 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                             >
                                 {marker.elementType === 'text' && (
                                     <TextWorld elementData={marker.elementData as ITextWorld} />
+                                )}
+                                {marker.elementType === 'link' && (
+                                    <LinkWorld elementData={marker.elementData as ILinkWorld} />
                                 )}
                                 {marker.elementType === 'pin' && (
                                     <PinWorld elementData={marker.elementData as IPinWorld} />

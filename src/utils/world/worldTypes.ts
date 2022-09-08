@@ -22,7 +22,8 @@ export type ICombinedWorld =
     | IPinWorld
     | IPolygonWorld
     | IDirectionWorld
-    | IYoutubeWorld;
+    | IYoutubeWorld
+    | ILinkWorld;
 
 export type WorldElements =
     | 'react'
@@ -33,12 +34,24 @@ export type WorldElements =
     | 'pin'
     | 'polygon'
     | 'direction'
-    | 'youtube';
+    | 'youtube'
+    | 'link';
 
 export interface ITextWorld {
     text: string;
     width: number;
     fill: boolean;
+    color: string;
+    borderRadiusPx?: number;
+    borderSize?: number;
+    borderColor?: string;
+    dropShadowCombined?: string;
+}
+
+export interface ILinkWorld {
+    link: string;
+    text: string;
+    width: number;
     color: string;
     borderRadiusPx?: number;
     borderSize?: number;
