@@ -8,38 +8,45 @@ interface Props {
     onResizeNeeded?: () => void;
 }
 
+type AllowedResolutions = keyof NonNullable<IImageWorld['additionalSrc']>;
 const orderedAllowedResolutions = [100, 600, 1000, 1920];
-const markerImgWidth = 1000;
+const markerImgWidth = 250;
 
-// The original URL may be in two forms:
-// - https://dvtqxks0zalev.cloudfront.net/100/3a2d147f-e513-4417-ad2e-0b13a6f5eae5.png
-// - https://dvtqxks0zalev.cloudfront.net/3a2d147f-e513-4417-ad2e-0b13a6f5eae5.png
-// this method optimizes the url to provide the right image size
-const generateImageUrlFor = (url: string, adjustedScale: number): string => {
-    const parsed = new URL(url);
+const generateImageUrlFor = (elementData: IImageWorld, adjustedScale: number): string => {
+    const { additionalSrc, src } = elementData;
 
-    const maxResolution = parseInt(parsed.pathname.split('/')[0]);
-
-    if (!isNaN(maxResolution)) {
-        const resolution =
-            orderedAllowedResolutions.find(
-                (resolution) =>
-                    resolution > markerImgWidth * adjustedScale && maxResolution <= resolution
-            ) ?? maxResolution;
-        return `${parsed.origin}/${resolution}/${parsed.pathname.split('/').pop()}`;
+    if (!additionalSrc) {
+        return elementData.src;
     }
 
     const resolution = orderedAllowedResolutions.find(
-        (resolution) => resolution > markerImgWidth * adjustedScale
+        (resolution) => resolution > markerImgWidth * 2 * adjustedScale
     );
+
     if (resolution) {
-        return `${parsed.origin}/${resolution}/${parsed.pathname.split('/').pop()}`;
+        return additionalSrc[resolution as AllowedResolutions] ?? src;
     }
 
-    return `${parsed.origin}/${parsed.pathname.split('/').pop()}`;
+    return src;
 };
 
 export const ImageWorld = (props: Props): JSX.Element => {
+    const getImg = () => {
+        if (!props.elementData.additionalSrc || props.elementData.src.endsWith('svg')) {
+            return <img src={props.elementData.src} />;
+        }
+
+        return (
+            <img
+                width={markerImgWidth}
+                src={
+                    props.adjustedScale
+                        ? generateImageUrlFor(props.elementData, props.adjustedScale)
+                        : props.elementData.src
+                }
+            />
+        );
+    };
     return (
         <S_ImageWorld
             borderRadiusPx={props.elementData.borderRadiusPx}
@@ -47,14 +54,7 @@ export const ImageWorld = (props: Props): JSX.Element => {
             borderColor={props.elementData.borderColor}
             dropShadowCombined={props.elementData.dropShadowCombined}
         >
-            <img
-                width={markerImgWidth}
-                src={
-                    props.adjustedScale
-                        ? generateImageUrlFor(props.elementData.src, props.adjustedScale)
-                        : props.elementData.src
-                }
-            />
+            {getImg()}
         </S_ImageWorld>
     );
 };
