@@ -61,6 +61,12 @@ export interface ILinkWorld {
 
 export interface IImageWorld {
     src: string;
+    additionalSrc?: {
+        100: string;
+        600: string;
+        1000: string;
+        1920: string;
+    };
     lat?: number;
     lng?: number;
     borderRadiusPx?: number;
