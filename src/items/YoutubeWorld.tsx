@@ -61,7 +61,6 @@ export const YoutubeWorld = (props: Props): JSX.Element => {
                         <div
                             className="ready"
                             onClick={() => {
-                                if (!props.disablePlaying) return;
                                 if (videoPlaying) {
                                     videoElement.current?.target?.pauseVideo();
                                 } else {

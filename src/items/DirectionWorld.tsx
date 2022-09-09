@@ -1,18 +1,18 @@
 import React from 'react';
 import { Marker } from 'react-map-gl';
 import { useCtx } from '../context/dynamic/provider';
-import { IDirectionWorld, IWorldMarker } from '../utils/world/worldTypes';
+import { IDirectionWorldMarker } from '../utils/world/worldTypes';
 import { FeatureRoute } from './geojson/FeatureRoute';
 import { S_DotPin } from './PinWorld';
 
 interface Props {
-    marker: IWorldMarker;
+    marker: IDirectionWorldMarker;
     onSelected?: () => void;
 }
 
 export const DirectionWorld = (props: Props): JSX.Element => {
     const id = props.marker.id;
-    const elementData = props.marker.elementData as IDirectionWorld;
+    const elementData = props.marker.elementData;
     const { state } = useCtx();
 
     return (

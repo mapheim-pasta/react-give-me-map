@@ -15,16 +15,7 @@ import { YoutubeWorld } from '../items/YoutubeWorld';
 import { IViewportExtended } from '../utils/map/mapTypes';
 import { isMarkerElement } from '../utils/marker/markerUtils';
 import { ORIGIN_ZOOM } from '../utils/world/worldConfig';
-import {
-    IDrawWorld,
-    IImageWorld,
-    ILinkWorld,
-    IPinWorld,
-    IPolygonWorld,
-    ITextWorld,
-    IWorldMarker,
-    IYoutubeWorld
-} from '../utils/world/worldTypes';
+import { IWorldMarker } from '../utils/world/worldTypes';
 import { getInScale } from '../utils/world/worldUtils';
 
 export interface IProps {
@@ -64,7 +55,36 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                     ? getInScale(marker.scale as number, ORIGIN_ZOOM, props.viewport.zoom)
                     : marker.scale ?? 1;
 
-                if (isMarkerElement(marker.elementType)) {
+                if (marker.elementType === 'image') {
+                    return (
+                        <Marker
+                            key={marker.id + marker.order}
+                            longitude={marker.lng}
+                            latitude={marker.lat}
+                            style={{
+                                pointerEvents: 'none',
+                                opacity: state.selectedIds.includes(marker.id) ? 0.25 : 1
+                            }}
+                        >
+                            <div
+                                ref={marker.ref}
+                                style={{
+                                    transform: `rotate(${marker.rotate}deg)`,
+                                    pointerEvents: 'all'
+                                }}
+                                onClick={() => {
+                                    console.log('aaaaaaaaaaaaaaa');
+                                    state.callbacks.onMarkersSelected?.([marker.id]);
+                                }}
+                            >
+                                <ImageWorld
+                                    elementData={marker.elementData}
+                                    adjustedScale={adjustedScale}
+                                />
+                            </div>
+                        </Marker>
+                    );
+                } else if (isMarkerElement(marker.elementType)) {
                     return (
                         <Marker
                             key={marker.id + marker.order}
@@ -87,33 +107,25 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                 }}
                             >
                                 {marker.elementType === 'text' && (
-                                    <TextWorld elementData={marker.elementData as ITextWorld} />
+                                    <TextWorld elementData={marker.elementData} />
                                 )}
                                 {marker.elementType === 'link' && (
-                                    <LinkWorld elementData={marker.elementData as ILinkWorld} />
+                                    <LinkWorld elementData={marker.elementData} />
                                 )}
                                 {marker.elementType === 'pin' && (
-                                    <PinWorld elementData={marker.elementData as IPinWorld} />
-                                )}
-                                {marker.elementType === 'image' && (
-                                    <ImageWorld
-                                        elementData={marker.elementData as IImageWorld}
-                                        adjustedScale={adjustedScale}
-                                    />
+                                    <PinWorld elementData={marker.elementData} />
                                 )}
                                 {marker.elementType === 'draw' && (
-                                    <DrawWorld elementData={marker.elementData as IDrawWorld} />
+                                    <DrawWorld elementData={marker.elementData} />
                                 )}
                                 {marker.elementType === 'polygon' && (
                                     <PolygonWorld
-                                        elementData={marker.elementData as IPolygonWorld}
+                                        elementData={marker.elementData}
                                         adjustedScale={adjustedScale}
                                     />
                                 )}
                                 {marker.elementType === 'youtube' && (
-                                    <YoutubeWorld
-                                        elementData={marker.elementData as IYoutubeWorld}
-                                    />
+                                    <YoutubeWorld elementData={marker.elementData} />
                                 )}
                             </div>
                         </Marker>

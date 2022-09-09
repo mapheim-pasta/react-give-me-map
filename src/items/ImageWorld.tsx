@@ -4,7 +4,7 @@ import { IImageWorld } from '../utils/world/worldTypes';
 
 interface Props {
     elementData: IImageWorld;
-    adjustedScale?: number;
+    adjustedScale: number;
     onResizeNeeded?: () => void;
 }
 
@@ -31,22 +31,6 @@ const generateImageUrlFor = (elementData: IImageWorld, adjustedScale: number): s
 };
 
 export const ImageWorld = (props: Props): JSX.Element => {
-    const getImg = () => {
-        if (!props.elementData.additionalSrc || props.elementData.src.endsWith('svg')) {
-            return <img src={props.elementData.src} />;
-        }
-
-        return (
-            <img
-                width={markerImgWidth}
-                src={
-                    props.adjustedScale
-                        ? generateImageUrlFor(props.elementData, props.adjustedScale)
-                        : props.elementData.src
-                }
-            />
-        );
-    };
     return (
         <S_ImageWorld
             borderRadiusPx={props.elementData.borderRadiusPx}
@@ -54,7 +38,10 @@ export const ImageWorld = (props: Props): JSX.Element => {
             borderColor={props.elementData.borderColor}
             dropShadowCombined={props.elementData.dropShadowCombined}
         >
-            {getImg()}
+            <img
+                width={markerImgWidth * props.adjustedScale}
+                src={generateImageUrlFor(props.elementData, props.adjustedScale)}
+            />
         </S_ImageWorld>
     );
 };

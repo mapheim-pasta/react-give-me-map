@@ -1,30 +1,6 @@
 import { RefObject } from 'react';
 import { ICoordinates } from '../map/mapTypes';
 
-export interface IWorldMarker {
-    id: string;
-    lat: number;
-    lng: number;
-    elementType: WorldElements;
-    elementData: ICombinedWorld;
-    scale?: number; //at originZoom 1
-    scalable: boolean;
-    rotate?: number;
-    order: number;
-    ref?: RefObject<HTMLDivElement>;
-}
-
-export type ICombinedWorld =
-    | ITextWorld
-    | IImageWorld
-    | IRouteWorld
-    | IDrawWorld
-    | IPinWorld
-    | IPolygonWorld
-    | IDirectionWorld
-    | IYoutubeWorld
-    | ILinkWorld;
-
 export type WorldElements =
     | 'react'
     | 'text'
@@ -37,6 +13,31 @@ export type WorldElements =
     | 'youtube'
     | 'link';
 
+export type ICombinedWorld =
+    | ITextWorld
+    | IImageWorld
+    | IRouteWorld
+    | IDrawWorld
+    | IPinWorld
+    | IPolygonWorld
+    | IDirectionWorld
+    | IYoutubeWorld
+    | ILinkWorld;
+
+interface BaseMarker {
+    id: string;
+    lat: number;
+    lng: number;
+    scale?: number; //at originZoom 1
+    scalable: boolean;
+    rotate?: number;
+    order: number;
+    ref?: RefObject<HTMLDivElement>;
+
+    elementType: WorldElements;
+    elementData: ICombinedWorld;
+}
+
 export interface ITextWorld {
     text: string;
     width: number;
@@ -48,6 +49,11 @@ export interface ITextWorld {
     dropShadowCombined?: string;
 }
 
+export interface ITextWorldMarker extends BaseMarker {
+    elementType: 'text';
+    elementData: ITextWorld;
+}
+
 export interface ILinkWorld {
     link: string;
     text: string;
@@ -57,6 +63,11 @@ export interface ILinkWorld {
     borderSize?: number;
     borderColor?: string;
     dropShadowCombined?: string;
+}
+
+export interface ILinkWorldMarker extends BaseMarker {
+    elementType: 'link';
+    elementData: ILinkWorld;
 }
 
 export interface IImageWorld {
@@ -75,6 +86,11 @@ export interface IImageWorld {
     dropShadowCombined?: string;
 }
 
+export interface IImageWorldMarker extends BaseMarker {
+    elementType: 'image';
+    elementData: IImageWorld;
+}
+
 export interface IRouteWorld {
     coordinates: ICoordinates[];
     fillColor?: string;
@@ -82,6 +98,11 @@ export interface IRouteWorld {
     lineColor?: string;
     lineOpacity?: number;
     dropShadowColor?: string;
+}
+
+export interface IRouteWorldMarker extends BaseMarker {
+    elementType: 'route';
+    elementData: IRouteWorld;
 }
 
 export interface IDrawWorld {
@@ -93,11 +114,21 @@ export interface IDrawWorld {
     color: string;
 }
 
+export interface IDrawWorldMarker extends BaseMarker {
+    elementType: 'draw';
+    elementData: IDrawWorld;
+}
+
 export interface IPinWorld {
     label?: string;
     img?: string;
     emoji?: string;
     dotColor?: string;
+}
+
+export interface IPinWorldMarker extends BaseMarker {
+    elementType: 'pin';
+    elementData: IPinWorld;
 }
 
 export interface IPolygonWorld {
@@ -109,7 +140,12 @@ export interface IPolygonWorld {
     fill?: boolean;
 }
 
-export interface IDirectionWorld {
+export interface IPolygonWorldMarker extends BaseMarker {
+    elementType: 'polygon';
+    elementData: IPolygonWorld;
+}
+
+interface IDirectionWorld {
     start: ICoordinates;
     end: ICoordinates;
     coordinates: ICoordinates[];
@@ -117,6 +153,11 @@ export interface IDirectionWorld {
     lineColor?: string;
     lineOpacity?: number;
     dropShadowColor?: string;
+}
+
+export interface IDirectionWorldMarker extends BaseMarker {
+    elementType: 'direction';
+    elementData: IDirectionWorld;
 }
 
 export type Transport = 'driving-traffic' | 'driving' | 'walking' | 'cycling';
@@ -128,3 +169,19 @@ export interface IYoutubeWorld {
     borderColor?: string;
     dropShadowCombined?: string;
 }
+
+export interface IYoutubeWorldMarker extends BaseMarker {
+    elementType: 'youtube';
+    elementData: IYoutubeWorld;
+}
+
+export type IWorldMarker =
+    | ITextWorldMarker
+    | IImageWorldMarker
+    | IRouteWorldMarker
+    | IDrawWorldMarker
+    | IPinWorldMarker
+    | IPolygonWorldMarker
+    | IDirectionWorldMarker
+    | IYoutubeWorldMarker
+    | ILinkWorldMarker;
