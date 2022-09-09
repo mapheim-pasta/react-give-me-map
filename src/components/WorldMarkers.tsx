@@ -84,7 +84,7 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                             </div>
                         </Marker>
                     );
-                } else if (isMarkerElement(marker.elementType)) {
+                } else if (isMarkerElement(marker)) {
                     return (
                         <Marker
                             key={marker.id + marker.order}

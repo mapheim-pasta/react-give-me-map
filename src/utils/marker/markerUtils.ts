@@ -1,6 +1,25 @@
-import { WorldElements } from '../world/worldTypes';
+import {
+    IDrawWorldMarker,
+    IImageWorldMarker,
+    ILinkWorldMarker,
+    IPinWorldMarker,
+    IPolygonWorldMarker,
+    ITextWorldMarker,
+    IWorldMarker,
+    IYoutubeWorldMarker
+} from '../world/worldTypes';
 
-export function isMarkerElement(type: WorldElements): boolean {
+type MarkerElements =
+    | ITextWorldMarker
+    | IImageWorldMarker
+    | IDrawWorldMarker
+    | IPinWorldMarker
+    | IPolygonWorldMarker
+    | IYoutubeWorldMarker
+    | ILinkWorldMarker;
+
+export function isMarkerElement(marker: IWorldMarker): marker is MarkerElements {
+    const type = marker.elementType;
     return (
         type === 'text' ||
         type === 'image' ||

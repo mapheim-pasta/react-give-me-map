@@ -31,7 +31,9 @@ export const DirectionWorld = (props: Props): JSX.Element => {
                     opacity: state.selectedIds.includes(id) ? 0.25 : 1
                 }}
             >
-                <S_DotPin dotColor={elementData.lineColor} />
+                <div ref={props.marker.refs?.[0]}>
+                    <S_DotPin dotColor={elementData.lineColor} />
+                </div>
             </Marker>
 
             {elementData.coordinates?.length > 0 && (
@@ -58,7 +60,9 @@ export const DirectionWorld = (props: Props): JSX.Element => {
                     opacity: state.selectedIds.includes(id) ? 0.25 : 1
                 }}
             >
-                <S_DotPin dotColor={elementData.lineColor} />
+                <div ref={props.marker.refs?.[props.marker.refs?.length - 1]}>
+                    <S_DotPin dotColor={elementData.lineColor} />
+                </div>
             </Marker>
         </>
     );

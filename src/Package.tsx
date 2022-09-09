@@ -21,7 +21,14 @@ export const Package = (props: IProps): JSX.Element => {
 
     const markers = props.markers ?? [];
     for (const marker of markers) {
-        if (!marker.ref) {
+        if (marker.elementType === 'direction') {
+            // first is "start"
+            // 1...n-1 are coordinates
+            // last is "end"
+            marker.refs = new Array(marker.elementData.coordinates.length + 2)
+                .fill(0)
+                .map(() => React.createRef<HTMLDivElement>());
+        } else {
             marker.ref = React.createRef<HTMLDivElement>();
         }
     }

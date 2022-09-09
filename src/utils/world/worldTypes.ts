@@ -32,7 +32,6 @@ interface BaseMarker {
     scalable: boolean;
     rotate?: number;
     order: number;
-    ref?: RefObject<HTMLDivElement>;
 
     elementType: WorldElements;
     elementData: ICombinedWorld;
@@ -52,6 +51,7 @@ export interface ITextWorld {
 export interface ITextWorldMarker extends BaseMarker {
     elementType: 'text';
     elementData: ITextWorld;
+    ref?: RefObject<HTMLDivElement>;
 }
 
 export interface ILinkWorld {
@@ -68,6 +68,7 @@ export interface ILinkWorld {
 export interface ILinkWorldMarker extends BaseMarker {
     elementType: 'link';
     elementData: ILinkWorld;
+    ref?: RefObject<HTMLDivElement>;
 }
 
 export interface IImageWorld {
@@ -89,6 +90,7 @@ export interface IImageWorld {
 export interface IImageWorldMarker extends BaseMarker {
     elementType: 'image';
     elementData: IImageWorld;
+    ref?: RefObject<HTMLDivElement>;
 }
 
 export interface IRouteWorld {
@@ -103,6 +105,7 @@ export interface IRouteWorld {
 export interface IRouteWorldMarker extends BaseMarker {
     elementType: 'route';
     elementData: IRouteWorld;
+    ref?: RefObject<HTMLDivElement>;
 }
 
 export interface IDrawWorld {
@@ -117,6 +120,7 @@ export interface IDrawWorld {
 export interface IDrawWorldMarker extends BaseMarker {
     elementType: 'draw';
     elementData: IDrawWorld;
+    ref?: RefObject<HTMLDivElement>;
 }
 
 export interface IPinWorld {
@@ -129,6 +133,7 @@ export interface IPinWorld {
 export interface IPinWorldMarker extends BaseMarker {
     elementType: 'pin';
     elementData: IPinWorld;
+    ref?: RefObject<HTMLDivElement>;
 }
 
 export interface IPolygonWorld {
@@ -143,6 +148,7 @@ export interface IPolygonWorld {
 export interface IPolygonWorldMarker extends BaseMarker {
     elementType: 'polygon';
     elementData: IPolygonWorld;
+    ref?: RefObject<HTMLDivElement>;
 }
 
 interface IDirectionWorld {
@@ -158,6 +164,7 @@ interface IDirectionWorld {
 export interface IDirectionWorldMarker extends BaseMarker {
     elementType: 'direction';
     elementData: IDirectionWorld;
+    refs?: Array<RefObject<HTMLDivElement>>;
 }
 
 export type Transport = 'driving-traffic' | 'driving' | 'walking' | 'cycling';
@@ -173,6 +180,7 @@ export interface IYoutubeWorld {
 export interface IYoutubeWorldMarker extends BaseMarker {
     elementType: 'youtube';
     elementData: IYoutubeWorld;
+    ref?: RefObject<HTMLDivElement>;
 }
 
 export type IWorldMarker =
