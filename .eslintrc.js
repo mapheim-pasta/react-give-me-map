@@ -12,6 +12,7 @@ module.exports = {
             version: 'detect' // Tells eslint-plugin-react to automatically detect the version of React to use
         }
     },
+    ignorePatterns: ['dist/*'],
     // plugins: ['react-hooks', 'no-relative-import-paths'],
     plugins: ['react-hooks'],
     extends: [

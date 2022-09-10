@@ -2,8 +2,9 @@
     "name": "react-give-me-map",
     "version": "1.0.30",
     "description": "React wrapper for Mapbox with predefined markers and other quick actions",
-    "main": "lib/index.js",
-    "types": "lib/index.d.ts",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\"",
         "build": "tsc",
