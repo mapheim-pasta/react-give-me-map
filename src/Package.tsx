@@ -37,12 +37,7 @@ export const Package = (props: IProps): JSX.Element => {
         <>
             <ContextProvider reducer={{ state, dispatch }}>
                 <RegisterCallbacks {...props.callbacks} />
-                <Map
-                    map={props.map}
-                    markers={markers}
-                    selectedIds={props.selectedIds ?? []}
-                    selectedMapStyle={props.selectedMapStyle ?? EMapStyle.WORLD}
-                >
+                <Map map={props.map} markers={markers} selectedIds={props.selectedIds ?? []}>
                     {props.children}
                 </Map>
             </ContextProvider>

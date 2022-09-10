@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { Ref, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactMapGL, { GeolocateControl, GeolocateControlRef, MapRef } from 'react-map-gl';
 import { WorldMapControl } from '../components/WorldMapControl';
 import { WorldMarkers } from '../components/WorldMarkers';
@@ -11,14 +11,23 @@ import { IWorldMarker } from '../utils/world/worldTypes';
 interface IProps {
     map: IMapProps;
     markers: IWorldMarker[];
-    selectedMapStyle: EMapStyle;
     selectedIds: string[];
     children?: React.ReactNode;
 }
 
+const defaults: Partial<IMapProps> = {
+    reuseMaps: true,
+    dragRotate: false,
+    boxZoom: false,
+    dragPan: true,
+    scrollZoom: true,
+    doubleClickZoom: true,
+    mapStyle: EMapStyle.WORLD
+};
+
 export const Map = (props: IProps): JSX.Element => {
     const [loaded, setLoaded] = useState<boolean>(false);
-    const mapRef = useRef<MapRef>();
+    const mapRef = useRef<MapRef>(null);
     const actions = useActions();
     const { state } = useCtx();
     const geoRef = useRef<GeolocateControlRef>(null);
@@ -39,49 +48,51 @@ export const Map = (props: IProps): JSX.Element => {
         })
         .filter((val): val is string => {
             return val !== undefined;
-        });
+        })
+        .concat(props.map.interactiveLayerIds ?? []);
 
     return (
         <>
             <ReactMapGL
-                {...props.map.viewport}
-                ref={mapRef as Ref<MapRef>}
+                {...defaults}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                {...(props.map as any)}
+                ref={mapRef}
                 style={{
                     width: '100%',
-                    height: '100%'
+                    height: '100%',
+                    ...props.map.style
                 }}
                 onClick={(e) => {
                     const features = e.features ?? [];
                     if (features.length > 0) {
                         state.callbacks.onMarkersSelected?.([features[0].source]);
                     }
-                    props.map.onMapClick?.(e);
+                    props.map.onClick?.(e);
                 }}
                 onLoad={(e) => {
                     setLoaded(true);
-                    props.map.onMapLoad?.(e, mapRef);
+                    props.map.onLoad?.(e, mapRef);
                 }}
-                reuseMaps={true}
-                mapStyle={props.selectedMapStyle}
-                onMove={props.map.onMapMove}
-                onRender={(event) => event.target.resize()}
-                dragRotate={false}
-                boxZoom={false}
+                onRender={(event) => {
+                    event.target.resize();
+                    props.map.onRender?.(event);
+                }}
                 interactiveLayerIds={layerIds ?? []}
-                dragPan={props.map.dragPan ?? true}
-                scrollZoom={props.map.scrollZoom ?? true}
-                doubleClickZoom={props.map.doubleClickZoom ?? true}
-                mapboxAccessToken={props.map.accessToken}
             >
                 {loaded && (
                     <>
-                        <WorldMarkers markers={props.markers} viewport={props.map.viewport} />
+                        <WorldMarkers markers={props.markers} zoom={props.map.zoom ?? 1} />
                         <WorldMapControl
                             onGeoClick={() => {
                                 console.log('Geo click');
                                 geoRef?.current?.trigger();
                             }}
-                            selectedMapStyle={props.selectedMapStyle}
+                            selectedMapStyle={
+                                [EMapStyle.SATELLITE, EMapStyle.OUTDOOR, EMapStyle.WORLD].find(
+                                    (e) => e === props.map.mapStyle
+                                ) ?? null
+                            }
                             mapStyles={[EMapStyle.WORLD, EMapStyle.SATELLITE, EMapStyle.OUTDOOR]}
                             onStyleChange={(style) => {
                                 console.log('Set map style', style);

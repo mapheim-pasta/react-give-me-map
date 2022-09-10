@@ -1,19 +1,10 @@
 import { MapboxEvent } from 'mapbox-gl';
-import { MapRef, ViewStateChangeEvent } from 'react-map-gl';
+import { MapProps as OriginalMapProps, MapRef } from 'react-map-gl';
 
-export interface IMapProps {
-    accessToken: string;
-    viewport: IViewportExtended;
-    onMapClick?: (e: mapboxgl.MapLayerMouseEvent) => void;
-    onMapLoad?: (
-        e: MapboxEvent<undefined>,
-        mapRef: React.MutableRefObject<MapRef | undefined>
-    ) => void;
-    onMapMove: (e: ViewStateChangeEvent) => void;
-    dragPan?: boolean;
-    scrollZoom?: boolean;
-    doubleClickZoom?: boolean;
-}
+export type IMapProps = Omit<OriginalMapProps, 'onLoad' | 'mapStyle'> & {
+    onLoad?: (e: MapboxEvent<undefined>, mapRef: React.RefObject<MapRef>) => void;
+    mapStyle?: OriginalMapProps['mapStyle'] | EMapStyle;
+};
 
 export interface IViewportExtended {
     latitude: number;
