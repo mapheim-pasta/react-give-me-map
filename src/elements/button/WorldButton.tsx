@@ -36,11 +36,9 @@ export const WorldButton = (props: Props): JSX.Element => {
     );
 };
 
-export const S_WorldButton = (styled.div as any).attrs(() => ({
-    style: {}
-}))`
-    width: ${(props: any) => props.dimensions + 'px'};
-    height: ${(props: any) => props.dimensions + 'px'};
+export const S_WorldButton = styled.div<{ dimensions: number; size: string; selected?: boolean }>`
+    width: ${(props) => props.dimensions + 'px'};
+    height: ${(props) => props.dimensions + 'px'};
     box-shadow: ${SHADOW1}, ${INSET1};
     border-radius: 5px;
     display: flex;
@@ -48,9 +46,9 @@ export const S_WorldButton = (styled.div as any).attrs(() => ({
     border: 1px solid ${GREY1};
     align-items: center;
     svg {
-        width: ${(props: any) => props.size};
+        width: ${(props) => props.size};
     }
-    ${(props: any) => {
+    ${(props) => {
         if (props.selected) {
             return css`
                 background-color: ${MAIN};

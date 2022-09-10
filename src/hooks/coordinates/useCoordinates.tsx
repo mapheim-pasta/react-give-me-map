@@ -1,10 +1,14 @@
-import { useContext, useMemo } from 'react';
-import { MapContext } from 'react-map-gl/dist/esm/components/map';
+import { useMemo } from 'react';
+import { useMap } from 'react-map-gl';
 import { getCoordinatesBoundaries, ICoordinatesBoundaries } from '../../utils/gpx/gpxUtils';
 import { ICoordinates, IXY } from '../../utils/map/mapTypes';
 
 export const useCoordinate = (coordinates: ICoordinates[]): IReturnUseCoordinate => {
-    const { map } = useContext(MapContext);
+    const { current: map } = useMap();
+
+    if (!map) {
+        throw Error('Map not found in context');
+    }
 
     const points = useMemo(() => {
         return coordinates.map((point) => {

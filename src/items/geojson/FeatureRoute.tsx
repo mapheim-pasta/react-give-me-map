@@ -1,7 +1,5 @@
-import React, { useContext } from 'react';
-import { Layer, Source } from 'react-map-gl';
-import { MapContext } from 'react-map-gl/dist/esm/components/map';
-import { useCtx } from '../../context/dynamic/provider';
+import React from 'react';
+import { Layer, Source, useMap } from 'react-map-gl';
 import { useCoordinate } from '../../hooks/coordinates/useCoordinates';
 import { ICoordinates } from '../../utils/map/mapTypes';
 import { MAX_ZOOM, ROUTE_LINE_WIDTH } from '../../utils/world/worldConfig';
@@ -17,10 +15,13 @@ interface Props {
     dropShadowColor?: string;
 }
 
-export const FeatureRoute = (props: Props): JSX.Element => {
-    const { state } = useCtx();
-    const { map } = useContext(MapContext);
+export const FeatureRoute = (props: Props): JSX.Element | null => {
+    const { current: map } = useMap();
     const { points } = useCoordinate(props.coordinates);
+
+    if (!map) {
+        throw Error('Map not found in context');
+    }
 
     let width = getInScaleReverse(ROUTE_LINE_WIDTH, map.getZoom(), MAX_ZOOM);
     const extraWidth = width < 40 ? 40 : width;

@@ -28,13 +28,11 @@ export const WorldMapStyle = (props: Props): JSX.Element => {
     );
 };
 
-const S_WorldMapStyle = (styled.div as any).attrs(() => ({
-    style: {}
-}))`
+const S_WorldMapStyle = styled.div<{ url: string }>`
     width: 50px;
     height: 50px;
     border-radius: 5px;
-    background-image: url(${(props: any) => props.url});
+    background-image: url(${(props) => props.url});
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;

@@ -1,5 +1,3 @@
-// import ReactMapGL from 'react-map-gl';
-
 export { DrawWorld } from './items/DrawWorld';
 export { ImageWorld } from './items/ImageWorld';
 export { LinkWorld } from './items/LinkWorld';
@@ -14,5 +12,27 @@ export {
     ROUTE_LINE_WIDTH,
     TEXT_BORDER_RADIUS
 } from './utils/world/worldConfig';
-export { ICombinedWorld, IWorldMarker } from './utils/world/worldTypes';
+export {
+    ICombinedWorld,
+    IDirectionWorldMarker,
+    IDrawWorld,
+    IDrawWorldMarker,
+    IImageWorld,
+    IImageWorldMarker,
+    ILinkWorld,
+    ILinkWorldMarker,
+    IPinWorld,
+    IPinWorldMarker,
+    IPolygonWorld,
+    IPolygonWorldMarker,
+    IRouteWorld,
+    IRouteWorldMarker,
+    ITextWorld,
+    ITextWorldMarker,
+    IWorldMarker,
+    IYoutubeWorld,
+    IYoutubeWorldMarker,
+    Transport,
+    WorldElements
+} from './utils/world/worldTypes';
 export { getInScale, getInScaleReverse } from './utils/world/worldUtils';

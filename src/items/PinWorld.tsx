@@ -35,7 +35,7 @@ export const PinWorld = (props: Props): JSX.Element => {
     );
 };
 
-const S_PinWorld = (styled.div as any).attrs(() => ({}))`
+const S_PinWorld = styled.div`
     width: 45px;
     height: 45px;
     position: relative;
@@ -44,13 +44,13 @@ const S_PinWorld = (styled.div as any).attrs(() => ({}))`
     justify-content: center;
 `;
 
-const S_PinWorldLabel = (styled.span as any).attrs(() => ({}))`
+const S_PinWorldLabel = styled.span<{ inverse: boolean }>`
     position: absolute;
     top: 12px;
     left: 55px;
     white-space: nowrap;
     font-size: 16px;
-    ${(props: any) => {
+    ${(props) => {
         if (props.inverse) {
             return css`
                 color: ${WHITE};
@@ -67,21 +67,17 @@ const S_PinWorldLabel = (styled.span as any).attrs(() => ({}))`
     }}
 `;
 
-const S_ImagePin = (styled.div as any).attrs(() => ({
-    style: {}
-}))`
+const S_ImagePin = styled.div<{ src: string }>`
     width: 100%;
     height: 100%;
     overflow: hidden;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    background-image: url(${(props: any) => props.src});
+    background-image: url(${(props) => props.src});
 `;
 
-const S_EmojiPin = (styled.div as any).attrs(() => ({
-    style: {}
-}))`
+const S_EmojiPin = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -90,16 +86,14 @@ const S_EmojiPin = (styled.div as any).attrs(() => ({
     }
 `;
 
-export const S_DotPin = (styled.div as any).attrs(() => ({
-    style: {}
-}))`
+export const S_DotPin = styled.div<{ dotColor?: string; inverse?: boolean }>`
     border-radius: 50%;
     width: 15px;
     height: 15px;
     border: 4px solid white;
     box-sizing: content-box;
 
-    ${(props: any) => {
+    ${(props) => {
         if (props.inverse) {
             return css`
                 background-color: #${props.dotColor ?? EWorldColor.BLUE};

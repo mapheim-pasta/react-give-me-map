@@ -76,9 +76,12 @@ export const YoutubeWorld = (props: Props): JSX.Element => {
     );
 };
 
-const S_YoutubeWorld = (styled.div as any).attrs(() => ({
-    style: {}
-}))`
+const S_YoutubeWorld = styled.div<{
+    borderRadiusPx?: number;
+    borderSize?: number;
+    borderColor?: string;
+    dropShadowCombined?: string;
+}>`
     width: 400px;
     height: 230px;
     position: relative;
@@ -91,7 +94,7 @@ const S_YoutubeWorld = (styled.div as any).attrs(() => ({
         align-items: center;
         justify-content: center;
         overflow: hidden;
-        ${(props: any) => {
+        ${(props) => {
             return css`
                 border-radius: ${props.borderRadiusPx ?? TEXT_BORDER_RADIUS}px;
                 border-width: ${props.borderSize}px;

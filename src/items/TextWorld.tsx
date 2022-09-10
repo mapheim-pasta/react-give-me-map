@@ -24,13 +24,21 @@ export const TextWorld = (props: ITextWorldProps): JSX.Element => {
     );
 };
 
-const S_TextWorld = styled.div<any>`
-    width: ${(props: any) => (props.width > 0 ? props.width : 0)}px;
+const S_TextWorld = styled.div<{
+    width: number;
+    borderRadiusPx?: number;
+    borderSize?: number;
+    borderColor?: string;
+    dropShadowCombined?: string;
+    fill: string;
+    color: string;
+}>`
+    width: ${(props) => (props.width > 0 ? props.width : 0)}px;
     min-width: 150px;
     display: flex;
     position: relative;
 
-    ${(props: any) => {
+    ${(props) => {
         return css`
             border-radius: ${props.borderRadiusPx ?? TEXT_BORDER_RADIUS}px;
             border-width: ${props.borderSize}px;
@@ -39,26 +47,26 @@ const S_TextWorld = styled.div<any>`
             box-shadow: ${props.dropShadowCombined};
         `;
     }}
-    ${(props: any) => {
+    ${(props) => {
         if (props.fill === 'true') {
             return css`
-                background-color: ${(props: any) => '#' + props.color};
+                background-color: ${(props: { color: string }) => '#' + props.color};
                 padding: 20px;
                 > pre {
-                    color: ${(props: any) =>
+                    color: ${(props) =>
                         props.color === EWorldColor.WHITE ? ALMOST_BLACK : '#' + EWorldColor.WHITE};
-                    text-shadow: ${(props: any) =>
+                    text-shadow: ${(props) =>
                         props.color === EWorldColor.WHITE ? '' : '1px 1px 2px rgba(0, 0, 0, 0.25)'};
                 }
             `;
         } else {
             return css`
                 padding: 5px;
-                text-shadow: ${(props: any) =>
+                text-shadow: ${(props: { color: string }) =>
                     props.color === EWorldColor.WHITE
                         ? '1px 1px 2px rgba(0, 0, 0, 0.5)'
                         : '1px 1px 2px rgba(0, 0, 0, 0.25)'};
-                color: ${(props: any) =>
+                color: ${(props) =>
                     props.color === EWorldColor.WHITE
                         ? '#' + EWorldColor.WHITE
                         : '#' + props.color};

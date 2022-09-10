@@ -39,14 +39,20 @@ export const LinkWorld = (props: ILinkWorldProps): JSX.Element => {
     );
 };
 
-const S_LinkWorld = styled.div<any>`
-    width: ${(props: any) => (props.width > 0 ? props.width : 0)}px;
+const S_LinkWorld = styled.div<{
+    width: number;
+    borderRadiusPx?: number;
+    borderSize?: number;
+    borderColor?: string;
+    dropShadowCombined?: string;
+}>`
+    width: ${(props) => (props.width > 0 ? props.width : 0)}px;
     min-width: 150px;
     display: flex;
     position: relative;
     flex-direction: column;
 
-    ${(props: any) => {
+    ${(props) => {
         return css`
             border-radius: ${props.borderRadiusPx ?? TEXT_BORDER_RADIUS}px;
             border-width: ${props.borderSize}px;
@@ -55,7 +61,7 @@ const S_LinkWorld = styled.div<any>`
             box-shadow: ${props.dropShadowCombined};
         `;
     }}
-    background-color: ${(props: any) => '#' + props.color};
+    background-color: ${(props) => '#' + props.color};
     padding: 20px;
     .link {
         width: 100%;
@@ -75,9 +81,9 @@ const S_LinkWorld = styled.div<any>`
                 font-size: 14px;
                 white-space: nowrap;
                 text-decoration: underline;
-                color: ${(props: any) =>
+                color: ${(props) =>
                     props.color === EWorldColor.WHITE ? ALMOST_BLACK : '#' + EWorldColor.WHITE};
-                text-shadow: ${(props: any) =>
+                text-shadow: ${(props) =>
                     props.color === EWorldColor.WHITE ? '' : '1px 1px 2px rgba(0, 0, 0, 0.25)'};
             }
         }
@@ -86,16 +92,16 @@ const S_LinkWorld = styled.div<any>`
             align-items: center;
             svg {
                 width: 20px;
-                fill: ${(props: any) =>
+                fill: ${(props) =>
                     props.color === EWorldColor.WHITE ? ALMOST_BLACK : '#' + EWorldColor.WHITE};
             }
         }
     }
     > pre {
         margin: 15px 0 0 0;
-        color: ${(props: any) =>
+        color: ${(props) =>
             props.color === EWorldColor.WHITE ? ALMOST_BLACK : '#' + EWorldColor.WHITE};
-        text-shadow: ${(props: any) =>
+        text-shadow: ${(props) =>
             props.color === EWorldColor.WHITE ? '' : '1px 1px 2px rgba(0, 0, 0, 0.25)'};
         font-size: 13px;
         background-color: unset;

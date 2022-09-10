@@ -15,7 +15,7 @@ export const PolygonWorld = (props: Props): JSX.Element => {
         stroke: '#' + elementData.color,
         strokeWidth: 3 / props.adjustedScale,
         strokeOpacity: 0.9,
-        pointerEvents: 'painted'
+        pointerEvents: 'painted' as const
     };
 
     //Split for display bug in big zoom
@@ -27,7 +27,7 @@ export const PolygonWorld = (props: Props): JSX.Element => {
             }}
         >
             <S_SVG>
-                <path style={style as any} d={elementData.path} />
+                <path style={style} d={elementData.path} />
             </S_SVG>
             {elementData.fill && (
                 <S_SVG>

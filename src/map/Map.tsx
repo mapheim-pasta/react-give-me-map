@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Ref, useEffect, useRef, useState } from 'react';
-import ReactMapGL, { GeolocateControl, MapRef } from 'react-map-gl';
+import ReactMapGL, { GeolocateControl, GeolocateControlRef, MapRef } from 'react-map-gl';
 import { WorldMapControl } from '../components/WorldMapControl';
 import { WorldMarkers } from '../components/WorldMarkers';
 import { useActions } from '../context/dynamic/actions';
@@ -21,7 +21,7 @@ export const Map = (props: IProps): JSX.Element => {
     const mapRef = useRef<MapRef>();
     const actions = useActions();
     const { state } = useCtx();
-    const geoRef = useRef<any>();
+    const geoRef = useRef<GeolocateControlRef>(null);
 
     useEffect(() => {
         if (!_.isEqual(props.selectedIds.sort(), state.selectedIds.sort())) {
@@ -31,13 +31,13 @@ export const Map = (props: IProps): JSX.Element => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.selectedIds]);
 
-    const layerIds: any = props.markers
+    const layerIds = props.markers
         .map((marker) => {
             if (marker.elementType === 'route' || marker.elementType === 'direction') {
                 return marker.id + '|line-click';
             }
         })
-        .filter(function (val) {
+        .filter((val): val is string => {
             return val !== undefined;
         });
 
@@ -50,9 +50,10 @@ export const Map = (props: IProps): JSX.Element => {
                     width: '100%',
                     height: '100%'
                 }}
-                onClick={(e: any) => {
-                    if (e.features?.length > 0) {
-                        state.callbacks.onMarkersSelected?.([e.features[0].source]);
+                onClick={(e) => {
+                    const features = e.features ?? [];
+                    if (features.length > 0) {
+                        state.callbacks.onMarkersSelected?.([features[0].source]);
                     }
                     props.map.onMapClick?.(e);
                 }}

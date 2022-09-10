@@ -46,10 +46,13 @@ export const ImageWorld = (props: Props): JSX.Element => {
     );
 };
 
-const S_ImageWorld = (styled.div as any).attrs(() => ({
-    style: {}
-}))`
-    ${(props: any) => {
+const S_ImageWorld = styled.div<{
+    borderRadiusPx?: number;
+    borderSize?: number;
+    borderColor?: string;
+    dropShadowCombined?: string;
+}>`
+    ${(props) => {
         return css`
             img {
                 border-radius: ${props.borderRadiusPx}px;
