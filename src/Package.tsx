@@ -23,11 +23,9 @@ export const Package = (props: IProps): JSX.Element => {
     for (const marker of markers) {
         if (marker.elementType === 'direction') {
             // first is "start"
-            // 1...n-1 are coordinates
+            // TODO: 1...n-1 will be stops on the way
             // last is "end"
-            marker.refs = new Array(marker.elementData.coordinates.length + 2)
-                .fill(0)
-                .map(() => React.createRef<HTMLDivElement>());
+            marker.refs = new Array(2).fill(0).map(() => React.createRef<HTMLDivElement>());
         } else {
             marker.ref = React.createRef<HTMLDivElement>();
         }
@@ -37,12 +35,7 @@ export const Package = (props: IProps): JSX.Element => {
         <>
             <ContextProvider reducer={{ state, dispatch }}>
                 <RegisterCallbacks {...props.callbacks} />
-                <Map
-                    map={props.map}
-                    markers={markers}
-                    selectedIds={props.selectedIds ?? []}
-                    selectedMapStyle={props.selectedMapStyle ?? EMapStyle.WORLD}
-                >
+                <Map map={props.map} markers={markers} selectedIds={props.selectedIds ?? []}>
                     {props.children}
                 </Map>
             </ContextProvider>

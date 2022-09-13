@@ -12,7 +12,6 @@ import { PolygonWorld } from '../items/PolygonWorld';
 import { RouteWorld } from '../items/RouteWorld';
 import { TextWorld } from '../items/TextWorld';
 import { YoutubeWorld } from '../items/YoutubeWorld';
-import { IViewportExtended } from '../utils/map/mapTypes';
 import { isMarkerElement } from '../utils/marker/markerUtils';
 import { ORIGIN_ZOOM } from '../utils/world/worldConfig';
 import { IWorldMarker } from '../utils/world/worldTypes';
@@ -21,7 +20,7 @@ import { getInScale } from '../utils/world/worldUtils';
 export interface IProps {
     markers: IWorldMarker[];
 
-    viewport: IViewportExtended;
+    zoom: number;
 }
 
 export const WorldMarkers = (props: IProps): JSX.Element => {
@@ -52,7 +51,7 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
         <>
             {_.sortBy(markers, 'order').map((marker: IWorldMarker) => {
                 const adjustedScale = marker.scalable
-                    ? getInScale(marker.scale as number, ORIGIN_ZOOM, props.viewport.zoom)
+                    ? getInScale(marker.scale as number, ORIGIN_ZOOM, props.zoom)
                     : marker.scale ?? 1;
 
                 if (marker.elementType === 'image') {

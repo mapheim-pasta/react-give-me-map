@@ -1,6 +1,6 @@
 {
     "name": "react-give-me-map",
-    "version": "1.0.31",
+    "version": "1.0.35",
     "description": "React wrapper for Mapbox with predefined markers and other quick actions",
     "main": "dist/index.js",
     "module": "dist/index.js",
@@ -14,7 +14,7 @@
         "preversion": "npm run lint",
         "version": "npm run format && git add -A src",
         "postversion": "git push && git push --tags",
-        "give": "tsc && yalc push",
+        "give": "npm run build && yalc push",
         "lint": "eslint --ext .js,.jsx,.ts,.tsx src --color"
     },
     "repository": {

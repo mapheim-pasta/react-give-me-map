@@ -6,7 +6,7 @@ import { WorldMapStyle } from '../elements/map/WorldMapStyle';
 import { EMapStyle } from '../utils/map/mapTypes';
 
 interface Props {
-    selectedMapStyle: EMapStyle;
+    selectedMapStyle: EMapStyle | null;
     mapStyles: EMapStyle[];
     onStyleChange: (style: EMapStyle) => void;
     onGeoClick: () => void;
