@@ -34,7 +34,7 @@ export const Map = (props: IProps): JSX.Element => {
 
     useEffect(() => {
         if (!_.isEqual(props.selectedIds.sort(), state.selectedIds.sort())) {
-            console.log('Update');
+            console.log('Update!!!');
             actions.setSelectedIds(props.selectedIds);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
