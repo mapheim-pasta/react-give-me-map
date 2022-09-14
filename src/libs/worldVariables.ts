@@ -1,5 +1,5 @@
 export const SHADOW1 = '0px 5px 15px rgba(0, 0, 0, 0.05)';
-export const INSET1 = 'inset 0px -1px 0px #e6e6e6';
+
 export const INSET2 = 'inset 0px -1px 0px #3270C2';
 
 export const WHITE = '#ffffff';

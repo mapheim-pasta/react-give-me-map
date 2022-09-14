@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { GREY1, INSET2, SHADOW1, WHITE } from '../../libs/worldVariables';
+import { INSET2, SHADOW1, WHITE } from '../../libs/worldVariables';
 import { EMapStyle } from '../../utils/map/mapTypes';
 
 interface Props {
@@ -29,16 +29,16 @@ export const WorldMapStyle = (props: Props): JSX.Element => {
 };
 
 const S_WorldMapStyle = styled.div<{ url: string }>`
-    width: 50px;
-    height: 50px;
+    width: 37x;
+    height: 37px;
     border-radius: 5px;
     background-image: url(${(props) => props.url});
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     background-color: ${WHITE};
-    box-shadow: ${SHADOW1};
-    border: 1px solid ${GREY1};
+    border: 1px solid #ebebeb;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
     cursor: pointer;
     position: relative;
     &:hover::after {

@@ -4,7 +4,6 @@ import {
     ALMOST_BLACK,
     GREY1,
     GREY2,
-    INSET1,
     INSET2,
     MAIN,
     SHADOW1,
@@ -12,20 +11,14 @@ import {
 } from '../../libs/worldVariables';
 
 interface Props {
-    dimensions: 'dimensions1' | 'dimensions2';
     selected?: boolean;
     iconSVG?: React.ReactElement;
     onClick?: () => void;
 }
 
 export const WorldButton = (props: Props): JSX.Element => {
-    const dimensions: number = props.dimensions === 'dimensions1' ? 50 : 70;
-    const size: string = props.dimensions === 'dimensions1' ? '25px' : '30px';
-
     return (
         <S_WorldButton
-            dimensions={dimensions}
-            size={size}
             selected={props.selected}
             onClick={() => {
                 if (props.onClick) props.onClick();
@@ -36,17 +29,18 @@ export const WorldButton = (props: Props): JSX.Element => {
     );
 };
 
-export const S_WorldButton = styled.div<{ dimensions: number; size: string; selected?: boolean }>`
-    width: ${(props) => props.dimensions + 'px'};
-    height: ${(props) => props.dimensions + 'px'};
-    box-shadow: ${SHADOW1}, ${INSET1};
+export const S_WorldButton = styled.div<{ selected?: boolean }>`
+    width: 37px;
+    height: 37px;
+    border: 1px solid #ebebeb;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
     border-radius: 5px;
     display: flex;
     justify-content: center;
     border: 1px solid ${GREY1};
     align-items: center;
     svg {
-        width: ${(props) => props.size};
+        width: 18px;
     }
     ${(props) => {
         if (props.selected) {
