@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import YouTube from 'react-youtube';
 import styled, { css } from 'styled-components';
+import { parseYoutubeSource } from '../utils/marker/youtubeUtils';
 import { TEXT_BORDER_RADIUS } from '../utils/world/worldConfig';
 import { IYoutubeWorld } from '../utils/world/worldTypes';
 
@@ -14,21 +15,7 @@ export const YoutubeWorld = (props: Props): JSX.Element => {
     const [videoReady, setVideoReady] = useState(false);
     const [videoPlaying, setVideoPlaying] = useState(false);
 
-    let videoId;
-    const video = props.elementData.video;
-    if (video?.indexOf('watch?v=') >= 0) {
-        videoId = video?.split('watch?v=')[1];
-    } else if (video?.indexOf('youtu.be/') >= 0) {
-        videoId = video?.split('youtu.be/')[1];
-    } else {
-        videoId = video;
-    }
-    if (videoId?.indexOf('?t=') >= 0) {
-        videoId = videoId.split('?t=')[0];
-    }
-    if (videoId?.indexOf('&t=') >= 0) {
-        videoId = videoId.split('&t=')[0];
-    }
+    const videoId = parseYoutubeSource(props.elementData.video);
 
     return (
         <S_YoutubeWorld

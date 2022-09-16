@@ -6,6 +6,7 @@ export { YoutubeWorld } from './items/YoutubeWorld';
 export { Package as GiveMeMap } from './Package';
 export { EMapStyle, ICoordinates, IViewportExtended } from './utils/map/mapTypes';
 export { isMarkerElement } from './utils/marker/markerUtils';
+export { parseYoutubeSource } from './utils/marker/youtubeUtils';
 export {
     MAX_ZOOM,
     ORIGIN_ZOOM,
