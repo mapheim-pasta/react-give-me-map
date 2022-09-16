@@ -167,7 +167,7 @@ export interface IDirectionWorldMarker extends BaseMarker {
     refs?: Array<RefObject<HTMLDivElement>>;
 }
 
-export type Transport = 'driving-traffic' | 'driving' | 'walking' | 'cycling';
+export type Transport = 'driving-traffic' | 'driving' | 'walking' | 'cycling' | 'plane' | 'direct';
 
 export interface IYoutubeWorld {
     video: string;
