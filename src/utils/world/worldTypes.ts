@@ -109,6 +109,7 @@ export interface IRouteWorldMarker extends BaseMarker {
 }
 
 export interface IDrawWorld {
+    type: 'pen' | 'brush';
     path: string;
     width: number;
     height: number;
@@ -167,7 +168,7 @@ export interface IDirectionWorldMarker extends BaseMarker {
     refs?: Array<RefObject<HTMLDivElement>>;
 }
 
-export type Transport = 'driving-traffic' | 'driving' | 'walking' | 'cycling' | 'plane' | 'direct';
+export type Transport = 'driving-traffic' | 'driving' | 'walking' | 'cycling' | 'plane';
 
 export interface IYoutubeWorld {
     video: string;
