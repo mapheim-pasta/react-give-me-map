@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { useActions } from '../context/dynamic/actions';
-import { EMapStyle } from '../utils/map/mapTypes';
 
 export interface ICallbacks {
     onMarkersSelected?: (ids: string[]) => void;
-    onStyleChanged?: (style: EMapStyle) => void;
+    onStyleChanged?: (style: string) => void;
 }
 
 export const RegisterCallbacks = (props: ICallbacks) => {

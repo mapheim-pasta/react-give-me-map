@@ -4,17 +4,19 @@ import { INSET2, SHADOW1, WHITE } from '../../libs/worldVariables';
 import { EMapStyle } from '../../utils/map/mapTypes';
 
 interface Props {
-    onClick: (style: EMapStyle) => void;
-    mapStyle: EMapStyle;
+    onClick: (style: string) => void;
+    mapStyle: string;
 }
 
 export const WorldMapStyle = (props: Props): JSX.Element => {
     let url = '';
-    if (props.mapStyle === EMapStyle.SATELLITE) {
+    if (props.mapStyle == EMapStyle.SATELLITE) {
         url = '../../../../map-satellite.png';
-    } else if (props.mapStyle === EMapStyle.OUTDOOR) {
+    } else if (props.mapStyle == EMapStyle.OUTDOOR) {
         url = '../../../../map-outdoor.png';
-    } else if (props.mapStyle === EMapStyle.WORLD) {
+    } else if (props.mapStyle == EMapStyle.WORLD) {
+        url = '../../../../map-world.png';
+    } else {
         url = '../../../../map-world.png';
     }
 

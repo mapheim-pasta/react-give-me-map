@@ -1,11 +1,17 @@
 import _ from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
-import ReactMapGL, { GeolocateControl, GeolocateControlRef, MapRef } from 'react-map-gl';
+import ReactMapGL, {
+    GeolocateControl,
+    GeolocateControlRef,
+    ImmutableLike,
+    MapboxStyle,
+    MapRef
+} from 'react-map-gl';
 import { WorldMapControl } from '../components/WorldMapControl';
 import { WorldMarkers } from '../components/WorldMarkers';
 import { useActions } from '../context/dynamic/actions';
 import { useCtx } from '../context/dynamic/provider';
-import { EMapStyle, IMapProps } from '../utils/map/mapTypes';
+import { EMapStyle, IMapConfig, IMapProps } from '../utils/map/mapTypes';
 import { IWorldMarker } from '../utils/world/worldTypes';
 
 interface IProps {
@@ -13,6 +19,7 @@ interface IProps {
     markers: IWorldMarker[];
     selectedIds: string[];
     children?: React.ReactNode;
+    config?: IMapConfig;
 }
 
 const defaults: Partial<IMapProps> = {
@@ -21,8 +28,7 @@ const defaults: Partial<IMapProps> = {
     boxZoom: false,
     dragPan: true,
     scrollZoom: true,
-    doubleClickZoom: true,
-    mapStyle: EMapStyle.WORLD
+    doubleClickZoom: true
 };
 
 export const Map = (props: IProps): JSX.Element => {
@@ -31,6 +37,15 @@ export const Map = (props: IProps): JSX.Element => {
     const actions = useActions();
     const { state } = useCtx();
     const geoRef = useRef<GeolocateControlRef>(null);
+    const [selectedMapStyle, setSelectedMapStyle] = useState<
+        MapboxStyle | string | ImmutableLike | EMapStyle
+    >(getInitMapStyle());
+
+    useEffect(() => {
+        if (props.map.mapStyle) {
+            setSelectedMapStyle(props.map.mapStyle);
+        }
+    }, [props.map.mapStyle]);
 
     useEffect(() => {
         if (!_.isEqual(props.selectedIds.sort(), state.selectedIds.sort())) {
@@ -50,6 +65,16 @@ export const Map = (props: IProps): JSX.Element => {
             return val !== undefined;
         })
         .concat(props.map.interactiveLayerIds ?? []);
+
+    function getInitMapStyle() {
+        if (props.map.mapStyle) {
+            return props.map.mapStyle;
+        } else if (props.config?.availableStyles?.[0]) {
+            return props.config.availableStyles[0];
+        } else {
+            return EMapStyle.WORLD;
+        }
+    }
 
     return (
         <>
@@ -79,6 +104,7 @@ export const Map = (props: IProps): JSX.Element => {
                     props.map.onRender?.(event);
                 }}
                 interactiveLayerIds={layerIds ?? []}
+                mapStyle={selectedMapStyle}
             >
                 {loaded && (
                     <>
@@ -88,14 +114,17 @@ export const Map = (props: IProps): JSX.Element => {
                                 console.log('Geo click');
                                 geoRef?.current?.trigger();
                             }}
-                            selectedMapStyle={
-                                [EMapStyle.SATELLITE, EMapStyle.OUTDOOR, EMapStyle.WORLD].find(
-                                    (e) => e === props.map.mapStyle
-                                ) ?? null
+                            selectedMapStyle={selectedMapStyle}
+                            mapStyles={
+                                props.config?.availableStyles ?? [
+                                    EMapStyle.WORLD,
+                                    EMapStyle.SATELLITE,
+                                    EMapStyle.OUTDOOR
+                                ]
                             }
-                            mapStyles={[EMapStyle.WORLD, EMapStyle.SATELLITE, EMapStyle.OUTDOOR]}
                             onStyleChange={(style) => {
-                                console.log('Set map style', style);
+                                console.log('Set map style2', style);
+                                setSelectedMapStyle(style);
                                 state.callbacks.onStyleChanged?.(style);
                             }}
                         />
