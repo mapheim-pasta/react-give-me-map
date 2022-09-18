@@ -17,6 +17,8 @@ export const YoutubeWorld = (props: Props): JSX.Element => {
 
     const videoId = parseYoutubeSource(props.elementData.video);
 
+    console.log('Youtube', videoId);
+
     return (
         <S_YoutubeWorld
             borderRadiusPx={props.elementData.borderRadiusPx}
@@ -98,12 +100,15 @@ const S_YoutubeWorld = styled.div<{
             width: 100%;
             height: 100%;
             position: relative;
-            > div:nth-child(1) {
+            display: flex;
+            .video {
                 width: 100%;
                 height: 100%;
-                .video {
+                display: flex;
+                * {
                     width: 100%;
                     height: 100%;
+                    display: flex;
                 }
             }
             .ready {
