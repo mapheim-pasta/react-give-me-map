@@ -25,7 +25,9 @@ export const DrawWorld = (props: Props): JSX.Element => {
                     strokeLinejoin: 'round',
                     strokeLinecap: 'round',
                     opacity: elementData.opacity / 100,
-                    pointerEvents: 'painted'
+                    pointerEvents: 'painted',
+                    fill: elementData?.fill ? '#' + elementData.color : 'none',
+                    fillOpacity: 1
                 }}
                 onClick={() => {
                     props.onSelected?.();

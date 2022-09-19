@@ -17,8 +17,6 @@ export const YoutubeWorld = (props: Props): JSX.Element => {
 
     const videoId = parseYoutubeSource(props.elementData.video);
 
-    console.log('Youtube', videoId);
-
     return (
         <S_YoutubeWorld
             borderRadiusPx={props.elementData.borderRadiusPx}

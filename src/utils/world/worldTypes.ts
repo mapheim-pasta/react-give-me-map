@@ -116,6 +116,7 @@ export interface IDrawWorld {
     opacity: number;
     strokeWidth: number;
     color: string;
+    fill: boolean;
 }
 
 export interface IDrawWorldMarker extends BaseMarker {
