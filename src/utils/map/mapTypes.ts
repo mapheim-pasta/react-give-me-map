@@ -1,10 +1,6 @@
-import { MapboxEvent } from 'mapbox-gl';
-import { MapProps as OriginalMapProps, MapRef } from 'react-map-gl';
+import { MapProps as OriginalMapProps } from 'react-map-gl';
 
-export type IMapProps = Omit<OriginalMapProps, 'onLoad'> & {
-    onLoad?: (e: MapboxEvent<undefined>, mapRef: React.RefObject<MapRef>) => void;
-    // mapStyle?: OriginalMapProps['mapStyle'] | EMapStyle;
-};
+export type IMapProps = OriginalMapProps;
 
 export interface IViewportExtended {
     latitude: number;

@@ -16,6 +16,7 @@ import { IWorldMarker } from '../utils/world/worldTypes';
 
 interface IProps {
     map: IMapProps;
+    mapRef?: React.RefObject<MapRef>;
     markers: IWorldMarker[];
     selectedIds: string[];
     children?: React.ReactNode;
@@ -33,7 +34,6 @@ const defaults: Partial<IMapProps> = {
 
 export const Map = (props: IProps): JSX.Element => {
     const [loaded, setLoaded] = useState<boolean>(false);
-    const mapRef = useRef<MapRef>(null);
     const actions = useActions();
     const { state } = useCtx();
     const geoRef = useRef<GeolocateControlRef>(null);
@@ -82,7 +82,7 @@ export const Map = (props: IProps): JSX.Element => {
                 {...defaults}
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 {...(props.map as any)}
-                ref={mapRef}
+                ref={props.mapRef}
                 style={{
                     width: '100%',
                     height: '100%',
@@ -97,7 +97,7 @@ export const Map = (props: IProps): JSX.Element => {
                 }}
                 onLoad={(e) => {
                     setLoaded(true);
-                    props.map.onLoad?.(e, mapRef);
+                    props.map.onLoad?.(e);
                 }}
                 onRender={(event) => {
                     event.target.resize();

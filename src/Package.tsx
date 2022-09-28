@@ -1,4 +1,5 @@
 import React, { useReducer } from 'react';
+import { MapRef } from 'react-map-gl';
 import { ContextProvider } from './context/dynamic/provider';
 import { reducer } from './context/dynamic/reducer';
 import { initialState } from './context/dynamic/state';
@@ -9,6 +10,7 @@ import { IWorldMarker } from './utils/world/worldTypes';
 
 interface IProps {
     map: IMapProps;
+    mapRef?: React.RefObject<MapRef>;
     markers?: IWorldMarker[];
     children?: React.ReactNode;
     callbacks?: ICallbacks;
@@ -37,6 +39,7 @@ export const Package = (props: IProps): JSX.Element => {
             <ContextProvider reducer={{ state, dispatch }}>
                 <RegisterCallbacks {...props.callbacks} />
                 <Map
+                    mapRef={props.mapRef}
                     map={props.map}
                     markers={markers}
                     selectedIds={props.selectedIds ?? []}
