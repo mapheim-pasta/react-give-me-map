@@ -1,5 +1,4 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
 import { IImageWorld } from '../utils/world/worldTypes';
 
 interface Props {
@@ -31,36 +30,26 @@ const generateImageUrlFor = (elementData: IImageWorld, adjustedScale: number): s
 };
 
 export const ImageWorld = (props: Props): JSX.Element => {
+    const getPixelInScale = (val: number | undefined) => (val ? val * props.adjustedScale : val);
+    const getShadowInScale = (str: string | undefined) =>
+        (str || '')
+            .split('px')
+            .map((e) => (!isNaN(parseFloat(e)) ? `${parseFloat(e) * 1.34344}px` : e))
+            .join(' ');
+
     return (
-        <S_ImageWorld
-            borderRadiusPx={props.elementData.borderRadiusPx}
-            borderSize={props.elementData.borderSize}
-            borderColor={props.elementData.borderColor}
-            dropShadowCombined={props.elementData.dropShadowCombined}
-        >
+        <div>
             <img
                 width={markerImgWidth * props.adjustedScale}
                 src={generateImageUrlFor(props.elementData, props.adjustedScale)}
+                style={{
+                    borderRadius: `${props.elementData.borderRadiusPx}px`,
+                    borderWidth: `${getPixelInScale(props.elementData.borderSize)}px`,
+                    borderStyle: 'solid',
+                    borderColor: props.elementData.borderColor,
+                    boxShadow: getShadowInScale(props.elementData.dropShadowCombined)
+                }}
             />
-        </S_ImageWorld>
+        </div>
     );
 };
-
-const S_ImageWorld = styled.div<{
-    borderRadiusPx?: number;
-    borderSize?: number;
-    borderColor?: string;
-    dropShadowCombined?: string;
-}>`
-    ${(props) => {
-        return css`
-            img {
-                border-radius: ${props.borderRadiusPx}px;
-                border-width: ${props.borderSize}px;
-                border-style: solid;
-                border-color: #${props.borderColor};
-                box-shadow: ${props.dropShadowCombined};
-            }
-        `;
-    }}
-`;
