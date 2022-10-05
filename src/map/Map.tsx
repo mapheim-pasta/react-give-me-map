@@ -72,7 +72,7 @@ export const Map = (props: IProps): JSX.Element => {
         } else if (props.config?.availableStyles?.[0]) {
             return props.config.availableStyles[0];
         } else {
-            return EMapStyle.WORLD;
+            return EMapStyle.DEFAULT;
         }
     }
 
@@ -117,7 +117,7 @@ export const Map = (props: IProps): JSX.Element => {
                             selectedMapStyle={selectedMapStyle}
                             mapStyles={
                                 props.config?.availableStyles ?? [
-                                    EMapStyle.WORLD,
+                                    EMapStyle.DEFAULT,
                                     EMapStyle.SATELLITE,
                                     EMapStyle.OUTDOOR
                                 ]
