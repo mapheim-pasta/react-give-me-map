@@ -76,6 +76,13 @@ export const Map = (props: IProps): JSX.Element => {
         }
     }
 
+    useEffect(() => {
+        if (!props.config?.availableStyles?.includes(selectedMapStyle as string)) {
+            setSelectedMapStyle(getInitMapStyle());
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.map.mapStyle, props.config?.availableStyles?.length]);
+
     return (
         <>
             <ReactMapGL
