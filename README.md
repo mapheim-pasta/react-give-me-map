@@ -108,7 +108,8 @@ A nice alternative, and more user friendly is to use Mapheim editor on https://w
 ![Mapheim export functionality](/docs/mapheim_export.png)
 
 
-## Detail documentation
+## Detail Marker's documentation
+Below you can see listed all the market types.
 
 |Marker type|Description
 |---|---|
@@ -122,8 +123,9 @@ A nice alternative, and more user friendly is to use Mapheim editor on https://w
 |Link|Renders a link to the external web including it's favicon|
 
 
-## Marker parameters
-### Common marker attributes
+<br/>
+
+__Common marker attributes__
 |Attribute|Type|Required|Default|Description|
 |----|----|----|----|----|
 |id|string|required|-|Unique identifier of the marker|
@@ -136,7 +138,9 @@ A nice alternative, and more user friendly is to use Mapheim editor on https://w
 |order|number|optional|false|defines if the marker is in front/behind other markers. Higher the value, the more in front the marker is|
 
 
-### Text marker
+<br/>
+
+__Text marker__
 |Attribute|Type|Required|Default|Description|
 |----|----|----|----|----|
 |text|string|required|-|Text content of the marker|
@@ -149,7 +153,9 @@ A nice alternative, and more user friendly is to use Mapheim editor on https://w
 |dropShadowCombined|string|optional|_empty_|Defines the `box-shadow` style of the element|
 
 
-### Image marker
+<br/>
+
+__Image marker__
 
 |Attribute|Type|Required|Default|Description|
 |----|----|----|----|----|
@@ -160,7 +166,9 @@ A nice alternative, and more user friendly is to use Mapheim editor on https://w
 |dropShadowCombined|string|optional|_empty_|Defines the `box-shadow` style of the element|
 
 
-### Link marker
+<br/>
+
+__Link marker__
 |Attribute|Type|Required|Default|Description|
 |----|----|----|----|----|
 |link|string|required|-|URL of the external website to redirect to when the marker is clicked|
@@ -173,7 +181,9 @@ A nice alternative, and more user friendly is to use Mapheim editor on https://w
 |dropShadowCombined|string|optional|_empty_|Defines the `box-shadow` style of the element|
 
 
-### Draw marker
+<br/>
+
+__Draw marker__
 |Attribute|Type|Required|Default|Description|
 |----|----|----|----|----|
 |type|enum|required|-|One of `pen`, `brush` value. The value `pen` will render a sharp link, while `brush` will render a line that is not sharp and is more suitable for highlighting|
@@ -186,7 +196,9 @@ A nice alternative, and more user friendly is to use Mapheim editor on https://w
 |fill|boolean|required|-|Defines is the drawn shape should be filled in with the same color as the line|
 
 
-### Pin marker
+<br/>
+
+__Pin marker__
 |Attribute|Type|Required|Default|Description|
 |----|----|----|----|----|
 |label|string|optional|-|Defines text that is displayed next to the pin|
@@ -195,7 +207,9 @@ A nice alternative, and more user friendly is to use Mapheim editor on https://w
 |dotColor|string|optional|-|Defines content of the pin. Accepts the color that the pin will be filled with. When set, the `img` and `emoji` should not be set|
 
 
-### Polygon marker
+<br/>
+
+__Polygon marker__
 |Attribute|Type|Required|Default|Description|
 |----|----|----|----|----|
 |path|string|required|-
@@ -206,7 +220,9 @@ A nice alternative, and more user friendly is to use Mapheim editor on https://w
 |fill|boolean|optional|false||Defines is the drawn shape should be filled in with the same color as the polygon|
 
 
-### Direction marker
+<br/>
+
+__Direction marker__
 |Attribute|Type|Required|Default|Description|
 |----|----|----|----|----|
 |start|object|required|-|An object that defines the start of the route defined as `{ lat: number; lng: number }`|
@@ -218,7 +234,9 @@ A nice alternative, and more user friendly is to use Mapheim editor on https://w
 |dropShadowColor|string|optional|_empty_|Defines the `box-shadow` style of the element|
 
 
-### Youtube marker
+<br/>
+
+__Youtube marker__
 |Attribute|Type|Required|Default|Description|
 |----|----|----|----|----|
 |video|string|required|-|Youtube video identifier or a full video URL|
