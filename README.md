@@ -13,6 +13,9 @@
 
 <br>
 
+## __🚧 The package is currently under development.__
+You can use this package and experiment with it but major changes may be introduced in future versions.
+
 # React - Give Me Map
 
 Give-Me-Map is a library that allows you to add content on a map easily. Using Mapbox as an underlying map provider.
@@ -23,11 +26,8 @@ Assuming you have `react` and `react-dom` packages already installed, you need t
 npm i react-give-me-map mapbox-gl react-map-gl
 ```
 
-## Overview
-
-### Drawing content
-
 ## Features
+
 
 ## Example
 
@@ -79,7 +79,8 @@ ReactDOM.render(<App />, document.querySelector('#root'))
 ```
 
 ### Adding markers
-To add markers to your map, add a `markers` parameter and fill it with the right data.
+#### Manually
+To add markers to your map, add a `markers` parameter and fill it with the right data. An example marker can be seen below:
 
 ```jsx
   const imageMarker: IImageWorldMarker = {
@@ -102,6 +103,10 @@ To add markers to your map, add a `markers` parameter and fill it with the right
     markers={[imageMarker]}
   />
 ```
+
+#### Using Mapheim
+A nice alternative, and more user friendly is to use Mapheim editor on https://www.mapheim.com/world where you can instantly create a new map and either use your map hosted directly on Mapheim platform, or you can export the marker in a JSON format. And include it as a JSON/variable in your code. See below how to find the export functionality in two steps:
+![Mapheim export functionality](/docs/mapheim_export.png)
 
 
 ## Detail documentation
