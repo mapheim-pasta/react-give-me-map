@@ -29,9 +29,9 @@ interface BaseMarker {
     lat: number;
     lng: number;
     scale?: number; //at originZoom 1
-    scalable: boolean;
+    scalable?: boolean;
     rotate?: number;
-    order: number;
+    order?: number;
 
     elementType: WorldElements;
     elementData: ICombinedWorld;
@@ -79,8 +79,6 @@ export interface IImageWorld {
         1000: string;
         1920: string;
     };
-    lat?: number;
-    lng?: number;
     borderRadiusPx?: number;
     borderSize?: number;
     borderColor?: string;

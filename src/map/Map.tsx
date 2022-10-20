@@ -76,6 +76,14 @@ export const Map = (props: IProps): JSX.Element => {
         }
     }
 
+    // Fill in default values
+    const markers = props.markers.map((m, i) => ({
+        ...m,
+        order: m.order ?? i,
+        scalable: m.scalable ?? true,
+        scale: m.scale ?? 1
+    }));
+
     useEffect(() => {
         if (!props.config?.availableStyles?.includes(selectedMapStyle as string)) {
             setSelectedMapStyle(getInitMapStyle());
@@ -115,7 +123,7 @@ export const Map = (props: IProps): JSX.Element => {
             >
                 {loaded && (
                     <>
-                        <WorldMarkers markers={props.markers} zoom={props.map.zoom ?? 1} />
+                        <WorldMarkers markers={markers} zoom={props.map.zoom ?? 1} />
                         <WorldMapControl
                             onGeoClick={() => {
                                 console.log('Geo click');
