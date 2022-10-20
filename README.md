@@ -14,11 +14,16 @@
 <br>
 
 ## __🚧 The package is currently under development.__
-You can use this package and experiment with it but major changes may be introduced in future versions.
+_You can use this package and experiment with it but major changes may be introduced in future versions._
 
 # React - Give Me Map
 
-Give-Me-Map is a library that allows you to add content on a map easily. Using Mapbox as an underlying map provider.
+Give-Me-Map is a library that allows you to add content on a map easily. Using Mapbox as an underlying map provider. The main features:
+- ✨ Simple to use
+- 🎨 Support many marker types
+- 💡 Create your content in JSON or draw your map on [Mapheim](https://mapheim.com/world) and export it
+- 📦 Still Provides access to all underlying Mapbox API
+
 
 ## Installation
 Assuming you have `react` and `react-dom` packages already installed, you need to only install the following packages:
@@ -26,12 +31,10 @@ Assuming you have `react` and `react-dom` packages already installed, you need t
 npm i react-give-me-map mapbox-gl react-map-gl
 ```
 
-## Features
-
-
 ## Example
 
 Below you can see a demo created through Mapheim - a map about a running race event in Norway. You can also see a live demo on https://mapheim.com/fjellseterlopet.
+
 ![Example of a map with custom content](docs/fjellseterlopet_screenshot.png)
 
 ## Usage
@@ -85,16 +88,11 @@ To add markers to your map, add a `markers` parameter and fill it with the right
 ```jsx
   const imageMarker: IImageWorldMarker = {
     id: '1',
-    scalable: true,
-    scale: 0.1,
-    order: 1,
-
     lat: 55,
     lng: 16,
     elementType: 'image',
     elementData: {
       src: 'https://relive-story-static-content-email.s3.eu-central-1.amazonaws.com/logo.png',
-      borderSize: 0,
     }
   }
 
@@ -106,6 +104,7 @@ To add markers to your map, add a `markers` parameter and fill it with the right
 
 #### Using Mapheim
 A nice alternative, and more user friendly is to use Mapheim editor on https://www.mapheim.com/world where you can instantly create a new map and either use your map hosted directly on Mapheim platform, or you can export the marker in a JSON format. And include it as a JSON/variable in your code. See below how to find the export functionality in two steps:
+
 ![Mapheim export functionality](/docs/mapheim_export.png)
 
 
@@ -124,7 +123,7 @@ A nice alternative, and more user friendly is to use Mapheim editor on https://w
 
 
 ## Marker parameters
-__Common marker attributes__
+### Common marker attributes
 |Attribute|Type|Required|Default|Description|
 |----|----|----|----|----|
 |id|string|required|-|Unique identifier of the marker|
@@ -137,7 +136,7 @@ __Common marker attributes__
 |order|number|optional|false|defines if the marker is in front/behind other markers. Higher the value, the more in front the marker is|
 
 
-__Text marker__
+### Text marker
 |Attribute|Type|Required|Default|Description|
 |----|----|----|----|----|
 |text|string|required|-|Text content of the marker|
@@ -149,7 +148,8 @@ __Text marker__
 |borderColor|string|optional|black|Defines the `border-color` style of the element|
 |dropShadowCombined|string|optional|_empty_|Defines the `box-shadow` style of the element|
 
-__Image marker__
+
+### Image marker
 
 |Attribute|Type|Required|Default|Description|
 |----|----|----|----|----|
@@ -159,7 +159,8 @@ __Image marker__
 |borderColor|string|optional|black|Defines the `border-color` style of the element|
 |dropShadowCombined|string|optional|_empty_|Defines the `box-shadow` style of the element|
 
-__Link marker__
+
+### Link marker
 |Attribute|Type|Required|Default|Description|
 |----|----|----|----|----|
 |link|string|required|-|URL of the external website to redirect to when the marker is clicked|
@@ -171,7 +172,8 @@ __Link marker__
 |borderColor|string|optional|black|Defines the `border-color` style of the element|
 |dropShadowCombined|string|optional|_empty_|Defines the `box-shadow` style of the element|
 
-__Draw marker__
+
+### Draw marker
 |Attribute|Type|Required|Default|Description|
 |----|----|----|----|----|
 |type|enum|required|-|One of `pen`, `brush` value. The value `pen` will render a sharp link, while `brush` will render a line that is not sharp and is more suitable for highlighting|
@@ -183,7 +185,8 @@ __Draw marker__
 |color|string|required|-|Defines the color of the drawn line|
 |fill|boolean|required|-|Defines is the drawn shape should be filled in with the same color as the line|
 
-__Pin marker__
+
+### Pin marker
 |Attribute|Type|Required|Default|Description|
 |----|----|----|----|----|
 |label|string|optional|-|Defines text that is displayed next to the pin|
@@ -191,7 +194,8 @@ __Pin marker__
 |emoji|string|optional|-|Defines content of the pin. Accepts a single character to be rendered as the pin. When set, the `img` and `dotColor` should not be set|
 |dotColor|string|optional|-|Defines content of the pin. Accepts the color that the pin will be filled with. When set, the `img` and `emoji` should not be set|
 
-__Polygon marker__
+
+### Polygon marker
 |Attribute|Type|Required|Default|Description|
 |----|----|----|----|----|
 |path|string|required|-
@@ -201,7 +205,8 @@ __Polygon marker__
 |color|string|required|-|Color of the polygon|
 |fill|boolean|optional|false||Defines is the drawn shape should be filled in with the same color as the polygon|
 
-__Direction marker__
+
+### Direction marker
 |Attribute|Type|Required|Default|Description|
 |----|----|----|----|----|
 |start|object|required|-|An object that defines the start of the route defined as `{ lat: number; lng: number }`|
@@ -212,7 +217,8 @@ __Direction marker__
 |lineOpacity|number|required|-|Defines the `opacity` style of the line|
 |dropShadowColor|string|optional|_empty_|Defines the `box-shadow` style of the element|
 
-__Youtube marker__
+
+### Youtube marker
 |Attribute|Type|Required|Default|Description|
 |----|----|----|----|----|
 |video|string|required|-|Youtube video identifier or a full video URL|
