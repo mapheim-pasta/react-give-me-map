@@ -90,6 +90,7 @@
         "fs": false
     },
     "dependencies": {
+        "dompurify": "^2.4.0",
         "lodash": "^4.17.21",
         "react-youtube": "^9.0.3"
     }
