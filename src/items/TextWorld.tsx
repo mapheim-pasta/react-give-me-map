@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { ALMOST_BLACK, EWorldColor } from '../libs/worldVariables';
+import { EWorldColor } from '../libs/worldVariables';
 import { TEXT_BORDER_RADIUS } from '../utils/world/worldConfig';
 import { ITextWorld } from '../utils/world/worldTypes';
 
@@ -14,6 +14,8 @@ export const TextWorld = (props: ITextWorldProps): JSX.Element => {
             fill={props.elementData.fill.toString()}
             width={300 + props.elementData.width * 100}
             color={props.elementData.color}
+            textColor={props.elementData.textColor}
+            textShadow={props.elementData.textShadow}
             borderRadiusPx={props.elementData.borderRadiusPx}
             borderSize={props.elementData.borderSize}
             borderColor={props.elementData.borderColor}
@@ -29,6 +31,8 @@ const S_TextWorld = styled.div<{
     borderRadiusPx?: number;
     borderSize?: number;
     borderColor?: string;
+    textColor?: string;
+    textShadow?: string;
     dropShadowCombined?: string;
     fill: string;
     color: string;
@@ -53,23 +57,17 @@ const S_TextWorld = styled.div<{
                 background-color: ${(props: { color: string }) => '#' + props.color};
                 padding: 20px;
                 > pre {
-                    color: ${(props) =>
-                        props.color === EWorldColor.WHITE ? ALMOST_BLACK : '#' + EWorldColor.WHITE};
-                    text-shadow: ${(props) =>
-                        props.color === EWorldColor.WHITE ? '' : '1px 1px 2px rgba(0, 0, 0, 0.25)'};
+                    color: #${props.textColor ?? EWorldColor.WHITE};
+                    text-shadow: ${props.textShadow ?? '1px 1px 2px rgba(0, 0, 0, 0.5)'};
                 }
             `;
         } else {
             return css`
                 padding: 5px;
-                text-shadow: ${(props: { color: string }) =>
-                    props.color === EWorldColor.WHITE
-                        ? '1px 1px 2px rgba(0, 0, 0, 0.5)'
-                        : '1px 1px 2px rgba(0, 0, 0, 0.25)'};
-                color: ${(props) =>
-                    props.color === EWorldColor.WHITE
-                        ? '#' + EWorldColor.WHITE
-                        : '#' + props.color};
+                > pre {
+                    color: #${props.textColor ?? props.color};
+                    text-shadow: ${props.textShadow ?? '1px 1px 2px rgba(0, 0, 0, 0.25)'};
+                }
             `;
         }
     }}

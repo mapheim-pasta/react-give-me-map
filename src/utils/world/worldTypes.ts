@@ -42,6 +42,8 @@ export interface ITextWorld {
     width: number;
     fill: boolean;
     color: string;
+    textColor?: string;
+    textShadow?: string;
     borderRadiusPx?: number;
     borderSize?: number;
     borderColor?: string;
