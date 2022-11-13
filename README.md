@@ -146,11 +146,13 @@ __Text marker__
 |text|string|required|-|Text content of the marker|
 |width|number|required|-|Defines the width of the marker. The text breaks after the given width|
 |fill|number|required|-|Defines if the marker is filled with background, otherwise background is transparent|
-|color|string|required|-|Background color of the marker in hexadecimal format. Text color is determined automatically|
+|color|string|required|-|Background color of the marker in hexadecimal format|
+|textColor|string|optional|white|Text color|
 |borderRadiusPx|number|optional|0|Defines the `border-radius` style of the element in pixels|
 |borderSize|number|optional|0|Defines the `border-size` style of the element in pixels|
 |borderColor|string|optional|black|Defines the `border-color` style of the element|
 |dropShadowCombined|string|optional|_empty_|Defines the `box-shadow` style of the element|
+|textShadow|string|optional|`1px 1px 2px rgba(0, 0, 0, 0.5)` when `fill=false`, otherwise gamma is `0.25`|Defines the `box-shadow` style of the element|
 
 
 <br/>

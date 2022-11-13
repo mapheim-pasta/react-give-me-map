@@ -120,6 +120,8 @@ export const Map = (props: IProps): JSX.Element => {
                 }}
                 interactiveLayerIds={layerIds ?? []}
                 mapStyle={selectedMapStyle}
+                dragRotate={props.map.dragRotate ?? false}
+                touchZoomRotate={props.map.touchZoomRotate ?? false}
             >
                 {loaded && (
                     <>
