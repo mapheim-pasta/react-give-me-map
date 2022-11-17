@@ -14,7 +14,7 @@ export const WorldMapStyle = (props: Props): JSX.Element => {
         url = '../../../../map-satellite.png';
     } else if (props.mapStyle == EMapStyle.OUTDOOR) {
         url = '../../../../map-outdoor.png';
-    } else if (props.mapStyle == EMapStyle.WORLD) {
+    } else if (props.mapStyle == EMapStyle.DEFAULT) {
         url = '../../../../map-world.png';
     } else {
         url = '../../../../map-world.png';

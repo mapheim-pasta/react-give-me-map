@@ -30,7 +30,7 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
 
     useEffect(() => {
         setMarkers(props.markers);
-        const newOrder = props.markers.map((marker) => marker.order);
+        const newOrder = props.markers.map((marker) => marker.order ?? 0);
         // console.log('Order', order, newOrder);
         for (let i = 0; i < order.length; i++) {
             if (order[i] !== newOrder[i]) {
@@ -69,11 +69,13 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                 ref={marker.ref}
                                 style={{
                                     transform: `rotate(${marker.rotate}deg)`,
-                                    pointerEvents: 'all'
+                                    pointerEvents: marker.locked ? 'none' : 'all'
                                 }}
                                 onClick={() => {
                                     console.log('aaaaaaaaaaaaaaa');
-                                    state.callbacks.onMarkersSelected?.([marker.id]);
+                                    if (!marker.locked) {
+                                        state.callbacks.onMarkersSelected?.([marker.id]);
+                                    }
                                 }}
                             >
                                 <ImageWorld
@@ -98,11 +100,16 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                 ref={marker.ref}
                                 style={{
                                     transform: `scale(${adjustedScale}) rotate(${marker.rotate}deg)`,
-                                    pointerEvents: marker.elementType === 'draw' ? 'none' : 'all'
+                                    pointerEvents:
+                                        marker.locked || marker.elementType === 'draw'
+                                            ? 'none'
+                                            : 'all'
                                 }}
                                 onClick={() => {
                                     console.log('aaaaaaaaaaaaaaa');
-                                    state.callbacks.onMarkersSelected?.([marker.id]);
+                                    if (!marker.locked) {
+                                        state.callbacks.onMarkersSelected?.([marker.id]);
+                                    }
                                 }}
                             >
                                 {marker.elementType === 'text' && (

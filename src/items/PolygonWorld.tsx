@@ -15,7 +15,8 @@ export const PolygonWorld = (props: Props): JSX.Element => {
         stroke: '#' + elementData.color,
         strokeWidth: 3 / props.adjustedScale,
         strokeOpacity: 0.9,
-        pointerEvents: 'painted' as const
+        pointerEvents: 'painted' as const,
+        strokeDasharray: elementData.strokeDashArray ?? 0
     };
 
     //Split for display bug in big zoom

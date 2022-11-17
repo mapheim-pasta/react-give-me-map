@@ -25,12 +25,16 @@ export const Package = (props: IProps): JSX.Element => {
     const markers = props.markers ?? [];
     for (const marker of markers) {
         if (marker.elementType === 'direction') {
-            // first is "start"
-            // TODO: 1...n-1 will be stops on the way
-            // last is "end"
-            marker.refs = new Array(2).fill(0).map(() => React.createRef<HTMLDivElement>());
+            if (!marker.refs) {
+                // first is "start"
+                // TODO: 1...n-1 will be stops on the way
+                // last is "end"
+                marker.refs = new Array(2).fill(0).map(() => React.createRef<HTMLDivElement>());
+            }
         } else {
-            marker.ref = React.createRef<HTMLDivElement>();
+            if (!marker.ref) {
+                marker.ref = React.createRef<HTMLDivElement>();
+            }
         }
     }
 

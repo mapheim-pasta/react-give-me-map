@@ -106,13 +106,18 @@ export const Map = (props: IProps): JSX.Element => {
                 onClick={(e) => {
                     const features = e.features ?? [];
                     if (features.length > 0) {
-                        state.callbacks.onMarkersSelected?.([features[0].source]);
+                        const marker = markers.find((e) => e.id === features[0].source);
+                        if (marker && !marker.locked) {
+                            state.callbacks.onMarkersSelected?.([marker.id]);
+                        }
                     }
                     props.map.onClick?.(e);
                 }}
                 onLoad={(e) => {
                     setLoaded(true);
                     props.map.onLoad?.(e);
+                    props.mapRef?.current?.getMap()?.touchZoomRotate?.disableRotation?.();
+                    props.mapRef?.current?.getMap()?.touchPitch.disable();
                 }}
                 onRender={(event) => {
                     event.target.resize();
@@ -120,8 +125,6 @@ export const Map = (props: IProps): JSX.Element => {
                 }}
                 interactiveLayerIds={layerIds ?? []}
                 mapStyle={selectedMapStyle}
-                dragRotate={props.map.dragRotate ?? false}
-                touchZoomRotate={props.map.touchZoomRotate ?? false}
             >
                 {loaded && (
                     <>

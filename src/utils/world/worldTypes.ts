@@ -28,6 +28,7 @@ interface BaseMarker {
     id: string;
     lat: number;
     lng: number;
+    locked?: boolean;
     scale?: number; //at originZoom 1
     scalable?: boolean;
     rotate?: number;
@@ -145,6 +146,8 @@ export interface IPolygonWorld {
     height: number;
     color: string;
     fill?: boolean;
+
+    strokeDashArray?: string;
 }
 
 export interface IPolygonWorldMarker extends BaseMarker {
