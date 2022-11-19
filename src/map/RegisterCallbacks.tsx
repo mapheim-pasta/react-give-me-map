@@ -15,8 +15,7 @@ export const RegisterCallbacks = (props: ICallbacks) => {
                 onStyleChanged: props.onStyleChanged
             }
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [props.onMarkersSelected, props.onStyleChanged]);
 
     return <></>;
 };
