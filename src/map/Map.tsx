@@ -11,6 +11,7 @@ import { WorldMapControl } from '../components/WorldMapControl';
 import { WorldMarkers } from '../components/WorldMarkers';
 import { useActions } from '../context/dynamic/actions';
 import { useCtx } from '../context/dynamic/provider';
+import { useMouseListener } from '../hooks/mouse/useMouseListener';
 import { EMapStyle, IMapConfig, IMapProps } from '../utils/map/mapTypes';
 import { IWorldMarker } from '../utils/world/worldTypes';
 
@@ -36,7 +37,9 @@ export const Map = (props: IProps): JSX.Element => {
     const [loaded, setLoaded] = useState<boolean>(false);
     const actions = useActions();
     const { state } = useCtx();
+    const customMapRef = useRef<MapRef>(null);
     const geoRef = useRef<GeolocateControlRef>(null);
+    const wrapperMapRef = useRef<HTMLDivElement>(null);
     const [selectedMapStyle, setSelectedMapStyle] = useState<
         MapboxStyle | string | ImmutableLike | EMapStyle
     >(getInitMapStyle());
@@ -84,6 +87,20 @@ export const Map = (props: IProps): JSX.Element => {
         scale: m.scale ?? 1
     }));
 
+    const mouseListener = useMouseListener(markers, props.mapRef ?? customMapRef, wrapperMapRef);
+
+    useEffect(() => {
+        if ((props.mapRef ?? customMapRef)?.current && wrapperMapRef.current) {
+            document.addEventListener('mouseup', mouseListener.onMouseUp);
+            document.addEventListener('mousedown', mouseListener.onMouseDown);
+        }
+        return () => {
+            document.removeEventListener('mouseup', mouseListener.onMouseUp);
+            document.removeEventListener('mousedown', mouseListener.onMouseDown);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.mapRef, customMapRef, mouseListener]);
+
     useEffect(() => {
         if (!props.config?.availableStyles?.includes(selectedMapStyle as string)) {
             setSelectedMapStyle(getInitMapStyle());
@@ -92,12 +109,12 @@ export const Map = (props: IProps): JSX.Element => {
     }, [props.map.mapStyle, props.config?.availableStyles?.length]);
 
     return (
-        <>
+        <div ref={wrapperMapRef} style={{ width: '100%', height: '100%' }}>
             <ReactMapGL
                 {...defaults}
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 {...(props.map as any)}
-                ref={props.mapRef}
+                ref={props.mapRef ?? customMapRef}
                 style={{
                     width: '100%',
                     height: '100%',
@@ -118,6 +135,7 @@ export const Map = (props: IProps): JSX.Element => {
                     props.map.onLoad?.(e);
                     props.mapRef?.current?.getMap()?.touchZoomRotate?.disableRotation?.();
                     props.mapRef?.current?.getMap()?.touchPitch.disable();
+                    props.mapRef?.current?.getMap()?.keyboard.disable();
                 }}
                 onRender={(event) => {
                     event.target.resize();
@@ -153,6 +171,6 @@ export const Map = (props: IProps): JSX.Element => {
                     </>
                 )}
             </ReactMapGL>
-        </>
+        </div>
     );
 };

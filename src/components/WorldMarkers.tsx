@@ -61,7 +61,6 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                             longitude={marker.lng}
                             latitude={marker.lat}
                             style={{
-                                pointerEvents: 'none',
                                 opacity: state.selectedIds.includes(marker.id) ? 0.25 : 1
                             }}
                         >
@@ -92,7 +91,6 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                             longitude={marker.lng}
                             latitude={marker.lat}
                             style={{
-                                pointerEvents: 'none',
                                 opacity: state.selectedIds.includes(marker.id) ? 0.25 : 1
                             }}
                         >
