@@ -21,6 +21,8 @@ export interface IProps {
     markers: IWorldMarker[];
 
     zoom: number;
+
+    selectableMarkersStyle: React.CSSProperties;
 }
 
 export const WorldMarkers = (props: IProps): JSX.Element => {
@@ -68,11 +70,13 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                 ref={marker.ref}
                                 style={{
                                     transform: `rotate(${marker.rotate}deg)`,
-                                    pointerEvents: marker.locked ? 'none' : 'all'
+                                    pointerEvents: marker.selectable ? 'all' : 'none',
+                                    cursor: marker.selectable ? 'pointer' : 'inherit',
+                                    ...(marker.selectable ? props.selectableMarkersStyle : {})
                                 }}
                                 onClick={() => {
                                     console.log('aaaaaaaaaaaaaaa');
-                                    if (!marker.locked) {
+                                    if (marker.selectable) {
                                         state.callbacks.onMarkersSelected?.([marker.id]);
                                     }
                                 }}
@@ -99,13 +103,18 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                 style={{
                                     transform: `scale(${adjustedScale}) rotate(${marker.rotate}deg)`,
                                     pointerEvents:
-                                        marker.locked || marker.elementType === 'draw'
-                                            ? 'none'
-                                            : 'all'
+                                        marker.selectable && marker.elementType !== 'draw'
+                                            ? 'all'
+                                            : 'none',
+                                    cursor:
+                                        marker.selectable && marker.elementType !== 'draw'
+                                            ? 'pointer'
+                                            : 'inherit',
+                                    ...(marker.selectable ? props.selectableMarkersStyle : {})
                                 }}
                                 onClick={() => {
                                     console.log('aaaaaaaaaaaaaaa');
-                                    if (!marker.locked) {
+                                    if (marker.selectable) {
                                         state.callbacks.onMarkersSelected?.([marker.id]);
                                     }
                                 }}

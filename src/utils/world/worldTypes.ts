@@ -28,7 +28,7 @@ interface BaseMarker {
     id: string;
     lat: number;
     lng: number;
-    locked?: boolean;
+    selectable?: boolean;
     scale?: number; //at originZoom 1
     scalable?: boolean;
     rotate?: number;

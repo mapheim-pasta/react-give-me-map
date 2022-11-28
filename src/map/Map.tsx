@@ -22,6 +22,7 @@ interface IProps {
     selectedIds: string[];
     children?: React.ReactNode;
     config?: IMapConfig;
+    selectableMarkersStyle: React.CSSProperties;
 }
 
 const defaults: Partial<IMapProps> = {
@@ -124,7 +125,7 @@ export const Map = (props: IProps): JSX.Element => {
                     const features = e.features ?? [];
                     if (features.length > 0) {
                         const marker = markers.find((e) => e.id === features[0].source);
-                        if (marker && !marker.locked) {
+                        if (marker && marker.selectable) {
                             state.callbacks.onMarkersSelected?.([marker.id]);
                         }
                     }
@@ -146,7 +147,11 @@ export const Map = (props: IProps): JSX.Element => {
             >
                 {loaded && (
                     <>
-                        <WorldMarkers markers={markers} zoom={props.map.zoom ?? 1} />
+                        <WorldMarkers
+                            markers={markers}
+                            zoom={props.map.zoom ?? 1}
+                            selectableMarkersStyle={props.selectableMarkersStyle}
+                        />
                         <WorldMapControl
                             onGeoClick={() => {
                                 console.log('Geo click');

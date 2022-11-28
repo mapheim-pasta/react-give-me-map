@@ -36,9 +36,9 @@ export const useMouseListener = (
             wrapperMapRef?.current?.contains(e.target as any) ||
             (finalMarker && markers.some((e) => e.id === finalMarker?.id))
         ) {
-            if (marker && !marker.locked) {
+            if (marker && marker.selectable) {
                 state.callbacks.onMarkersSelected?.([marker.id]);
-            } else if (marker2 && !marker2.locked) {
+            } else if (marker2 && marker2.selectable) {
                 state.callbacks.onMarkersSelected?.([marker2.id]);
             } else {
                 state.callbacks.onMarkersSelected?.([]);

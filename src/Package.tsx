@@ -17,6 +17,8 @@ interface IProps {
     selectedIds?: string[];
 
     config?: IMapConfig;
+
+    selectableMarkersStyle?: React.CSSProperties;
 }
 
 export const Package = (props: IProps): JSX.Element => {
@@ -48,6 +50,7 @@ export const Package = (props: IProps): JSX.Element => {
                     markers={markers}
                     selectedIds={props.selectedIds ?? []}
                     config={props.config}
+                    selectableMarkersStyle={props.selectableMarkersStyle ?? {}}
                 >
                     {props.children}
                 </Map>
