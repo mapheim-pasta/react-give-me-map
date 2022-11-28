@@ -152,6 +152,7 @@ export const Map = (props: IProps): JSX.Element => {
                                 console.log('Geo click');
                                 geoRef?.current?.trigger();
                             }}
+                            geolocate={props.config?.geolocate}
                             selectedMapStyle={selectedMapStyle}
                             mapStyles={
                                 props.config?.availableStyles ?? [
@@ -166,7 +167,9 @@ export const Map = (props: IProps): JSX.Element => {
                                 state.callbacks.onStyleChanged?.(style);
                             }}
                         />
-                        <GeolocateControl ref={geoRef} style={{ display: 'none' }} />
+                        {props.config?.geolocate && (
+                            <GeolocateControl ref={geoRef} style={{ display: 'none' }} />
+                        )}
                         {props.children}
                     </>
                 )}

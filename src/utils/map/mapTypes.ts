@@ -29,5 +29,6 @@ export enum EMapStyle {
 }
 
 export interface IMapConfig {
-    availableStyles: string[];
+    availableStyles?: string[];
+    geolocate?: boolean;
 }
