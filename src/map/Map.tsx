@@ -23,6 +23,8 @@ interface IProps {
     children?: React.ReactNode;
     config?: IMapConfig;
     selectableMarkersStyle: React.CSSProperties;
+    highlightedMarkers: string[];
+    highlightedMarkersStyle: React.CSSProperties;
 }
 
 const defaults: Partial<IMapProps> = {
@@ -151,6 +153,8 @@ export const Map = (props: IProps): JSX.Element => {
                             markers={markers}
                             zoom={props.map.zoom ?? 1}
                             selectableMarkersStyle={props.selectableMarkersStyle}
+                            highlightedMarkers={props.highlightedMarkers}
+                            highlightedMarkersStyle={props.highlightedMarkersStyle}
                         />
                         <WorldMapControl
                             onGeoClick={() => {

@@ -23,6 +23,8 @@ export interface IProps {
     zoom: number;
 
     selectableMarkersStyle: React.CSSProperties;
+    highlightedMarkers: string[];
+    highlightedMarkersStyle: React.CSSProperties;
 }
 
 export const WorldMarkers = (props: IProps): JSX.Element => {
@@ -49,6 +51,11 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.markers]);
 
+    function isMarkerHighlighted(markerId: string): boolean {
+        const found = props.highlightedMarkers.find((id) => id === markerId);
+        return !!found;
+    }
+
     return (
         <>
             {_.sortBy(markers, 'order').map((marker: IWorldMarker) => {
@@ -72,7 +79,10 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                     transform: `rotate(${marker.rotate}deg)`,
                                     pointerEvents: marker.selectable ? 'all' : 'none',
                                     cursor: marker.selectable ? 'pointer' : 'inherit',
-                                    ...(marker.selectable ? props.selectableMarkersStyle : {})
+                                    ...(marker.selectable ? props.selectableMarkersStyle : {}),
+                                    ...(isMarkerHighlighted(marker.id)
+                                        ? props.highlightedMarkersStyle
+                                        : {})
                                 }}
                                 onClick={() => {
                                     console.log('aaaaaaaaaaaaaaa');
@@ -110,7 +120,10 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                         marker.selectable && marker.elementType !== 'draw'
                                             ? 'pointer'
                                             : 'inherit',
-                                    ...(marker.selectable ? props.selectableMarkersStyle : {})
+                                    ...(marker.selectable ? props.selectableMarkersStyle : {}),
+                                    ...(isMarkerHighlighted(marker.id)
+                                        ? props.highlightedMarkersStyle
+                                        : {})
                                 }}
                                 onClick={() => {
                                     console.log('aaaaaaaaaaaaaaa');
