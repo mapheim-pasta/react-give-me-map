@@ -69,6 +69,11 @@ export const useContainComputation = (markers: IWorldMarker[], mapRef: React.Ref
 
         const zoom = mapRef.current?.getZoom();
 
+        const eventX =
+            event.x - (mapRef.current?.getContainer()?.getBoundingClientRect()?.left ?? 0);
+        const eventY =
+            event.y - (mapRef.current?.getContainer()?.getBoundingClientRect()?.top ?? 0);
+
         const marker2 = markers
             .filter((e) => !svgElements.includes(e.elementType))
             // This does not work correctly for images, find out why in the future
@@ -95,7 +100,7 @@ export const useContainComputation = (markers: IWorldMarker[], mapRef: React.Ref
                     point.y +
                     (getMarkerScale(marker, zoom) * (marker.ref?.current?.offsetHeight ?? 0)) / 2;
 
-                return event.x >= minX && event.x <= maxX && event.y >= minY && event.y <= maxY;
+                return eventX >= minX && eventX <= maxX && eventY >= minY && eventY <= maxY;
             });
 
         const finalMarker = marker ?? marker2;
