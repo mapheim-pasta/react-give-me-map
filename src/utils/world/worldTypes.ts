@@ -33,6 +33,8 @@ interface BaseMarker {
     scalable?: boolean;
     rotate?: number;
     order?: number;
+    visible?: boolean;
+    category?: string[];
 
     elementType: WorldElements;
     elementData: ICombinedWorld;
@@ -81,11 +83,19 @@ export interface IImageWorld {
         600: string;
         1000: string;
         1920: string;
+        original?: string;
     };
     borderRadiusPx?: number;
     borderSize?: number;
     borderColor?: string;
     dropShadowCombined?: string;
+    isLayer?: {
+        renderAsLayer: boolean;
+        topLeft: number[];
+        topRight: number[];
+        bottomLeft: number[];
+        bottomRight: number[];
+    };
 }
 
 export interface IImageWorldMarker extends BaseMarker {
@@ -146,8 +156,14 @@ export interface IPolygonWorld {
     height: number;
     color: string;
     fill?: boolean;
-
     strokeDashArray?: string;
+    is3D?: {
+        renderAs3D: boolean;
+        level: number;
+        baseHeight: number;
+        height: number;
+        color: string;
+    };
 }
 
 export interface IPolygonWorldMarker extends BaseMarker {

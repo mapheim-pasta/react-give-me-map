@@ -25,6 +25,8 @@ interface IProps {
     selectableMarkersStyle: React.CSSProperties;
     highlightedMarkers: string[];
     highlightedMarkersStyle: React.CSSProperties;
+    categories: string[];
+    selectedCategories: string[];
 }
 
 const defaults: Partial<IMapProps> = {
