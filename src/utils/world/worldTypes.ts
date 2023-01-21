@@ -28,12 +28,14 @@ interface BaseMarker {
     id: string;
     lat: number;
     lng: number;
+    layerTitle?: string;
     selectable?: boolean;
     scale?: number; //at originZoom 1
     scalable?: boolean;
     rotate?: number;
     order?: number;
     visible?: boolean;
+
     category?: string[];
 
     elementType: WorldElements;
@@ -89,12 +91,12 @@ export interface IImageWorld {
     borderSize?: number;
     borderColor?: string;
     dropShadowCombined?: string;
-    isLayer?: {
-        renderAsLayer: boolean;
-        topLeft: number[];
-        topRight: number[];
-        bottomLeft: number[];
-        bottomRight: number[];
+    renderAsLayer: boolean;
+    layerData?: {
+        topLeft: { lat: number; lng: number };
+        topRight: { lat: number; lng: number };
+        bottomLeft: { lat: number; lng: number };
+        bottomRight: { lat: number; lng: number };
     };
 }
 
@@ -157,8 +159,8 @@ export interface IPolygonWorld {
     color: string;
     fill?: boolean;
     strokeDashArray?: string;
-    is3D?: {
-        renderAs3D: boolean;
+    renderAs3d: boolean;
+    data3d?: {
         level: number;
         baseHeight: number;
         height: number;
