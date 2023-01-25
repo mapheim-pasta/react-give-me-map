@@ -55,6 +55,8 @@ export const Map = (props: IProps): JSX.Element => {
         }
     }, [props.map.mapStyle]);
 
+    console.log('UPDATEno. 3');
+
     useEffect(() => {
         if (!_.isEqual(props.selectedIds.sort(), state.selectedIds.sort())) {
             console.log('Update!!!');
@@ -67,6 +69,9 @@ export const Map = (props: IProps): JSX.Element => {
         .map((marker) => {
             if (marker.elementType === 'route' || marker.elementType === 'direction') {
                 return marker.id + '|line-click';
+            }
+            if (marker.elementType === 'polygon' && marker.elementData.renderAs3d) {
+                return marker.id + '|layer';
             }
         })
         .filter((val): val is string => {
@@ -128,8 +133,10 @@ export const Map = (props: IProps): JSX.Element => {
                 onClick={(e) => {
                     const features = e.features ?? [];
                     if (features.length > 0) {
-                        const marker = markers.find((e) => e.id === features[0].source);
-                        if (marker && marker.selectable) {
+                        const marker = markers
+                            .filter((e) => e.selectable)
+                            .find((e) => e.id === features[0].source);
+                        if (marker) {
                             state.callbacks.onMarkersSelected?.([marker.id]);
                         }
                     }

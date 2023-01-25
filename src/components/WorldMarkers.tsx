@@ -92,6 +92,7 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                 }}
                             >
                                 <ImageWorld
+                                    markerId={marker.id}
                                     elementData={marker.elementData}
                                     adjustedScale={adjustedScale}
                                 />
@@ -146,6 +147,7 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                 )}
                                 {marker.elementType === 'polygon' && (
                                     <PolygonWorld
+                                        markerId={marker.id}
                                         elementData={marker.elementData}
                                         adjustedScale={adjustedScale}
                                     />
