@@ -1,3 +1,4 @@
+import { isEqual, uniqWith } from 'lodash';
 import React from 'react';
 import { Layer, Source, useMap } from 'react-map-gl';
 import { coordsToArrays } from '../../utils/geojson/coordsToArrays';
@@ -16,6 +17,7 @@ export const ImageWorldLayer = (props: IProps): JSX.Element => {
     const mapCtx = useMap();
 
     if (!mapCtx.current) {
+        console.log('Cannot render Image card - missing map context');
         return <></>;
     }
 
@@ -25,7 +27,8 @@ export const ImageWorldLayer = (props: IProps): JSX.Element => {
         )
     );
 
-    if (coordinates.length !== 4) {
+    if (coordinates.length !== 4 || uniqWith(coordinates, isEqual).length !== 4) {
+        console.log('Cannot render Image card - invalid coordinates', coordinates);
         return <></>;
     }
 
