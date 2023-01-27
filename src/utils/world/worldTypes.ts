@@ -22,7 +22,8 @@ export type ICombinedWorld =
     | IPolygonWorld
     | IDirectionWorld
     | IYoutubeWorld
-    | ILinkWorld;
+    | ILinkWorld
+    | IReactWorld;
 
 interface BaseMarker {
     id: string;
@@ -210,6 +211,17 @@ export interface IYoutubeWorldMarker extends BaseMarker {
     ref?: RefObject<HTMLDivElement>;
 }
 
+export interface IReactWorld {
+    componentTypeId: string;
+    componentData: Record<string, string>;
+}
+
+export interface IReactWorldMarker extends BaseMarker {
+    elementType: 'react';
+    elementData: IReactWorld;
+    ref?: RefObject<HTMLDivElement>;
+}
+
 export type IWorldMarker =
     | ITextWorldMarker
     | IImageWorldMarker
@@ -219,4 +231,5 @@ export type IWorldMarker =
     | IPolygonWorldMarker
     | IDirectionWorldMarker
     | IYoutubeWorldMarker
-    | ILinkWorldMarker;
+    | ILinkWorldMarker
+    | IReactWorldMarker;

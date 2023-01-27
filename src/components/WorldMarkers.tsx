@@ -9,6 +9,7 @@ import { ImageWorld } from '../items/ImageWorld';
 import { LinkWorld } from '../items/LinkWorld';
 import { PinWorld } from '../items/PinWorld';
 import { PolygonWorld } from '../items/PolygonWorld';
+import { ReactWorld } from '../items/ReactWorld';
 import { RouteWorld } from '../items/RouteWorld';
 import { TextWorld } from '../items/TextWorld';
 import { YoutubeWorld } from '../items/YoutubeWorld';
@@ -154,6 +155,9 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                 )}
                                 {marker.elementType === 'youtube' && (
                                     <YoutubeWorld elementData={marker.elementData} />
+                                )}
+                                {marker.elementType === 'react' && (
+                                    <ReactWorld elementData={marker.elementData} />
                                 )}
                             </div>
                         </Marker>

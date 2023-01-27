@@ -3,6 +3,7 @@ export { ImageWorld } from './items/ImageWorld';
 export { LinkWorld } from './items/LinkWorld';
 export { PinWorld, S_DotPin } from './items/PinWorld';
 export { PolygonWorld } from './items/PolygonWorld';
+export { ReactWorld } from './items/ReactWorld';
 export { YoutubeWorld } from './items/YoutubeWorld';
 export { Package as GiveMeMap } from './Package';
 export { EMapStyle, ICoordinates, IViewportExtended } from './utils/map/mapTypes';
@@ -27,6 +28,8 @@ export {
     IPinWorldMarker,
     IPolygonWorld,
     IPolygonWorldMarker,
+    IReactWorld,
+    IReactWorldMarker,
     IRouteWorld,
     IRouteWorldMarker,
     ITextWorld,
