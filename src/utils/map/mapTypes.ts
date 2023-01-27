@@ -3,9 +3,9 @@ import { MapProps as OriginalMapProps } from 'react-map-gl';
 export type IMapProps = OriginalMapProps;
 
 export interface IViewportExtended {
-    latitude: number;
-    longitude: number;
-    zoom: number;
+    latitude?: number;
+    longitude?: number;
+    zoom?: number;
     nw?: ICoordinates;
     se?: ICoordinates;
     height?: number;
