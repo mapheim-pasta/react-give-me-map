@@ -64,6 +64,10 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                     ? getInScale(marker.scale as number, ORIGIN_ZOOM, props.zoom)
                     : marker.scale ?? 1;
 
+                if (!marker.visible) {
+                    return null;
+                }
+
                 if (marker.elementType === 'image') {
                     return (
                         <Marker
