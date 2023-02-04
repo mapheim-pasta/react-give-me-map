@@ -22,7 +22,8 @@ export type ICombinedWorld =
     | IPolygonWorld
     | IDirectionWorld
     | IYoutubeWorld
-    | ILinkWorld;
+    | ILinkWorld
+    | IReactWorld;
 
 interface BaseMarker {
     id: string;
@@ -78,6 +79,13 @@ export interface ILinkWorldMarker extends BaseMarker {
     ref?: RefObject<HTMLDivElement>;
 }
 
+export interface ImageWorldLayerData {
+    topLeft?: ICoordinates;
+    topRight?: ICoordinates;
+    bottomLeft?: ICoordinates;
+    bottomRight?: ICoordinates;
+}
+
 export interface IImageWorld {
     src: string;
     additionalSrc?: {
@@ -92,12 +100,7 @@ export interface IImageWorld {
     borderColor?: string;
     dropShadowCombined?: string;
     renderAsLayer: boolean;
-    layerData?: {
-        topLeft: { lat: number; lng: number };
-        topRight: { lat: number; lng: number };
-        bottomLeft: { lat: number; lng: number };
-        bottomRight: { lat: number; lng: number };
-    };
+    layerData?: ImageWorldLayerData;
 }
 
 export interface IImageWorldMarker extends BaseMarker {
@@ -151,6 +154,13 @@ export interface IPinWorldMarker extends BaseMarker {
     ref?: RefObject<HTMLDivElement>;
 }
 
+export interface PolygonWorldData3d {
+    level?: number;
+    baseHeight?: number;
+    height?: number;
+    color?: string;
+}
+
 export interface IPolygonWorld {
     path: string;
     coordinates: ICoordinates[];
@@ -160,12 +170,7 @@ export interface IPolygonWorld {
     fill?: boolean;
     strokeDashArray?: string;
     renderAs3d: boolean;
-    data3d?: {
-        level: number;
-        baseHeight: number;
-        height: number;
-        color: string;
-    };
+    data3d?: PolygonWorldData3d;
 }
 
 export interface IPolygonWorldMarker extends BaseMarker {
@@ -206,6 +211,17 @@ export interface IYoutubeWorldMarker extends BaseMarker {
     ref?: RefObject<HTMLDivElement>;
 }
 
+export interface IReactWorld {
+    componentTypeId: string;
+    componentData: Record<string, string>;
+}
+
+export interface IReactWorldMarker extends BaseMarker {
+    elementType: 'react';
+    elementData: IReactWorld;
+    ref?: RefObject<HTMLDivElement>;
+}
+
 export type IWorldMarker =
     | ITextWorldMarker
     | IImageWorldMarker
@@ -215,4 +231,5 @@ export type IWorldMarker =
     | IPolygonWorldMarker
     | IDirectionWorldMarker
     | IYoutubeWorldMarker
-    | ILinkWorldMarker;
+    | ILinkWorldMarker
+    | IReactWorldMarker;

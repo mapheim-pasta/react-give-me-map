@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { IPolygonWorld } from '../utils/world/worldTypes';
+import { PolygonWorld3d } from './geojson/PolygonWorld3d';
 
 interface Props {
+    markerId: string;
     onSelected?: () => void;
     elementData: IPolygonWorld;
     adjustedScale: number;
@@ -18,6 +20,16 @@ export const PolygonWorld = (props: Props): JSX.Element => {
         pointerEvents: 'painted' as const,
         strokeDasharray: elementData.strokeDashArray ?? 0
     };
+
+    if (props.elementData.renderAs3d) {
+        return (
+            <PolygonWorld3d
+                markerId={props.markerId}
+                data3d={props.elementData.data3d ?? {}}
+                coordinates={props.elementData.coordinates}
+            />
+        );
+    }
 
     //Split for display bug in big zoom
     return (

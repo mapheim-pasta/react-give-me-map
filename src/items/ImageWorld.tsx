@@ -1,7 +1,9 @@
 import React from 'react';
 import { IImageWorld } from '../utils/world/worldTypes';
+import { ImageWorldLayer } from './geojson/ImageWorldLayer';
 
 interface Props {
+    markerId: string;
     elementData: IImageWorld;
     adjustedScale: number;
     onResizeNeeded?: () => void;
@@ -36,6 +38,16 @@ export const ImageWorld = (props: Props): JSX.Element => {
             .split('px')
             .map((e) => (!isNaN(parseFloat(e)) ? `${parseFloat(e) * 1.34344}px` : e))
             .join(' ');
+
+    if (props.elementData.renderAsLayer) {
+        return (
+            <ImageWorldLayer
+                markerId={props.markerId}
+                layerData={props.elementData.layerData ?? {}}
+                imageUrl={props.elementData.src}
+            />
+        );
+    }
 
     return (
         <div>

@@ -4,6 +4,7 @@ import {
     ILinkWorldMarker,
     IPinWorldMarker,
     IPolygonWorldMarker,
+    IReactWorldMarker,
     ITextWorldMarker,
     IWorldMarker,
     IYoutubeWorldMarker
@@ -16,7 +17,8 @@ type MarkerElements =
     | IPinWorldMarker
     | IPolygonWorldMarker
     | IYoutubeWorldMarker
-    | ILinkWorldMarker;
+    | ILinkWorldMarker
+    | IReactWorldMarker;
 
 export function isMarkerElement(marker: IWorldMarker): marker is MarkerElements {
     const type = marker.elementType;
@@ -27,6 +29,7 @@ export function isMarkerElement(marker: IWorldMarker): marker is MarkerElements 
         type === 'pin' ||
         type === 'polygon' ||
         type === 'youtube' ||
-        type === 'link'
+        type === 'link' ||
+        type === 'react'
     );
 }

@@ -4,7 +4,7 @@ import { ContextProvider } from './context/dynamic/provider';
 import { reducer } from './context/dynamic/reducer';
 import { initialState } from './context/dynamic/state';
 import { Map } from './map/Map';
-import { ICallbacks, RegisterCallbacks } from './map/RegisterCallbacks';
+import { ICallbacks, RegisterPropsToGlobalState } from './map/RegisterPropsToGlobalState';
 import { IMapConfig, IMapProps } from './utils/map/mapTypes';
 import { IWorldMarker } from './utils/world/worldTypes';
 
@@ -23,6 +23,7 @@ interface IProps {
     highlightedMarkersStyle?: React.CSSProperties;
     categories?: string[];
     selectedCategories?: string[];
+    customMarkerBuilders?: Record<string, (props: Record<string, unknown>) => JSX.Element>;
 }
 
 export const Package = (props: IProps): JSX.Element => {
@@ -47,7 +48,10 @@ export const Package = (props: IProps): JSX.Element => {
     return (
         <>
             <ContextProvider reducer={{ state, dispatch }}>
-                <RegisterCallbacks {...props.callbacks} />
+                <RegisterPropsToGlobalState
+                    callbacks={props.callbacks}
+                    customMarkerBuilders={props.customMarkerBuilders}
+                />
                 <Map
                     mapRef={props.mapRef}
                     map={props.map}

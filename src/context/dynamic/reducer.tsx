@@ -1,4 +1,4 @@
-import { Actions } from './actions';
+import { Actions, CustomMarkerBuilders } from './actions';
 import { ISetCallbacks } from './interfaces';
 import { IState } from './state';
 
@@ -14,6 +14,11 @@ export const reducer = (state: IState, action: { type: Actions; value: unknown }
             return {
                 ...state,
                 selectedIds: value as string[]
+            };
+        case Actions.SET_CUSTOM_MARKER_BUILDERS:
+            return {
+                ...state,
+                customMarkerBuilders: value as CustomMarkerBuilders
             };
         default:
             return state;

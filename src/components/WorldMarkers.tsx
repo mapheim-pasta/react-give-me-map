@@ -9,6 +9,7 @@ import { ImageWorld } from '../items/ImageWorld';
 import { LinkWorld } from '../items/LinkWorld';
 import { PinWorld } from '../items/PinWorld';
 import { PolygonWorld } from '../items/PolygonWorld';
+import { ReactWorld } from '../items/ReactWorld';
 import { RouteWorld } from '../items/RouteWorld';
 import { TextWorld } from '../items/TextWorld';
 import { YoutubeWorld } from '../items/YoutubeWorld';
@@ -63,6 +64,10 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                     ? getInScale(marker.scale as number, ORIGIN_ZOOM, props.zoom)
                     : marker.scale ?? 1;
 
+                if (!marker.visible) {
+                    return null;
+                }
+
                 if (marker.elementType === 'image') {
                     return (
                         <Marker
@@ -92,6 +97,7 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                 }}
                             >
                                 <ImageWorld
+                                    markerId={marker.id}
                                     elementData={marker.elementData}
                                     adjustedScale={adjustedScale}
                                 />
@@ -146,12 +152,16 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                 )}
                                 {marker.elementType === 'polygon' && (
                                     <PolygonWorld
+                                        markerId={marker.id}
                                         elementData={marker.elementData}
                                         adjustedScale={adjustedScale}
                                     />
                                 )}
                                 {marker.elementType === 'youtube' && (
                                     <YoutubeWorld elementData={marker.elementData} />
+                                )}
+                                {marker.elementType === 'react' && (
+                                    <ReactWorld elementData={marker.elementData} />
                                 )}
                             </div>
                         </Marker>

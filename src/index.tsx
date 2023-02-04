@@ -3,6 +3,7 @@ export { ImageWorld } from './items/ImageWorld';
 export { LinkWorld } from './items/LinkWorld';
 export { PinWorld, S_DotPin } from './items/PinWorld';
 export { PolygonWorld } from './items/PolygonWorld';
+export { ReactWorld } from './items/ReactWorld';
 export { TextWorld } from './items/TextWorld';
 export { YoutubeWorld } from './items/YoutubeWorld';
 export { Package as GiveMeMap } from './Package';
@@ -28,6 +29,8 @@ export {
     IPinWorldMarker,
     IPolygonWorld,
     IPolygonWorldMarker,
+    IReactWorld,
+    IReactWorldMarker,
     IRouteWorld,
     IRouteWorldMarker,
     ITextWorld,
@@ -39,3 +42,4 @@ export {
     WorldElements
 } from './utils/world/worldTypes';
 export { getInScale, getInScaleReverse } from './utils/world/worldUtils';
+
