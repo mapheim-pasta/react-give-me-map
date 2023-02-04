@@ -42,4 +42,3 @@ export {
     WorldElements
 } from './utils/world/worldTypes';
 export { getInScale, getInScaleReverse } from './utils/world/worldUtils';
-
