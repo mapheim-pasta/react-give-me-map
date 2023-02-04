@@ -17,7 +17,7 @@ export const ImageWorldLayer = (props: IProps): JSX.Element => {
     const mapCtx = useMap();
 
     if (!mapCtx.current) {
-        console.log('Cannot render Image card - missing map context');
+        // console.log('Cannot render Image card - missing map context');
         return <></>;
     }
 
@@ -28,7 +28,7 @@ export const ImageWorldLayer = (props: IProps): JSX.Element => {
     );
 
     if (coordinates.length !== 4 || uniqWith(coordinates, isEqual).length !== 4) {
-        console.log('Cannot render Image card - invalid coordinates', coordinates);
+        // console.log('Cannot render Image card - invalid coordinates', coordinates);
         return <></>;
     }
 

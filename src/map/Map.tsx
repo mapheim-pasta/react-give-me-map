@@ -55,11 +55,11 @@ export const Map = (props: IProps): JSX.Element => {
         }
     }, [props.map.mapStyle]);
 
-    console.log('UPDATEno. 3');
+    // console.log('UPDATEno. 3');
 
     useEffect(() => {
         if (!_.isEqual(props.selectedIds.sort(), state.selectedIds.sort())) {
-            console.log('Update!!!');
+            // console.log('Update!!!');
             actions.setSelectedIds(props.selectedIds);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -167,7 +167,7 @@ export const Map = (props: IProps): JSX.Element => {
                         />
                         <WorldMapControl
                             onGeoClick={() => {
-                                console.log('Geo click');
+                                // console.log('Geo click');
                                 geoRef?.current?.trigger();
                             }}
                             geolocate={props.config?.geolocate}
@@ -180,7 +180,7 @@ export const Map = (props: IProps): JSX.Element => {
                                 ]
                             }
                             onStyleChange={(style) => {
-                                console.log('Set map style2', style);
+                                // console.log('Set map style2', style);
                                 setSelectedMapStyle(style);
                                 state.callbacks.onStyleChanged?.(style);
                             }}

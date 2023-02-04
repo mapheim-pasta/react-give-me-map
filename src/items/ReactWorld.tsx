@@ -17,7 +17,7 @@ export const ReactWorld = (props: Props): JSX.Element => {
     const builder = builders[props.elementData.componentTypeId];
 
     if (!builder) {
-        console.log('No builder provided for ReactWorld marker');
+        // console.log('No builder provided for ReactWorld marker');
         return <></>;
     }
 

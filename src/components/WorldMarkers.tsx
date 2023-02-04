@@ -90,7 +90,7 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                         : {})
                                 }}
                                 onClick={() => {
-                                    console.log('aaaaaaaaaaaaaaa');
+                                    // console.log('aaaaaaaaaaaaaaa');
                                     if (marker.selectable) {
                                         state.callbacks.onMarkersSelected?.([marker.id]);
                                     }
@@ -132,7 +132,7 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                         : {})
                                 }}
                                 onClick={() => {
-                                    console.log('aaaaaaaaaaaaaaa');
+                                    // console.log('aaaaaaaaaaaaaaa');
                                     if (marker.selectable) {
                                         state.callbacks.onMarkersSelected?.([marker.id]);
                                     }
