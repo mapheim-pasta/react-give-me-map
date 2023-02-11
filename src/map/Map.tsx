@@ -17,7 +17,7 @@ import { IWorldMarker } from '../utils/world/worldTypes';
 
 interface IProps {
     map: IMapProps;
-    mapRef?: React.RefObject<MapRef>;
+    mapRef: React.RefObject<MapRef>;
     markers: IWorldMarker[];
     selectedIds: string[];
     children?: React.ReactNode;
@@ -39,10 +39,9 @@ const defaults: Partial<IMapProps> = {
 };
 
 export const Map = (props: IProps): JSX.Element => {
-    const [loaded, setLoaded] = useState<boolean>(false);
+    const [loaded, setLoaded] = useState<boolean>(props.mapRef?.current?.loaded() ?? false);
     const actions = useActions();
     const { state } = useCtx();
-    const customMapRef = useRef<MapRef>(null);
     const geoRef = useRef<GeolocateControlRef>(null);
     const wrapperMapRef = useRef<HTMLDivElement>(null);
     const [selectedMapStyle, setSelectedMapStyle] = useState<
@@ -55,15 +54,28 @@ export const Map = (props: IProps): JSX.Element => {
         }
     }, [props.map.mapStyle]);
 
-    // console.log('UPDATEno. 3');
-
     useEffect(() => {
         if (!_.isEqual(props.selectedIds.sort(), state.selectedIds.sort())) {
-            // console.log('Update!!!');
             actions.setSelectedIds(props.selectedIds);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.selectedIds]);
+
+    useEffect(() => {
+        if (props.mapRef?.current?.loaded()) {
+            setLoaded(true);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.mapRef?.current?.loaded()]);
+
+    useEffect(() => {
+        if (loaded) {
+            props.mapRef?.current?.getMap()?.touchZoomRotate?.disableRotation?.();
+            props.mapRef?.current?.getMap()?.touchPitch.disable();
+            props.mapRef?.current?.getMap()?.keyboard.disable();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loaded]);
 
     const layerIds = props.markers
         .map((marker) => {
@@ -97,10 +109,10 @@ export const Map = (props: IProps): JSX.Element => {
         scale: m.scale ?? 1
     }));
 
-    const mouseListener = useMouseListener(markers, props.mapRef ?? customMapRef, wrapperMapRef);
+    const mouseListener = useMouseListener(markers, props.mapRef, wrapperMapRef);
 
     useEffect(() => {
-        if ((props.mapRef ?? customMapRef)?.current && wrapperMapRef.current) {
+        if (props.mapRef?.current && wrapperMapRef.current) {
             document.addEventListener('mouseup', mouseListener.onMouseUp);
             document.addEventListener('mousedown', mouseListener.onMouseDown);
         }
@@ -109,7 +121,7 @@ export const Map = (props: IProps): JSX.Element => {
             document.removeEventListener('mousedown', mouseListener.onMouseDown);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.mapRef, customMapRef, mouseListener]);
+    }, [props.mapRef, mouseListener]);
 
     useEffect(() => {
         if (!props.config?.availableStyles?.includes(selectedMapStyle as string)) {
@@ -124,7 +136,7 @@ export const Map = (props: IProps): JSX.Element => {
                 {...defaults}
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 {...(props.map as any)}
-                ref={props.mapRef ?? customMapRef}
+                ref={props.mapRef}
                 style={{
                     width: '100%',
                     height: '100%',
@@ -142,12 +154,8 @@ export const Map = (props: IProps): JSX.Element => {
                     }
                     props.map.onClick?.(e);
                 }}
-                onLoad={(e) => {
+                onLoad={() => {
                     setLoaded(true);
-                    props.map.onLoad?.(e);
-                    props.mapRef?.current?.getMap()?.touchZoomRotate?.disableRotation?.();
-                    props.mapRef?.current?.getMap()?.touchPitch.disable();
-                    props.mapRef?.current?.getMap()?.keyboard.disable();
                 }}
                 onRender={(event) => {
                     event.target.resize();
@@ -167,7 +175,6 @@ export const Map = (props: IProps): JSX.Element => {
                         />
                         <WorldMapControl
                             onGeoClick={() => {
-                                // console.log('Geo click');
                                 geoRef?.current?.trigger();
                             }}
                             geolocate={props.config?.geolocate}
@@ -180,7 +187,6 @@ export const Map = (props: IProps): JSX.Element => {
                                 ]
                             }
                             onStyleChange={(style) => {
-                                // console.log('Set map style2', style);
                                 setSelectedMapStyle(style);
                                 state.callbacks.onStyleChanged?.(style);
                             }}

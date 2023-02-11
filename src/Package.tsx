@@ -10,7 +10,7 @@ import { IWorldMarker } from './utils/world/worldTypes';
 
 interface IProps {
     map: IMapProps;
-    mapRef?: React.RefObject<MapRef>;
+    mapRef: React.RefObject<MapRef>;
     markers?: IWorldMarker[];
     children?: React.ReactNode;
     callbacks?: ICallbacks;
