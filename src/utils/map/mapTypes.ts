@@ -1,6 +1,8 @@
-import { MapProps as OriginalMapProps } from 'react-map-gl';
+import { MapProps as OriginalMapProps, MapRef } from 'react-map-gl';
 
-export type IMapProps = OriginalMapProps;
+export type IMapProps = OriginalMapProps & {
+    onLoad: (mapRef: MapRef | null) => void;
+};
 
 export interface IViewportExtended {
     latitude?: number;

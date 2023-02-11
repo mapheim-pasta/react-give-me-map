@@ -73,6 +73,7 @@ export const Map = (props: IProps): JSX.Element => {
             props.mapRef?.current?.getMap()?.touchZoomRotate?.disableRotation?.();
             props.mapRef?.current?.getMap()?.touchPitch.disable();
             props.mapRef?.current?.getMap()?.keyboard.disable();
+            props.map.onLoad(props.mapRef.current);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loaded]);
