@@ -41,6 +41,18 @@ export const useContainComputation = (markers: IWorldMarker[], mapRef: React.Ref
 
     function computations(event: MouseEvent) {
         const path = (event as any).path || (event.composedPath && event.composedPath());
+
+        const mapRefContainer = mapRef.current?.getContainer();
+        const isMapSourceOfClick = path.includes(mapRefContainer);
+
+        if (!isMapSourceOfClick) {
+            return {
+                marker: null,
+                marker2: null,
+                finalMarker: null
+            };
+        }
+
         const marker = markers.find((m) => {
             let includes = false;
             if ('ref' in m) {
