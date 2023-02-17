@@ -146,6 +146,11 @@ export interface IPinWorld {
     img?: string;
     emoji?: string;
     dotColor?: string;
+    icon?: {
+        iconElement: JSX.Element;
+        iconText: string;
+        backgroundColor: string;
+    };
 }
 
 export interface IPinWorldMarker extends BaseMarker {
