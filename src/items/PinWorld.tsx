@@ -22,7 +22,10 @@ export const PinWorld = (props: Props): JSX.Element => {
         );
     } else if (props.elementData.icon) {
         element = (
-            <S_Icon $backgroundColor={props.elementData.icon.backgroundColor}>
+            <S_Icon
+                $backgroundColor={props.elementData.icon.backgroundColor}
+                $iconColor={props.elementData.icon.iconColor}
+            >
                 {props.pinIconBuilder?.({
                     iconText: props.elementData.icon.iconText
                 })}
@@ -121,13 +124,14 @@ export const S_DotPin = styled.div<{ dotColor?: string; inverse?: boolean }>`
     }}
 `;
 
-const S_Icon = styled.div<{ $backgroundColor: string }>`
+const S_Icon = styled.div<{ $backgroundColor: string; $iconColor: string }>`
     display: flex;
     justify-content: center;
     align-items: center;
     width: 40px;
     height: 40px;
     box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.15);
-    background-color: ${(props) => props.$backgroundColor};
+    background-color: #${(props) => props.$backgroundColor};
+    color: #${(props) => (props.$iconColor ? props.$iconColor : EWorldColor.WHITE)};
     border-radius: 50%;
 `;
