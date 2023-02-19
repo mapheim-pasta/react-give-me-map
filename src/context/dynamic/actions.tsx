@@ -4,10 +4,17 @@ import { useCtx } from './provider';
 export enum Actions {
     SET_CALLBACKS,
     SET_SELECTED_IDS,
-    SET_CUSTOM_MARKER_BUILDERS
+    SET_BUILDERS
 }
 
 export type CustomMarkerBuilders = Record<string, (props: Record<string, unknown>) => JSX.Element>;
+
+export type PinIconBuilder = (props: { iconText: string }) => JSX.Element;
+
+export type CustomBuilders = {
+    reactMarkers?: CustomMarkerBuilders;
+    pinIcon?: PinIconBuilder;
+};
 
 export const useActions = (): IReturnUseActions => {
     const { dispatch } = useCtx();
@@ -20,14 +27,14 @@ export const useActions = (): IReturnUseActions => {
         dispatch({ type: Actions.SET_SELECTED_IDS, value });
     }
 
-    function setCustomMarkerBuilders(value: CustomMarkerBuilders) {
-        dispatch({ type: Actions.SET_CUSTOM_MARKER_BUILDERS, value });
+    function setCustomBuilders(value: CustomBuilders) {
+        dispatch({ type: Actions.SET_BUILDERS, value });
     }
 
     return {
         setCallbacks,
         setSelectedIds,
-        setCustomMarkerBuilders
+        setCustomBuilders
     };
 };
 
@@ -35,5 +42,5 @@ export interface IReturnUseActions {
     setCallbacks: (value: ISetCallbacks) => void;
     setSelectedIds: (value: string[]) => void;
 
-    setCustomMarkerBuilders: (value: CustomMarkerBuilders) => void;
+    setCustomBuilders: (value: CustomBuilders) => void;
 }

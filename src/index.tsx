@@ -1,3 +1,4 @@
+export { CustomMarkerBuilders, PinIconBuilder } from './context/dynamic/actions';
 export { useContainComputation } from './hooks/mouse/useContainComputation';
 export { DrawWorld } from './items/DrawWorld';
 export { ImageWorld } from './items/ImageWorld';

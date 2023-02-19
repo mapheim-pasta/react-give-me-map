@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { CustomMarkerBuilders, useActions } from '../context/dynamic/actions';
+import { CustomBuilders, useActions } from '../context/dynamic/actions';
 
 export interface ICallbacks {
     onMarkersSelected?: (ids: string[]) => void;
@@ -8,7 +8,7 @@ export interface ICallbacks {
 
 interface IProps {
     callbacks?: ICallbacks;
-    customMarkerBuilders?: CustomMarkerBuilders;
+    customBuilders?: CustomBuilders;
 }
 
 export const RegisterPropsToGlobalState = (props: IProps) => {
@@ -23,8 +23,8 @@ export const RegisterPropsToGlobalState = (props: IProps) => {
     }, [props.callbacks?.onMarkersSelected, props.callbacks?.onStyleChanged]);
 
     useEffect(() => {
-        actions.setCustomMarkerBuilders(props.customMarkerBuilders ?? {});
-    }, [props.customMarkerBuilders]);
+        actions.setCustomBuilders(props.customBuilders ?? {});
+    }, [props.customBuilders]);
 
     return <></>;
 };

@@ -1,11 +1,13 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import { PinIconBuilder } from '../context/dynamic/actions';
 import { EWorldColor, WHITE } from '../libs/worldVariables';
 import { IPinWorld } from '../utils/world/worldTypes';
 
 interface Props {
     elementData: IPinWorld;
     onClick?: () => void;
+    pinIconBuilder?: PinIconBuilder;
 }
 
 export const PinWorld = (props: Props): JSX.Element => {
@@ -21,7 +23,9 @@ export const PinWorld = (props: Props): JSX.Element => {
     } else if (props.elementData.icon) {
         element = (
             <S_Icon $backgroundColor={props.elementData.icon.backgroundColor}>
-                {props.elementData.icon.iconElement}
+                {props.pinIconBuilder?.({
+                    iconText: props.elementData.icon.iconText
+                })}
             </S_Icon>
         );
     } else {

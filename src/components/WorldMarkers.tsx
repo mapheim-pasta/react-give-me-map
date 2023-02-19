@@ -144,7 +144,11 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                     <LinkWorld elementData={marker.elementData} onClick={onClick} />
                                 )}
                                 {marker.elementType === 'pin' && (
-                                    <PinWorld elementData={marker.elementData} onClick={onClick} />
+                                    <PinWorld
+                                        elementData={marker.elementData}
+                                        onClick={onClick}
+                                        pinIconBuilder={state.customBuilders.pinIcon}
+                                    />
                                 )}
                                 {marker.elementType === 'draw' && (
                                     <DrawWorld elementData={marker.elementData} onClick={onClick} />
@@ -168,6 +172,7 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                     <ReactWorld
                                         elementData={marker.elementData}
                                         onClick={onClick}
+                                        customMarkerBuilders={state.customBuilders.reactMarkers}
                                     />
                                 )}
                             </div>
