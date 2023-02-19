@@ -5,6 +5,7 @@ import { IPinWorld } from '../utils/world/worldTypes';
 
 interface Props {
     elementData: IPinWorld;
+    onClick?: () => void;
 }
 
 export const PinWorld = (props: Props): JSX.Element => {
@@ -34,7 +35,7 @@ export const PinWorld = (props: Props): JSX.Element => {
     }
 
     return (
-        <S_PinWorld>
+        <S_PinWorld onClick={props.onClick}>
             {element}
             <S_PinWorldLabel inverse={inverse()}>{props.elementData.label}</S_PinWorldLabel>
         </S_PinWorld>

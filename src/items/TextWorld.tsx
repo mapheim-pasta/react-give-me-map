@@ -6,6 +6,8 @@ import { ITextWorld } from '../utils/world/worldTypes';
 
 export interface ITextWorldProps {
     elementData: ITextWorld;
+
+    onClick?: () => void;
 }
 
 export const TextWorld = (props: ITextWorldProps): JSX.Element => {
@@ -20,6 +22,7 @@ export const TextWorld = (props: ITextWorldProps): JSX.Element => {
             borderSize={props.elementData.borderSize}
             borderColor={props.elementData.borderColor}
             dropShadowCombined={props.elementData.dropShadowCombined}
+            onClick={props?.onClick}
         >
             <pre>{props.elementData?.text + ' '}</pre>
         </S_TextWorld>

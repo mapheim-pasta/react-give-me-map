@@ -2,7 +2,7 @@ import React from 'react';
 import { IDrawWorld } from '../utils/world/worldTypes';
 
 interface Props {
-    onSelected?: () => void;
+    onClick?: () => void;
     elementData: IDrawWorld;
 }
 
@@ -29,9 +29,7 @@ export const DrawWorld = (props: Props): JSX.Element => {
                     fill: elementData?.fill ? '#' + elementData.color : 'none',
                     fillOpacity: 1
                 }}
-                onClick={() => {
-                    props.onSelected?.();
-                }}
+                onClick={props.onClick}
                 d={elementData.path}
             />
         </svg>

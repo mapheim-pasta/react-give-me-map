@@ -11,6 +11,7 @@ import {
     WorldElements
 } from '../../utils/world/worldTypes';
 import { getInScale } from '../../utils/world/worldUtils';
+import { isPointInRectangle } from './useContainComputation/isPointInRectangle';
 
 export type SinglePointMultiSelectableMarker =
     | ITextWorldMarker
@@ -42,7 +43,8 @@ export const useContainComputation = (markers: IWorldMarker[], mapRef: React.Ref
     function computations(event: MouseEvent) {
         const path = (event as any).path || (event.composedPath && event.composedPath());
 
-        const mapRefContainer = mapRef.current?.getContainer();
+        const map = mapRef.current;
+        const mapRefContainer = map?.getContainer();
         const isMapSourceOfClick = path.includes(mapRefContainer);
 
         if (!isMapSourceOfClick) {
@@ -79,12 +81,10 @@ export const useContainComputation = (markers: IWorldMarker[], mapRef: React.Ref
             return includes;
         });
 
-        const zoom = mapRef.current?.getZoom();
+        const zoom = map?.getZoom();
 
-        const eventX =
-            event.x - (mapRef.current?.getContainer()?.getBoundingClientRect()?.left ?? 0);
-        const eventY =
-            event.y - (mapRef.current?.getContainer()?.getBoundingClientRect()?.top ?? 0);
+        const eventX = event.x - (map?.getContainer()?.getBoundingClientRect()?.left ?? 0);
+        const eventY = event.y - (map?.getContainer()?.getBoundingClientRect()?.top ?? 0);
 
         const marker2 = markers
             .filter((e) => !svgElements.includes(e.elementType))
@@ -92,11 +92,38 @@ export const useContainComputation = (markers: IWorldMarker[], mapRef: React.Ref
             .filter((e) => e.elementType !== 'image')
             .filter((e): e is SinglePointMultiSelectableMarker => isSinglePointMultiSelectable(e))
             .find((marker) => {
-                const point = mapRef.current?.getMap().project([marker.lng, marker.lat]);
+                if (marker.elementType === 'image') {
+                    const layerData = marker.elementData.layerData;
 
-                if (!point) {
-                    return false;
+                    if (
+                        !layerData ||
+                        !layerData.bottomLeft ||
+                        !layerData.bottomRight ||
+                        !layerData.topLeft ||
+                        !layerData.topRight
+                    ) {
+                        return;
+                    }
+
+                    if (!map) {
+                        return;
+                    }
+
+                    return isPointInRectangle(
+                        { x: eventX, y: eventY },
+                        {
+                            A: map?.project([layerData.topLeft.lng, layerData.topLeft.lat]),
+                            B: map?.project([layerData.topRight.lng, layerData.topRight.lat]),
+                            C: map?.project([layerData.bottomRight.lng, layerData.bottomRight.lat]),
+                            D: map?.project([layerData.bottomLeft.lng, layerData.bottomLeft.lat])
+                        }
+                    );
                 }
+
+                const point = map?.project([marker.lng, marker.lat]);
+
+                //hack?
+                if (!point) return;
 
                 const minX =
                     point.x -

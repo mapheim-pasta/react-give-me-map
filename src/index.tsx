@@ -1,3 +1,4 @@
+export { useContainComputation } from './hooks/mouse/useContainComputation';
 export { DrawWorld } from './items/DrawWorld';
 export { ImageWorld } from './items/ImageWorld';
 export { LinkWorld } from './items/LinkWorld';

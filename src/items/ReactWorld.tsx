@@ -7,6 +7,8 @@ interface Props {
     elementData: IReactWorld;
 
     customMarkerBuilders?: CustomMarkerBuilders;
+
+    onClick?: () => void;
 }
 
 export const ReactWorld = (props: Props): JSX.Element => {
@@ -23,5 +25,5 @@ export const ReactWorld = (props: Props): JSX.Element => {
 
     const element = builder(props.elementData.componentData);
 
-    return <>{element}</>;
+    return <div onClick={props.onClick}>{element}</div>;
 };

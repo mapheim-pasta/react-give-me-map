@@ -7,7 +7,7 @@ import { S_DotPin } from './PinWorld';
 
 interface Props {
     marker: IDirectionWorldMarker;
-    onSelected?: () => void;
+    onClick?: () => void;
 }
 
 export const DirectionWorld = (props: Props): JSX.Element => {
@@ -20,13 +20,7 @@ export const DirectionWorld = (props: Props): JSX.Element => {
             <Marker
                 longitude={elementData.start.lng}
                 latitude={elementData.start.lat}
-                onClick={() => {
-                    //select
-                    // dispatch(setSelectedMarkers([id]));
-                    // dispatch(setWorldAction(EWorldAction.SELECT));
-                    // state.callbacks.onMarkersSelected?.([id]);
-                    props.onSelected?.();
-                }}
+                onClick={props.onClick}
                 style={{
                     opacity: state.selectedIds.includes(id) ? 0.25 : 1
                 }}
@@ -49,13 +43,7 @@ export const DirectionWorld = (props: Props): JSX.Element => {
             <Marker
                 longitude={elementData.end.lng}
                 latitude={elementData.end.lat}
-                onClick={() => {
-                    //select
-                    // dispatch(setSelectedMarkers([id]));
-                    // dispatch(setWorldAction(EWorldAction.SELECT));
-                    // state.callbacks.onMarkersSelected?.([id]);
-                    props.onSelected?.();
-                }}
+                onClick={props.onClick}
                 style={{
                     opacity: state.selectedIds.includes(id) ? 0.25 : 1
                 }}
