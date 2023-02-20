@@ -47,6 +47,8 @@ export const Map = (props: IProps): JSX.Element => {
     const [selectedMapStyle, setSelectedMapStyle] = useState<
         MapboxStyle | string | ImmutableLike | EMapStyle
     >(getInitMapStyle());
+    const [geoTriggered, setGeoTriggered] = useState<boolean>(false);
+    const [geoHide, setGeoHide] = useState<boolean>(false);
 
     useEffect(() => {
         if (props.map.mapStyle) {
@@ -176,7 +178,14 @@ export const Map = (props: IProps): JSX.Element => {
                         />
                         <WorldMapControl
                             onGeoClick={() => {
-                                geoRef?.current?.trigger();
+                                if (!geoTriggered) {
+                                    geoRef?.current?.trigger();
+                                    setGeoTriggered(true);
+                                    setGeoHide(false);
+                                } else {
+                                    setGeoTriggered(false);
+                                    setGeoHide(true);
+                                }
                             }}
                             geolocate={props.config?.geolocate}
                             selectedMapStyle={selectedMapStyle}
@@ -192,7 +201,7 @@ export const Map = (props: IProps): JSX.Element => {
                                 state.callbacks.onStyleChanged?.(style);
                             }}
                         />
-                        {props.config?.geolocate && (
+                        {props.config?.geolocate && !geoHide && (
                             <GeolocateControl ref={geoRef} style={{ display: 'none' }} />
                         )}
                         {props.children}
