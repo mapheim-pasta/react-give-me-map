@@ -29,6 +29,8 @@ interface BaseMarker {
     id: string;
     lat: number;
     lng: number;
+    placeText?: string;
+    placeId?: string;
     layerTitle?: string;
     selectable?: boolean;
     scale?: number; //at originZoom 1
