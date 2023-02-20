@@ -68,6 +68,12 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                     return null;
                 }
 
+                const onClick = () => {
+                    if (marker.selectable) {
+                        state.callbacks.onMarkersSelected?.([marker.id]);
+                    }
+                };
+
                 if (marker.elementType === 'image') {
                     return (
                         <Marker
@@ -89,16 +95,12 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                         ? props.highlightedMarkersStyle
                                         : {})
                                 }}
-                                onClick={() => {
-                                    if (marker.selectable) {
-                                        state.callbacks.onMarkersSelected?.([marker.id]);
-                                    }
-                                }}
                             >
                                 <ImageWorld
                                     markerId={marker.id}
                                     elementData={marker.elementData}
                                     adjustedScale={adjustedScale}
+                                    onClick={onClick}
                                 />
                             </div>
                         </Marker>
@@ -118,11 +120,15 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                 style={{
                                     transform: `scale(${adjustedScale}) rotate(${marker.rotate}deg)`,
                                     pointerEvents:
-                                        marker.selectable && marker.elementType !== 'draw'
+                                        marker.selectable &&
+                                        marker.elementType !== 'draw' &&
+                                        marker.elementType !== 'polygon'
                                             ? 'all'
                                             : 'none',
                                     cursor:
-                                        marker.selectable && marker.elementType !== 'draw'
+                                        marker.selectable &&
+                                        marker.elementType !== 'draw' &&
+                                        marker.elementType !== 'polygon'
                                             ? 'pointer'
                                             : 'inherit',
                                     ...(marker.selectable ? props.selectableMarkersStyle : {}),
@@ -130,36 +136,44 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                         ? props.highlightedMarkersStyle
                                         : {})
                                 }}
-                                onClick={() => {
-                                    if (marker.selectable) {
-                                        state.callbacks.onMarkersSelected?.([marker.id]);
-                                    }
-                                }}
                             >
                                 {marker.elementType === 'text' && (
-                                    <TextWorld elementData={marker.elementData} />
+                                    <TextWorld elementData={marker.elementData} onClick={onClick} />
                                 )}
                                 {marker.elementType === 'link' && (
-                                    <LinkWorld elementData={marker.elementData} />
+                                    <LinkWorld elementData={marker.elementData} onClick={onClick} />
                                 )}
                                 {marker.elementType === 'pin' && (
-                                    <PinWorld elementData={marker.elementData} />
+                                    <PinWorld
+                                        elementData={marker.elementData}
+                                        onClick={onClick}
+                                        pinIconBuilder={state.customBuilders.pinIcon}
+                                    />
                                 )}
                                 {marker.elementType === 'draw' && (
-                                    <DrawWorld elementData={marker.elementData} />
+                                    <DrawWorld elementData={marker.elementData} onClick={onClick} />
                                 )}
                                 {marker.elementType === 'polygon' && (
                                     <PolygonWorld
                                         markerId={marker.id}
+                                        selectable={marker.selectable ?? false}
                                         elementData={marker.elementData}
                                         adjustedScale={adjustedScale}
+                                        onClick={onClick}
                                     />
                                 )}
                                 {marker.elementType === 'youtube' && (
-                                    <YoutubeWorld elementData={marker.elementData} />
+                                    <YoutubeWorld
+                                        elementData={marker.elementData}
+                                        onClick={onClick}
+                                    />
                                 )}
                                 {marker.elementType === 'react' && (
-                                    <ReactWorld elementData={marker.elementData} />
+                                    <ReactWorld
+                                        elementData={marker.elementData}
+                                        onClick={onClick}
+                                        customMarkerBuilders={state.customBuilders.reactMarkers}
+                                    />
                                 )}
                             </div>
                         </Marker>
@@ -167,15 +181,7 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                 } else if (marker.elementType === 'route') {
                     return <RouteWorld key={marker.id} marker={marker} />;
                 } else if (marker.elementType === 'direction') {
-                    return (
-                        <DirectionWorld
-                            key={marker.id}
-                            marker={marker}
-                            onSelected={() => {
-                                state.callbacks.onMarkersSelected?.([marker.id]);
-                            }}
-                        />
-                    );
+                    return <DirectionWorld key={marker.id} marker={marker} onClick={onClick} />;
                 }
             })}
         </>

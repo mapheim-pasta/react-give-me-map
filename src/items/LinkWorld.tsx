@@ -6,6 +6,7 @@ import { ILinkWorld } from '../utils/world/worldTypes';
 
 export interface ILinkWorldProps {
     elementData: ILinkWorld;
+    onClick?: () => void;
 }
 
 export const LinkWorld = (props: ILinkWorldProps): JSX.Element => {
@@ -21,6 +22,7 @@ export const LinkWorld = (props: ILinkWorldProps): JSX.Element => {
                 borderSize={props.elementData.borderSize}
                 borderColor={props.elementData.borderColor}
                 dropShadowCombined={props.elementData.dropShadowCombined}
+                onClick={props?.onClick}
             >
                 <div className={'link'}>
                     <div className="left">

@@ -1,15 +1,17 @@
 import { ICallbacks } from '../../map/RegisterPropsToGlobalState';
-import { CustomMarkerBuilders } from './actions';
+import { CustomBuilders } from './actions';
 
 export interface IState {
     selectedIds: string[];
     callbacks: ICallbacks;
 
-    customMarkerBuilders: CustomMarkerBuilders;
+    customBuilders: CustomBuilders;
 }
 
 export const initialState: IState = {
     selectedIds: [],
     callbacks: {},
-    customMarkerBuilders: {}
+    customBuilders: {
+        reactMarkers: {}
+    }
 };

@@ -5,9 +5,11 @@ import { PolygonWorld3d } from './geojson/PolygonWorld3d';
 
 interface Props {
     markerId: string;
-    onSelected?: () => void;
+    onClick?: () => void;
     elementData: IPolygonWorld;
     adjustedScale: number;
+
+    selectable: boolean;
 }
 
 export const PolygonWorld = (props: Props): JSX.Element => {
@@ -17,8 +19,9 @@ export const PolygonWorld = (props: Props): JSX.Element => {
         stroke: '#' + elementData.color,
         strokeWidth: 3 / props.adjustedScale,
         strokeOpacity: 0.9,
-        pointerEvents: 'painted' as const,
-        strokeDasharray: elementData.strokeDashArray ?? 0
+        strokeDasharray: elementData.strokeDashArray ?? 0,
+        pointerEvents: props.selectable ? ('painted' as const) : ('none' as const),
+        cursor: props.selectable ? ('pointer' as const) : ('inherit' as const)
     };
 
     if (props.elementData.renderAs3d) {
@@ -40,15 +43,17 @@ export const PolygonWorld = (props: Props): JSX.Element => {
             }}
         >
             <S_SVG>
-                <path style={style} d={elementData.path} />
+                <path style={style} d={elementData.path} onClick={props.onClick} />
             </S_SVG>
             {elementData.fill && (
-                <S_SVG>
+                <S_SVG style={{}}>
                     <path
+                        onClick={props.onClick}
                         style={{
                             fillOpacity: 0.15,
                             fill: '#' + elementData.color,
-                            pointerEvents: 'painted'
+                            pointerEvents: props.selectable ? 'painted' : 'none',
+                            cursor: props.selectable ? 'pointer' : 'inherit'
                         }}
                         d={elementData.path}
                     />

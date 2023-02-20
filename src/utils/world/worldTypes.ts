@@ -149,8 +149,8 @@ export interface IPinWorld {
     emoji?: string;
     dotColor?: string;
     icon?: {
-        iconElement: JSX.Element;
         iconText: string;
+        iconColor: string;
         backgroundColor: string;
     };
 }

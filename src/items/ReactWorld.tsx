@@ -1,20 +1,17 @@
 import React from 'react';
 import { CustomMarkerBuilders } from '../context/dynamic/actions';
-import { useCtx } from '../context/dynamic/provider';
 import { IReactWorld } from '../utils/world/worldTypes';
 
 interface Props {
     elementData: IReactWorld;
 
     customMarkerBuilders?: CustomMarkerBuilders;
+
+    onClick?: () => void;
 }
 
 export const ReactWorld = (props: Props): JSX.Element => {
-    const { state } = useCtx();
-
-    const builders = props.customMarkerBuilders ?? state.customMarkerBuilders;
-
-    const builder = builders[props.elementData.componentTypeId];
+    const builder = props.customMarkerBuilders?.[props.elementData.componentTypeId];
 
     if (!builder) {
         // console.log('No builder provided for ReactWorld marker');
@@ -23,5 +20,5 @@ export const ReactWorld = (props: Props): JSX.Element => {
 
     const element = builder(props.elementData.componentData);
 
-    return <>{element}</>;
+    return <div onClick={props.onClick}>{element}</div>;
 };

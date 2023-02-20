@@ -1,5 +1,6 @@
 import React, { useReducer } from 'react';
 import { MapRef } from 'react-map-gl';
+import { CustomBuilders } from './context/dynamic/actions';
 import { ContextProvider } from './context/dynamic/provider';
 import { reducer } from './context/dynamic/reducer';
 import { initialState } from './context/dynamic/state';
@@ -23,7 +24,7 @@ interface IProps {
     highlightedMarkersStyle?: React.CSSProperties;
     categories?: string[];
     selectedCategories?: string[];
-    customMarkerBuilders?: Record<string, (props: Record<string, unknown>) => JSX.Element>;
+    customBuilders?: CustomBuilders;
 }
 
 export const Package = (props: IProps): JSX.Element => {
@@ -50,7 +51,7 @@ export const Package = (props: IProps): JSX.Element => {
             <ContextProvider reducer={{ state, dispatch }}>
                 <RegisterPropsToGlobalState
                     callbacks={props.callbacks}
-                    customMarkerBuilders={props.customMarkerBuilders}
+                    customBuilders={props.customBuilders}
                 />
                 <Map
                     mapRef={props.mapRef}

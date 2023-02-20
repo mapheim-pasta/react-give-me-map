@@ -1,10 +1,13 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import { PinIconBuilder } from '../context/dynamic/actions';
 import { EWorldColor, WHITE } from '../libs/worldVariables';
 import { IPinWorld } from '../utils/world/worldTypes';
 
 interface Props {
     elementData: IPinWorld;
+    onClick?: () => void;
+    pinIconBuilder?: PinIconBuilder;
 }
 
 export const PinWorld = (props: Props): JSX.Element => {
@@ -19,8 +22,13 @@ export const PinWorld = (props: Props): JSX.Element => {
         );
     } else if (props.elementData.icon) {
         element = (
-            <S_Icon $backgroundColor={props.elementData.icon.backgroundColor}>
-                {props.elementData.icon.iconElement}
+            <S_Icon
+                $backgroundColor={props.elementData.icon.backgroundColor}
+                $iconColor={props.elementData.icon.iconColor}
+            >
+                {props.pinIconBuilder?.({
+                    iconText: props.elementData.icon.iconText
+                })}
             </S_Icon>
         );
     } else {
@@ -34,7 +42,7 @@ export const PinWorld = (props: Props): JSX.Element => {
     }
 
     return (
-        <S_PinWorld>
+        <S_PinWorld onClick={props.onClick}>
             {element}
             <S_PinWorldLabel inverse={inverse()}>{props.elementData.label}</S_PinWorldLabel>
         </S_PinWorld>
@@ -116,13 +124,14 @@ export const S_DotPin = styled.div<{ dotColor?: string; inverse?: boolean }>`
     }}
 `;
 
-const S_Icon = styled.div<{ $backgroundColor: string }>`
+const S_Icon = styled.div<{ $backgroundColor: string; $iconColor: string }>`
     display: flex;
     justify-content: center;
     align-items: center;
     width: 40px;
     height: 40px;
     box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.15);
-    background-color: ${(props) => props.$backgroundColor};
+    background-color: #${(props) => props.$backgroundColor};
+    color: #${(props) => (props.$iconColor ? props.$iconColor : EWorldColor.WHITE)};
     border-radius: 50%;
 `;

@@ -7,6 +7,7 @@ import { IYoutubeWorld } from '../utils/world/worldTypes';
 
 interface Props {
     elementData: IYoutubeWorld;
+    onClick?: () => void;
 }
 
 export const YoutubeWorld = (props: Props): JSX.Element => {
@@ -23,6 +24,7 @@ export const YoutubeWorld = (props: Props): JSX.Element => {
             borderSize={props.elementData.borderSize}
             borderColor={props.elementData.borderColor}
             dropShadowCombined={props.elementData.dropShadowCombined}
+            onClick={props.onClick}
         >
             <div className="placeholder">
                 <div className="view">

@@ -7,6 +7,8 @@ interface Props {
     elementData: IImageWorld;
     adjustedScale: number;
     onResizeNeeded?: () => void;
+
+    onClick?: () => void;
 }
 
 type AllowedResolutions = keyof NonNullable<IImageWorld['additionalSrc']>;
@@ -52,6 +54,7 @@ export const ImageWorld = (props: Props): JSX.Element => {
     return (
         <div>
             <img
+                onClick={props.onClick}
                 width={markerImgWidth * props.adjustedScale}
                 src={generateImageUrlFor(props.elementData, props.adjustedScale)}
                 style={{
