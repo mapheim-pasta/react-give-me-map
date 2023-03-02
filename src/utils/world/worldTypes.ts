@@ -39,6 +39,8 @@ interface BaseMarker {
     order?: number;
     visible?: boolean;
 
+    isGroupable?: boolean;
+
     category?: string[];
 
     elementType: WorldElements;
