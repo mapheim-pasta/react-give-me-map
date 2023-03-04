@@ -1,10 +1,11 @@
 import * as _ from 'lodash';
-import React, { useEffect, useState } from 'react';
-import { Marker } from 'react-map-gl';
+import React, { RefObject, useEffect, useState } from 'react';
+import { MapRef, Marker } from 'react-map-gl';
 import { useCtx } from '../context/dynamic/provider';
 import { useStateCallback } from '../hooks/general/useStateCallback';
 import { DirectionWorld } from '../items/DirectionWorld';
 import { DrawWorld } from '../items/DrawWorld';
+import { GroupMarkers } from '../items/GroupMarkers';
 import { ImageWorld } from '../items/ImageWorld';
 import { LinkWorld } from '../items/LinkWorld';
 import { PinWorld } from '../items/PinWorld';
@@ -13,6 +14,7 @@ import { ReactWorld } from '../items/ReactWorld';
 import { RouteWorld } from '../items/RouteWorld';
 import { TextWorld } from '../items/TextWorld';
 import { YoutubeWorld } from '../items/YoutubeWorld';
+import { GroupMarkerProps } from '../utils/map/mapTypes';
 import { isMarkerElement } from '../utils/marker/markerUtils';
 import { ORIGIN_ZOOM } from '../utils/world/worldConfig';
 import { IWorldMarker } from '../utils/world/worldTypes';
@@ -26,6 +28,9 @@ export interface IProps {
     selectableMarkersStyle: React.CSSProperties;
     highlightedMarkers: string[];
     highlightedMarkersStyle: React.CSSProperties;
+
+    groupMarkerProps: GroupMarkerProps;
+    mapRef: RefObject<MapRef>;
 }
 
 export const WorldMarkers = (props: IProps): JSX.Element => {
@@ -57,9 +62,18 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
         return !!found;
     }
 
+    const nonGroupMarkers = markers.filter((e) => !e.isGroupable);
+    const groupMarkers = markers.filter((e) => e.isGroupable);
+
     return (
         <>
-            {_.sortBy(markers, 'order').map((marker: IWorldMarker) => {
+            <GroupMarkers
+                mapRef={props.mapRef}
+                selectedMarkers={state.selectedIds}
+                groupableMarkers={groupMarkers}
+                groupMarkerProps={props.groupMarkerProps}
+            />
+            {_.sortBy(nonGroupMarkers, 'order').map((marker: IWorldMarker) => {
                 const adjustedScale = marker.scalable
                     ? getInScale(marker.scale as number, ORIGIN_ZOOM, props.zoom)
                     : marker.scale ?? 1;

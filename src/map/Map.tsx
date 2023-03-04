@@ -72,10 +72,20 @@ export const Map = (props: IProps): JSX.Element => {
 
     useEffect(() => {
         if (loaded) {
-            props.mapRef?.current?.getMap()?.touchZoomRotate?.disableRotation?.();
-            props.mapRef?.current?.getMap()?.touchPitch.disable();
-            props.mapRef?.current?.getMap()?.keyboard.disable();
-            props.map.onLoad(props.mapRef.current);
+            const mapRef = props.mapRef?.current;
+
+            mapRef?.getMap()?.touchZoomRotate?.disableRotation?.();
+            mapRef?.getMap()?.touchPitch.disable();
+            mapRef?.getMap()?.keyboard.disable();
+
+            mapRef?.on('mouseenter', 'unclustered-point-images-clickable', () => {
+                mapRef.getCanvas().style.cursor = 'pointer';
+            });
+            mapRef?.on('mouseleave', 'unclustered-point-images-clickable', () => {
+                mapRef.getCanvas().style.cursor = '';
+            });
+
+            props.map.onLoad(mapRef);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loaded]);
@@ -92,6 +102,7 @@ export const Map = (props: IProps): JSX.Element => {
         .filter((val): val is string => {
             return val !== undefined;
         })
+        .concat(['unclustered-point-images-clickable'])
         .concat(props.map.interactiveLayerIds ?? []);
 
     function getInitMapStyle() {
@@ -148,11 +159,23 @@ export const Map = (props: IProps): JSX.Element => {
                 onClick={(e) => {
                     const features = e.features ?? [];
                     if (features.length > 0) {
-                        const marker = markers
-                            .filter((e) => e.selectable)
-                            .find((e) => e.id === features[0].source);
+                        const feature = features[0];
+                        const selectableMarkers = markers.filter((e) => e.selectable);
+
+                        const marker = selectableMarkers.find(
+                            (marker) => marker.id === feature.source
+                        );
                         if (marker) {
                             state.callbacks.onMarkersSelected?.([marker.id]);
+                            props.map.onClick?.(e);
+                            return;
+                        }
+
+                        if (feature?.properties?.markerId) {
+                            // TODO: verify that it's selectable
+                            state.callbacks.onMarkersSelected?.([feature?.properties?.markerId]);
+                            props.map.onClick?.(e);
+                            return;
                         }
                     }
                     props.map.onClick?.(e);
@@ -170,11 +193,13 @@ export const Map = (props: IProps): JSX.Element => {
                 {loaded && (
                     <>
                         <WorldMarkers
+                            mapRef={props.mapRef}
                             markers={markers}
                             zoom={props.map.zoom ?? 1}
                             selectableMarkersStyle={props.selectableMarkersStyle}
                             highlightedMarkers={props.highlightedMarkers}
                             highlightedMarkersStyle={props.highlightedMarkersStyle}
+                            groupMarkerProps={props.config?.groupMarkerProps ?? {}}
                         />
                         <WorldMapControl
                             onGeoClick={() => {

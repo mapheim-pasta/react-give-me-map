@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-export function useStateCallback<S>(initialState: S): any {
+export function useStateCallback<S>(initialState: S): [S, (state: S, cb?: () => void) => void] {
     const [state, setState] = useState(initialState);
     const cbRef = useRef(null); // mutable ref to store current callback
 
-    const setStateCallback = useCallback((state: any, cb: any) => {
+    const setStateCallback = useCallback((state: S, cb: any) => {
         cbRef.current = cb; // store passed callback to ref
         setState(state);
     }, []);

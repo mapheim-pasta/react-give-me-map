@@ -30,7 +30,14 @@ export enum EMapStyle {
     DEFAULT = 'mapbox://styles/koudelka/cld4go9oi000k01p7wci751am'
 }
 
+export interface GroupMarkerProps {
+    textColor?: string;
+    backgroundColor?: string;
+}
+
 export interface IMapConfig {
     availableStyles?: string[];
     geolocate?: boolean;
+
+    groupMarkerProps?: GroupMarkerProps;
 }

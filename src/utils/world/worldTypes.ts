@@ -92,6 +92,7 @@ export interface ImageWorldLayerData {
 
 export interface IImageWorld {
     src: string;
+    srcWidth: number;
     additionalSrc?: {
         100: string;
         600: string;
