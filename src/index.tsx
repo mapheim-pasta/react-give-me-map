@@ -8,6 +8,7 @@ export { PolygonWorld } from './items/PolygonWorld';
 export { ReactWorld } from './items/ReactWorld';
 export { TextWorld } from './items/TextWorld';
 export { YoutubeWorld } from './items/YoutubeWorld';
+export { ClickEventData } from './map/RegisterPropsToGlobalState';
 export { Package as GiveMeMap } from './Package';
 export { EMapStyle, ICoordinates, IViewportExtended } from './utils/map/mapTypes';
 export { isMarkerElement } from './utils/marker/markerUtils';
