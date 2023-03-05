@@ -26,7 +26,7 @@ export const GroupMarkers = (props: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const sourceFeatures: GeoJSON.Feature<GeoJSON.Geometry, any>[] = props.groupableMarkers
         .map((marker) => {
-            if (marker.elementType === 'image') {
+            if (marker.elementType === 'image' && marker.visible) {
                 return {
                     type: 'Feature' as const,
                     properties: {
@@ -75,7 +75,7 @@ export const GroupMarkers = (props: {
             'text-size': 12
         },
         paint: {
-            'text-color': '#' + (props.groupMarkerProps.textColor ?? '#fff')
+            'text-color': '#' + (props.groupMarkerProps.textColor ?? 'fff')
         }
     };
 
@@ -116,7 +116,7 @@ export const GroupMarkers = (props: {
     return (
         <>
             <Source
-                id="earthquakes"
+                id="clusters-source"
                 type="geojson"
                 data={sourceData}
                 cluster={true}

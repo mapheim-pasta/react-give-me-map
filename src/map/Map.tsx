@@ -85,6 +85,15 @@ export const Map = (props: IProps): JSX.Element => {
                 mapRef.getCanvas().style.cursor = '';
             });
 
+            if (props.map.interactiveLayerIds?.includes('clusters')) {
+                mapRef?.on('mouseenter', 'clusters', () => {
+                    mapRef.getCanvas().style.cursor = 'pointer';
+                });
+                mapRef?.on('mouseleave', 'clusters', () => {
+                    mapRef.getCanvas().style.cursor = '';
+                });
+            }
+
             props.map.onLoad(mapRef);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -158,6 +167,9 @@ export const Map = (props: IProps): JSX.Element => {
                 }}
                 onClick={(e) => {
                     const features = e.features ?? [];
+
+                    const clickData = { lat: e.lngLat.lat, lng: e.lngLat.lng };
+
                     if (features.length > 0) {
                         const feature = features[0];
                         const selectableMarkers = markers.filter((e) => e.selectable);
@@ -166,15 +178,37 @@ export const Map = (props: IProps): JSX.Element => {
                             (marker) => marker.id === feature.source
                         );
                         if (marker) {
-                            state.callbacks.onMarkersSelected?.([marker.id]);
+                            state.callbacks.onMarkersSelected?.([marker.id], clickData);
                             props.map.onClick?.(e);
                             return;
                         }
 
                         if (feature?.properties?.markerId) {
-                            // TODO: verify that it's selectable
-                            state.callbacks.onMarkersSelected?.([feature?.properties?.markerId]);
+                            state.callbacks.onMarkersSelected?.(
+                                [feature?.properties?.markerId],
+                                clickData
+                            );
                             props.map.onClick?.(e);
+                            return;
+                        }
+
+                        if (feature?.layer?.id === 'clusters') {
+                            const clusterId = feature?.properties?.cluster_id;
+
+                            const clusterSource =
+                                props.mapRef.current?.getSource('clusters-source');
+
+                            clusterSource?.type === 'geojson' &&
+                                clusterSource.getClusterLeaves(
+                                    clusterId,
+                                    99999,
+                                    0,
+                                    (err, leaves) => {
+                                        const markerIds = leaves.map((e) => e.properties?.markerId);
+                                        state.callbacks.onMarkersSelected?.(markerIds, clickData);
+                                    }
+                                );
+
                             return;
                         }
                     }

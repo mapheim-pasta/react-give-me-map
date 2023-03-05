@@ -1,8 +1,13 @@
 import React, { useEffect } from 'react';
 import { CustomBuilders, useActions } from '../context/dynamic/actions';
 
+export interface ClickEventData {
+    lat: number;
+    lng: number;
+}
+
 export interface ICallbacks {
-    onMarkersSelected?: (ids: string[]) => void;
+    onMarkersSelected?: (ids: string[], clickData?: ClickEventData) => void;
     onStyleChanged?: (style: string) => void;
 }
 
