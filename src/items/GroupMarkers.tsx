@@ -35,7 +35,8 @@ export const GroupMarkers = (props: {
                         type: 'image',
                         markerId: marker.id,
                         selected: props.selectedMarkers.includes(marker.id) ? '1' : '0',
-                        clickable: marker.selectable ? '1' : '0'
+                        clickable: marker.selectable ? '1' : '0',
+                        rotation: marker.rotate ?? 0
                     },
                     geometry: {
                         type: 'Point' as const,
@@ -92,7 +93,8 @@ export const GroupMarkers = (props: {
         ],
         layout: {
             'icon-image': ['string', ['get', 'image']],
-            'icon-size': ['number', ['get', 'size']]
+            'icon-size': ['number', ['get', 'size']],
+            'icon-rotate': ['get', 'rotation']
         }
     };
 
@@ -109,7 +111,8 @@ export const GroupMarkers = (props: {
         ],
         layout: {
             'icon-image': ['string', ['get', 'image']],
-            'icon-size': ['number', ['get', 'size']]
+            'icon-size': ['number', ['get', 'size']],
+            'icon-rotate': ['get', 'rotation']
         }
     };
 

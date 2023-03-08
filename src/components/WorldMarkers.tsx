@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import React, { RefObject, useEffect, useState } from 'react';
+import React, { CSSProperties, RefObject, useEffect, useState } from 'react';
 import { MapRef, Marker } from 'react-map-gl';
 import { useCtx } from '../context/dynamic/provider';
 import { useStateCallback } from '../hooks/general/useStateCallback';
@@ -14,7 +14,7 @@ import { ReactWorld } from '../items/ReactWorld';
 import { RouteWorld } from '../items/RouteWorld';
 import { TextWorld } from '../items/TextWorld';
 import { YoutubeWorld } from '../items/YoutubeWorld';
-import { GroupMarkerProps } from '../utils/map/mapTypes';
+import { GroupMarkerProps, MarkerStyle } from '../utils/map/mapTypes';
 import { isMarkerElement } from '../utils/marker/markerUtils';
 import { ORIGIN_ZOOM } from '../utils/world/worldConfig';
 import { IWorldMarker } from '../utils/world/worldTypes';
@@ -22,12 +22,10 @@ import { getInScale } from '../utils/world/worldUtils';
 
 export interface IProps {
     markers: IWorldMarker[];
-
     zoom: number;
-
-    selectableMarkersStyle: React.CSSProperties;
+    selectableMarkersStyle?: MarkerStyle;
     highlightedMarkers: string[];
-    highlightedMarkersStyle: React.CSSProperties;
+    highlightedMarkersStyle?: MarkerStyle;
 
     groupMarkerProps: GroupMarkerProps;
     mapRef: RefObject<MapRef>;
@@ -64,6 +62,9 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
 
     const nonGroupMarkers = markers.filter((e) => !e.isGroupable);
     const groupMarkers = markers.filter((e) => e.isGroupable);
+
+    const getMarkerStyle = (style?: MarkerStyle): CSSProperties =>
+        style ? { boxShadow: `0px 0px ${style.pixelSize}px ${style.shadowColor}` } : {};
 
     return (
         <>
@@ -104,9 +105,11 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                     transform: `rotate(${marker.rotate}deg)`,
                                     pointerEvents: marker.selectable ? 'all' : 'none',
                                     cursor: marker.selectable ? 'pointer' : 'inherit',
-                                    ...(marker.selectable ? props.selectableMarkersStyle : {}),
+                                    ...(marker.selectable
+                                        ? getMarkerStyle(props.selectableMarkersStyle)
+                                        : {}),
                                     ...(isMarkerHighlighted(marker.id)
-                                        ? props.highlightedMarkersStyle
+                                        ? getMarkerStyle(props.highlightedMarkersStyle)
                                         : {})
                                 }}
                             >
@@ -120,6 +123,8 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                         </Marker>
                     );
                 } else if (isMarkerElement(marker)) {
+                    const isDrawOrPolygon = ['draw', 'polygon'].includes(marker.elementType);
+
                     return (
                         <Marker
                             key={marker.id + marker.order}
@@ -134,20 +139,16 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                 style={{
                                     transform: `scale(${adjustedScale}) rotate(${marker.rotate}deg)`,
                                     pointerEvents:
-                                        marker.selectable &&
-                                        marker.elementType !== 'draw' &&
-                                        marker.elementType !== 'polygon'
-                                            ? 'all'
-                                            : 'none',
+                                        marker.selectable && isDrawOrPolygon ? 'all' : 'none',
                                     cursor:
-                                        marker.selectable &&
-                                        marker.elementType !== 'draw' &&
-                                        marker.elementType !== 'polygon'
+                                        marker.selectable && isDrawOrPolygon
                                             ? 'pointer'
                                             : 'inherit',
-                                    ...(marker.selectable ? props.selectableMarkersStyle : {}),
-                                    ...(isMarkerHighlighted(marker.id)
-                                        ? props.highlightedMarkersStyle
+                                    ...(!isDrawOrPolygon && marker.selectable
+                                        ? getMarkerStyle(props.selectableMarkersStyle)
+                                        : {}),
+                                    ...(!isDrawOrPolygon && isMarkerHighlighted(marker.id)
+                                        ? getMarkerStyle(props.highlightedMarkersStyle)
                                         : {})
                                 }}
                             >
@@ -170,10 +171,13 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                 {marker.elementType === 'polygon' && (
                                     <PolygonWorld
                                         markerId={marker.id}
+                                        isHighlighted={isMarkerHighlighted(marker.id)}
                                         selectable={marker.selectable ?? false}
                                         elementData={marker.elementData}
                                         adjustedScale={adjustedScale}
                                         onClick={onClick}
+                                        highlightedStyle={props.highlightedMarkersStyle}
+                                        selectableStyle={props.selectableMarkersStyle}
                                     />
                                 )}
                                 {marker.elementType === 'youtube' && (

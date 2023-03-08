@@ -12,7 +12,7 @@ import { WorldMarkers } from '../components/WorldMarkers';
 import { useActions } from '../context/dynamic/actions';
 import { useCtx } from '../context/dynamic/provider';
 import { useMouseListener } from '../hooks/mouse/useMouseListener';
-import { EMapStyle, IMapConfig, IMapProps } from '../utils/map/mapTypes';
+import { EMapStyle, IMapConfig, IMapProps, MarkerStyle } from '../utils/map/mapTypes';
 import { IWorldMarker } from '../utils/world/worldTypes';
 
 interface IProps {
@@ -22,9 +22,9 @@ interface IProps {
     selectedIds: string[];
     children?: React.ReactNode;
     config?: IMapConfig;
-    selectableMarkersStyle: React.CSSProperties;
+    selectableMarkersStyle?: MarkerStyle;
     highlightedMarkers: string[];
-    highlightedMarkersStyle: React.CSSProperties;
+    highlightedMarkersStyle?: MarkerStyle;
     categories: string[];
     selectedCategories: string[];
 }
@@ -100,6 +100,7 @@ export const Map = (props: IProps): JSX.Element => {
     }, [loaded]);
 
     const layerIds = props.markers
+        .filter((e) => e.visible)
         .map((marker) => {
             if (marker.elementType === 'route' || marker.elementType === 'direction') {
                 return marker.id + '|line-click';

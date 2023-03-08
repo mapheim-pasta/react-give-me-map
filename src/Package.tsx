@@ -6,7 +6,7 @@ import { reducer } from './context/dynamic/reducer';
 import { initialState } from './context/dynamic/state';
 import { Map } from './map/Map';
 import { ICallbacks, RegisterPropsToGlobalState } from './map/RegisterPropsToGlobalState';
-import { IMapConfig, IMapProps } from './utils/map/mapTypes';
+import { IMapConfig, IMapProps, MarkerStyle } from './utils/map/mapTypes';
 import { IWorldMarker } from './utils/world/worldTypes';
 
 interface IProps {
@@ -19,9 +19,9 @@ interface IProps {
 
     config?: IMapConfig;
 
-    selectableMarkersStyle?: React.CSSProperties;
+    selectableMarkersStyle?: MarkerStyle;
     highlightedMarkers?: string[];
-    highlightedMarkersStyle?: React.CSSProperties;
+    highlightedMarkersStyle?: MarkerStyle;
     categories?: string[];
     selectedCategories?: string[];
     customBuilders?: CustomBuilders;
@@ -59,9 +59,9 @@ export const Package = (props: IProps): JSX.Element => {
                     markers={markers}
                     selectedIds={props.selectedIds ?? []}
                     config={props.config}
-                    selectableMarkersStyle={props.selectableMarkersStyle ?? {}}
+                    selectableMarkersStyle={props.selectableMarkersStyle}
+                    highlightedMarkersStyle={props.highlightedMarkersStyle}
                     highlightedMarkers={props.highlightedMarkers ?? []}
-                    highlightedMarkersStyle={props.highlightedMarkersStyle ?? {}}
                     categories={props.categories ?? []}
                     selectedCategories={props.selectedCategories ?? []}
                 >

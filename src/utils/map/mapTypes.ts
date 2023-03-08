@@ -41,3 +41,8 @@ export interface IMapConfig {
 
     groupMarkerProps?: GroupMarkerProps;
 }
+
+export interface MarkerStyle {
+    shadowColor: string;
+    pixelSize: number;
+}
