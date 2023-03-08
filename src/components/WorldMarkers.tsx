@@ -139,9 +139,9 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                                 style={{
                                     transform: `scale(${adjustedScale}) rotate(${marker.rotate}deg)`,
                                     pointerEvents:
-                                        marker.selectable && isDrawOrPolygon ? 'all' : 'none',
+                                        marker.selectable && !isDrawOrPolygon ? 'all' : 'none',
                                     cursor:
-                                        marker.selectable && isDrawOrPolygon
+                                        marker.selectable && !isDrawOrPolygon
                                             ? 'pointer'
                                             : 'inherit',
                                     ...(!isDrawOrPolygon && marker.selectable
