@@ -1,3 +1,4 @@
+import { orderBy } from 'lodash';
 import React, { CSSProperties, RefObject, useEffect, useState } from 'react';
 import { MapRef, Marker } from 'react-map-gl';
 import { useCtx } from '../context/dynamic/provider';
@@ -62,18 +63,23 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
     const getMarkerStyle = (style?: MarkerStyle): CSSProperties =>
         style ? { boxShadow: `0px 0px ${style.pixelSize}px ${style.shadowColor}` } : {};
 
-    const nativeMarkerIdsOrder = markers.reduce<string[]>((acc, curr) => {
+    const orderedMarkers = orderBy(markers, 'order');
+
+    const nativeMarkerIdsOrder = orderedMarkers.reduce<string[]>((acc, curr) => {
+        if (!curr.visible) {
+            return acc;
+        }
         if (curr.elementType === 'image' && curr.elementData.renderAsLayer) {
-            return [...acc, curr.id];
+            return [curr.id, ...acc];
         }
         if (curr.elementType === 'polygon' && curr.elementData.renderAs3d) {
-            return [...acc, curr.id];
+            return [curr.id, ...acc];
         }
         return acc;
     }, []);
 
-    const groupMarkers = markers.filter((e) => e.isGroupable);
-    const nonGroupMarkers = markers.filter((e) => !e.isGroupable);
+    const groupMarkers = orderedMarkers.filter((e) => e.isGroupable);
+    const nonGroupMarkers = orderedMarkers.filter((e) => !e.isGroupable);
 
     return (
         <>
@@ -83,7 +89,7 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                 groupableMarkers={groupMarkers}
                 groupMarkerProps={props.groupMarkerProps}
             />
-            {nonGroupMarkers.map((marker: IWorldMarker) => {
+            {orderBy(nonGroupMarkers, 'order').map((marker: IWorldMarker) => {
                 const adjustedScale = marker.scalable
                     ? getInScale(marker.scale as number, ORIGIN_ZOOM, props.zoom)
                     : marker.scale ?? 1;
