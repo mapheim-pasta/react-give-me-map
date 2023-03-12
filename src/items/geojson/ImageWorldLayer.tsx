@@ -9,6 +9,7 @@ interface IProps {
     markerId: string;
     layerData: ImageWorldLayerData;
     imageUrl: string;
+    nativeMarkerIdsOrder: string[];
 }
 
 export const ImageWorldLayer = (props: IProps): JSX.Element => {
@@ -32,11 +33,18 @@ export const ImageWorldLayer = (props: IProps): JSX.Element => {
         return <></>;
     }
 
+    const indexOfLayerId = props.nativeMarkerIdsOrder.indexOf(props.markerId);
+
     return (
         <>
             <Source id={props.markerId} type="image" url={props.imageUrl} coordinates={coordinates}>
                 <Layer
-                    id={props.markerId + '|raster'}
+                    id={props.markerId + '|layer'}
+                    beforeId={
+                        indexOfLayerId > 0
+                            ? `${props.nativeMarkerIdsOrder[indexOfLayerId - 1]}|layer`
+                            : undefined
+                    }
                     type="raster"
                     source={props.markerId}
                     paint={{ 'raster-fade-duration': 0 }}

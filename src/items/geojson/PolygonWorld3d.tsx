@@ -9,6 +9,7 @@ interface IProps {
 
     data3d: PolygonWorldData3d;
     coordinates: ICoordinates[];
+    nativeMarkerIdsOrder: string[];
 }
 
 export const PolygonWorld3d = (props: IProps) => {
@@ -24,6 +25,8 @@ export const PolygonWorld3d = (props: IProps) => {
     if (!mapCtx.current) {
         return <></>;
     }
+
+    const indexOfLayerId = props.nativeMarkerIdsOrder.indexOf(props.markerId);
 
     return (
         <div>
@@ -53,6 +56,11 @@ export const PolygonWorld3d = (props: IProps) => {
             >
                 <Layer
                     id={layerId}
+                    beforeId={
+                        indexOfLayerId > 0
+                            ? `${props.nativeMarkerIdsOrder[indexOfLayerId - 1]}|layer`
+                            : undefined
+                    }
                     type="fill-extrusion"
                     source={sourceId}
                     paint={{

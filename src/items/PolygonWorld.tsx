@@ -17,6 +17,7 @@ interface Props {
     highlightedStyle?: MarkerStyle;
 
     selectableStyle?: MarkerStyle;
+    nativeMarkerIdsOrder: string[];
 }
 
 export const PolygonWorld = (props: Props): JSX.Element => {
@@ -34,6 +35,7 @@ export const PolygonWorld = (props: Props): JSX.Element => {
     if (props.elementData.renderAs3d) {
         return (
             <PolygonWorld3d
+                nativeMarkerIdsOrder={props.nativeMarkerIdsOrder}
                 markerId={props.markerId}
                 data3d={props.elementData.data3d ?? {}}
                 coordinates={props.elementData.coordinates}

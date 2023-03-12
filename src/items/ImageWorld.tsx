@@ -9,6 +9,8 @@ interface Props {
     onResizeNeeded?: () => void;
 
     onClick?: () => void;
+
+    nativeMarkerIdsOrder: string[];
 }
 
 type AllowedResolutions = keyof NonNullable<IImageWorld['additionalSrc']>;
@@ -44,6 +46,7 @@ export const ImageWorld = (props: Props): JSX.Element => {
     if (props.elementData.renderAsLayer) {
         return (
             <ImageWorldLayer
+                nativeMarkerIdsOrder={props.nativeMarkerIdsOrder}
                 markerId={props.markerId}
                 layerData={props.elementData.layerData ?? {}}
                 imageUrl={props.elementData.src}
