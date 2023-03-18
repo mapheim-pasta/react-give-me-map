@@ -98,7 +98,7 @@ export interface IImageWorld {
         600: string;
         1000: string;
         1920: string;
-        original?: string;
+        4096: string;
     };
     borderRadiusPx?: number;
     borderSize?: number;
