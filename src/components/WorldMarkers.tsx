@@ -79,7 +79,12 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
     }, []);
 
     const groupMarkers = orderedMarkers.filter((e) => e.isGroupable);
-    const nonGroupMarkers = orderedMarkers.filter((e) => !e.isGroupable);
+    const nonGroupNativeMarkers = orderedMarkers
+        .filter((e) => !e.isGroupable && nativeMarkerIdsOrder.includes(e.id))
+        .reverse();
+    const nonGroupNonNativeMarkers = orderedMarkers.filter(
+        (e) => !e.isGroupable && !nativeMarkerIdsOrder.includes(e.id)
+    );
 
     return (
         <>
@@ -89,7 +94,7 @@ export const WorldMarkers = (props: IProps): JSX.Element => {
                 groupableMarkers={groupMarkers}
                 groupMarkerProps={props.groupMarkerProps}
             />
-            {orderBy(nonGroupMarkers, 'order').map((marker: IWorldMarker) => {
+            {[...nonGroupNativeMarkers, ...nonGroupNonNativeMarkers].map((marker: IWorldMarker) => {
                 const adjustedScale = marker.scalable
                     ? getInScale(marker.scale as number, ORIGIN_ZOOM, props.zoom)
                     : marker.scale ?? 1;
