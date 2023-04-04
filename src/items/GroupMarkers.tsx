@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react';
+import React, { RefObject, useState } from 'react';
 import { Layer, LayerProps, MapRef, Source } from 'react-map-gl';
 import { useLoadMapImages } from '../hooks/map/useLoadMapImages';
 import { IImageWorldMarker, IWorldMarker } from '../utils/world/worldTypes';
@@ -14,6 +14,8 @@ export const GroupMarkers = (props: {
     selectedMarkers: string[];
     groupMarkerProps: GroupMarkerProps;
 }) => {
+    const [areImagesLoaded, setAreImagesLoaded] = useState(false);
+
     const images = props.groupableMarkers
         .filter((marker): marker is IImageWorldMarker => marker.elementType === 'image')
         .map((marker) => ({
@@ -21,7 +23,17 @@ export const GroupMarkers = (props: {
             name: marker.elementData.src
         }));
 
-    useLoadMapImages({ mapRef: props.mapRef, images });
+    useLoadMapImages({
+        mapRef: props.mapRef,
+        images,
+        onLoad: () => {
+            setAreImagesLoaded(true);
+        }
+    });
+
+    if (!areImagesLoaded) {
+        return null;
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const sourceFeatures: GeoJSON.Feature<GeoJSON.Geometry, any>[] = props.groupableMarkers
