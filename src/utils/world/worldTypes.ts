@@ -39,6 +39,7 @@ interface BaseMarker {
     order?: number;
     visible?: boolean;
 
+    gptContextId?: string;
     isGroupable?: boolean;
 
     category?: string[];
