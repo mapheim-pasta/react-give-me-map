@@ -7,7 +7,7 @@ import { initialState } from './context/dynamic/state';
 import { Map } from './map/Map';
 import { ICallbacks, RegisterPropsToGlobalState } from './map/RegisterPropsToGlobalState';
 import { IMapConfig, IMapProps, MarkerStyle } from './utils/map/mapTypes';
-import { IWorldMarker } from './utils/world/worldTypes';
+import { IWorldMarker, IWorldV1Marker, IWorldV2Marker } from './utils/world/worldTypes';
 
 interface IProps {
     map: IMapProps;
@@ -27,11 +27,28 @@ interface IProps {
     customBuilders?: CustomBuilders;
 }
 
+const isV2Marker = (marker: IWorldMarker): marker is IWorldV2Marker =>
+    marker.elementType === 'v2/line' ||
+    marker.elementType === 'v2/icon' ||
+    marker.elementType === 'v2/polygon';
+
+const isV1Marker = (marker: IWorldMarker): marker is IWorldV1Marker => !isV2Marker(marker);
+
 export const Package = (props: IProps): JSX.Element => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    const markers = props.markers ?? [];
-    for (const marker of markers) {
+    // Fill in default values
+    const markers = (props.markers ?? []).map<IWorldMarker>((m, i) => ({
+        ...m,
+        order: m.order ?? i,
+        scalable: m.scalable ?? true,
+        scale: m.scale ?? 1
+    }));
+
+    const v1Markers = markers.filter<IWorldV1Marker>(isV1Marker);
+    const v2Markers = markers.filter<IWorldV2Marker>(isV2Marker);
+
+    for (const marker of v1Markers) {
         if (marker.elementType === 'direction') {
             if (!marker.refs) {
                 // first is "start"
@@ -56,7 +73,8 @@ export const Package = (props: IProps): JSX.Element => {
                 <Map
                     mapRef={props.mapRef}
                     map={props.map}
-                    markers={markers}
+                    v1Markers={v1Markers}
+                    v2Markers={v2Markers}
                     selectedIds={props.selectedIds ?? []}
                     config={props.config}
                     selectableMarkersStyle={props.selectableMarkersStyle}

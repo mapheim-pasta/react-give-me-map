@@ -4,21 +4,24 @@ import ReactMapGL, {
     GeolocateControl,
     GeolocateControlRef,
     ImmutableLike,
-    MapboxStyle,
-    MapRef
+    MapRef,
+    MapboxStyle
 } from 'react-map-gl';
 import { WorldMapControl } from '../components/WorldMapControl';
-import { WorldMarkers } from '../components/WorldMarkers';
+import { WorldMarkersV1 } from '../components/WorldMarkersV1';
+import { WorldMarkersV2 } from '../components/WorldMarkersV2';
 import { useActions } from '../context/dynamic/actions';
 import { useCtx } from '../context/dynamic/provider';
 import { useMouseListener } from '../hooks/mouse/useMouseListener';
 import { EMapStyle, IMapConfig, IMapProps, MarkerStyle } from '../utils/map/mapTypes';
-import { IWorldMarker } from '../utils/world/worldTypes';
+import { IWorldV1Marker, IWorldV2Marker } from '../utils/world/worldTypes';
+import { useWorldMarkersV1Data } from './useWorldMarkersV1Data';
 
 interface IProps {
     map: IMapProps;
     mapRef: React.RefObject<MapRef>;
-    markers: IWorldMarker[];
+    v1Markers: IWorldV1Marker[];
+    v2Markers: IWorldV2Marker[];
     selectedIds: string[];
     children?: React.ReactNode;
     config?: IMapConfig;
@@ -50,6 +53,8 @@ export const Map = (props: IProps): JSX.Element => {
     const [geoTriggered, setGeoTriggered] = useState<boolean>(false);
     const [geoShow, setGeoShow] = useState(true);
 
+    const v1MarkersData = useWorldMarkersV1Data(props.v1Markers);
+
     useEffect(() => {
         if (props.map.mapStyle) {
             setSelectedMapStyle(props.map.mapStyle);
@@ -62,6 +67,8 @@ export const Map = (props: IProps): JSX.Element => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.selectedIds]);
+
+    console.log('mm');
 
     useEffect(() => {
         if (props.mapRef?.current?.loaded()) {
@@ -99,21 +106,7 @@ export const Map = (props: IProps): JSX.Element => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loaded]);
 
-    const layerIds = props.markers
-        .filter((e) => e.visible)
-        .map((marker) => {
-            if (marker.elementType === 'route' || marker.elementType === 'direction') {
-                return marker.id + '|line-click';
-            }
-            if (marker.elementType === 'polygon' && marker.elementData.renderAs3d) {
-                return marker.id + '|layer';
-            }
-        })
-        .filter((val): val is string => {
-            return val !== undefined;
-        })
-        .concat(['unclustered-point-images-clickable'])
-        .concat(props.map.interactiveLayerIds ?? []);
+    const layerIds = (props.map.interactiveLayerIds ?? []).concat(v1MarkersData.layerIds);
 
     function getInitMapStyle() {
         if (props.map.mapStyle) {
@@ -125,15 +118,7 @@ export const Map = (props: IProps): JSX.Element => {
         }
     }
 
-    // Fill in default values
-    const markers = props.markers.map((m, i) => ({
-        ...m,
-        order: m.order ?? i,
-        scalable: m.scalable ?? true,
-        scale: m.scale ?? 1
-    }));
-
-    const mouseListener = useMouseListener(markers, props.mapRef, wrapperMapRef);
+    const mouseListener = useMouseListener(props.v1Markers, props.mapRef, wrapperMapRef);
 
     useEffect(() => {
         if (props.mapRef?.current && wrapperMapRef.current) {
@@ -173,7 +158,7 @@ export const Map = (props: IProps): JSX.Element => {
 
                     if (features.length > 0) {
                         const feature = features[0];
-                        const selectableMarkers = markers.filter((e) => e.selectable);
+                        const selectableMarkers = props.v1Markers.filter((e) => e.selectable);
 
                         const marker = selectableMarkers.find(
                             (marker) => marker.id === feature.source
@@ -227,15 +212,16 @@ export const Map = (props: IProps): JSX.Element => {
             >
                 {loaded && (
                     <>
-                        <WorldMarkers
+                        <WorldMarkersV1
                             mapRef={props.mapRef}
-                            markers={markers}
+                            markers={props.v1Markers}
                             zoom={props.map.zoom ?? 1}
                             selectableMarkersStyle={props.selectableMarkersStyle}
                             highlightedMarkers={props.highlightedMarkers}
                             highlightedMarkersStyle={props.highlightedMarkersStyle}
                             groupMarkerProps={props.config?.groupMarkerProps ?? {}}
                         />
+                        <WorldMarkersV2 markers={props.v2Markers} mapRef={props.mapRef} />
                         <WorldMapControl
                             onGeoClick={() => {
                                 if (!geoTriggered) {

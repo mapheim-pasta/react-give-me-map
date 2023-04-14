@@ -1,3 +1,4 @@
+export { Package as GiveMeMap } from './Package';
 export { CustomMarkerBuilders, PinIconBuilder } from './context/dynamic/actions';
 export { useContainComputation } from './hooks/mouse/useContainComputation';
 export { DrawWorld } from './items/DrawWorld';
@@ -9,7 +10,6 @@ export { ReactWorld } from './items/ReactWorld';
 export { TextWorld } from './items/TextWorld';
 export { YoutubeWorld } from './items/YoutubeWorld';
 export { ClickEventData } from './map/RegisterPropsToGlobalState';
-export { Package as GiveMeMap } from './Package';
 export { EMapStyle, ICoordinates, IViewportExtended } from './utils/map/mapTypes';
 export { isMarkerElement } from './utils/marker/markerUtils';
 export { parseYoutubeSource } from './utils/marker/youtubeUtils';
@@ -24,12 +24,18 @@ export {
     IDirectionWorldMarker,
     IDrawWorld,
     IDrawWorldMarker,
+    IIconV2World,
+    IIconV2WorldMarker,
     IImageWorld,
     IImageWorldMarker,
+    ILineV2World,
+    ILineV2WorldMarker,
     ILinkWorld,
     ILinkWorldMarker,
     IPinWorld,
     IPinWorldMarker,
+    IPolygonV2World,
+    IPolygonV2WorldMarker,
     IPolygonWorld,
     IPolygonWorldMarker,
     IReactWorld,

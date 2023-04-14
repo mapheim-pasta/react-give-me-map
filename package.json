@@ -41,6 +41,7 @@
         "@rollup/plugin-node-resolve": "^14.0.1",
         "@svgr/rollup": "^6.3.1",
         "@types/lodash": "^4.14.184",
+        "@types/mapbox-gl": "^2.7.10",
         "@types/node": "^18.7.14",
         "@types/react": "^18.0.17",
         "@types/react-dom": "^18.0.6",
@@ -57,7 +58,7 @@
         "eslint-plugin-prettier": "^3.4.0",
         "eslint-plugin-react": "^7.31.5",
         "eslint-plugin-react-hooks": "^4.6.0",
-        "mapbox-gl": "^2.6.1",
+        "mapbox-gl": "^2.14.0",
         "prettier": "^2.7.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
@@ -75,7 +76,7 @@
         "typescript": "^4.8.2"
     },
     "peerDependencies": {
-        "mapbox-gl": "^2.6.1",
+        "mapbox-gl": "^2.14.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-map-gl": "^7.0.19"
