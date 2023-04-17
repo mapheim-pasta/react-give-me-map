@@ -6,7 +6,7 @@ export function useWorldMarkersV2Data(markers: IWorldV2Marker[]) {
         .map((marker) => {
             const id = marker.id;
             if (marker.elementType === 'v2/polygon') {
-                return [id + '|clickable-fill', id + '|clickable-border'];
+                return [id + '|clickable', id + '|clickable-border'];
             }
             if (marker.elementType === 'v2/line') {
                 return [id + '|clickable'];

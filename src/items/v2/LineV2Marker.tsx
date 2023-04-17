@@ -6,6 +6,8 @@ import { ILineV2WorldMarker } from '../../utils/world/worldTypes';
 
 interface Props {
     marker: ILineV2WorldMarker;
+
+    beforeId?: string;
 }
 
 export const LineV2Marker = (props: Props): JSX.Element => {
@@ -42,6 +44,7 @@ export const LineV2Marker = (props: Props): JSX.Element => {
         >
             <Layer
                 id={`${markerId}|layer`}
+                beforeId={props.beforeId}
                 type="line"
                 source="line"
                 paint={{ ...omitBy(paintAttributes, isNil) }}

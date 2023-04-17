@@ -8,6 +8,7 @@ import { IIconV2WorldMarker } from '../../utils/world/worldTypes';
 interface Props {
     mapRef: RefObject<MapRef>;
     marker: IIconV2WorldMarker;
+    beforeId?: string;
 }
 
 export const IconV2Marker = (props: Props): JSX.Element => {
@@ -53,6 +54,7 @@ export const IconV2Marker = (props: Props): JSX.Element => {
         >
             <Layer
                 id={`${markerId}|layer`}
+                beforeId={props.beforeId}
                 type="symbol"
                 paint={{ ...omitBy(paintAttributes, isNil) }}
                 layout={{ ...omitBy(layoutAttributes, isNil) }}
