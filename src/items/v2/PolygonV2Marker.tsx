@@ -35,7 +35,7 @@ export const PolygonV2Marker = (props: Props): JSX.Element => {
 
     return (
         <Source
-            id={`${markerId}|source`}
+            id={`${markerId}`}
             type="geojson"
             data={{
                 type: 'Feature',
@@ -47,24 +47,45 @@ export const PolygonV2Marker = (props: Props): JSX.Element => {
             }}
         >
             {data.fill.isFilled && (
-                <Layer
-                    id={`${markerId}|layer-fill`}
-                    type="fill"
-                    source={`${markerId}|source`}
-                    paint={{ ...omitBy(fillPaintAttributes, isNil) }}
-                    layout={{ ...omitBy(fillLayoutAttributes, isNil) }}
-                    minzoom={0}
-                    maxzoom={24}
-                />
+                <>
+                    <Layer
+                        id={`${markerId}|layer-fill`}
+                        type="fill"
+                        source={`${markerId}`}
+                        paint={{ ...omitBy(fillPaintAttributes, isNil) }}
+                        layout={{ ...omitBy(fillLayoutAttributes, isNil) }}
+                    />
+                    {props.marker.selectable && (
+                        <Layer
+                            id={`${markerId}|clickable-fill`}
+                            type="fill"
+                            source={`${markerId}`}
+                            paint={{
+                                'fill-opacity': 0
+                            }}
+                        />
+                    )}
+                </>
             )}
             {data.border.hasBorder && (
-                <Layer
-                    id={`${markerId}|layer-border`}
-                    type="line"
-                    source={`${markerId}|source`}
-                    paint={{ ...omitBy(borderPaintAttributes, isNil) }}
-                    layout={{ ...omitBy(borderLayoutAttributes, isNil) }}
-                />
+                <>
+                    <Layer
+                        id={`${markerId}|layer-border`}
+                        type="line"
+                        source={`${markerId}`}
+                        paint={{ ...omitBy(borderPaintAttributes, isNil) }}
+                        layout={{ ...omitBy(borderLayoutAttributes, isNil) }}
+                    />
+                    {props.marker.selectable && (
+                        <Layer
+                            id={`${markerId}|clickable-border`}
+                            type="line"
+                            source={`${markerId}`}
+                            paint={{ ...omitBy(borderPaintAttributes, isNil), 'line-opacity': 0 }}
+                            layout={{ ...omitBy(borderLayoutAttributes, isNil) }}
+                        />
+                    )}
+                </>
             )}
         </Source>
     );

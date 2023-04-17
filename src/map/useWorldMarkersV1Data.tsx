@@ -13,10 +13,16 @@ export function useWorldMarkersV1Data(markers: IWorldV1Marker[]) {
         })
         .filter((val): val is string => {
             return val !== undefined;
-        })
-        .concat(['unclustered-point-images-clickable']);
+        });
+
+    const hasClusters = markers.some((e) => e.elementType === 'image' && e.isGroupable);
+
+    const clickableSourceIds = hasClusters
+        ? ['unclustered-point-images-clickable', 'clusters']
+        : [];
 
     return {
-        layerIds
+        layerIds,
+        clickableSourceIds
     };
 }

@@ -38,7 +38,7 @@ export const IconV2Marker = (props: Props): JSX.Element => {
 
     return (
         <Source
-            id={`${markerId}|source`}
+            id={`${markerId}`}
             type="geojson"
             data={{
                 type: 'Feature',
@@ -47,7 +47,7 @@ export const IconV2Marker = (props: Props): JSX.Element => {
                 },
                 geometry: {
                     type: 'Point',
-                    coordinates: [data.position.lng, data.position.lat] // Greece
+                    coordinates: [data.position.lng, data.position.lat]
                 }
             }}
         >

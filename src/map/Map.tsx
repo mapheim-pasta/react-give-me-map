@@ -14,8 +14,9 @@ import { useActions } from '../context/dynamic/actions';
 import { useCtx } from '../context/dynamic/provider';
 import { useMouseListener } from '../hooks/mouse/useMouseListener';
 import { EMapStyle, IMapConfig, IMapProps, MarkerStyle } from '../utils/map/mapTypes';
-import { IWorldV1Marker, IWorldV2Marker } from '../utils/world/worldTypes';
+import { IWorldMarker, IWorldV1Marker, IWorldV2Marker } from '../utils/world/worldTypes';
 import { useWorldMarkersV1Data } from './useWorldMarkersV1Data';
+import { useWorldMarkersV2Data } from './useWorldMarkersV2Data';
 
 interface IProps {
     map: IMapProps;
@@ -54,6 +55,14 @@ export const Map = (props: IProps): JSX.Element => {
     const [geoShow, setGeoShow] = useState(true);
 
     const v1MarkersData = useWorldMarkersV1Data(props.v1Markers);
+    const v2MarkersData = useWorldMarkersV2Data(props.v2Markers);
+
+    const layerIds = (props.map.interactiveLayerIds ?? [])
+        .concat(v1MarkersData.layerIds)
+        .concat(v2MarkersData.layerIds);
+    const clickableSourceIds = v1MarkersData.clickableSourceIds.concat(
+        v2MarkersData.clickableSourceIds
+    );
 
     useEffect(() => {
         if (props.map.mapStyle) {
@@ -78,6 +87,8 @@ export const Map = (props: IProps): JSX.Element => {
     }, [props.mapRef?.current?.loaded()]);
 
     useEffect(() => {
+        const currentHovered = new Set<string>();
+
         if (loaded) {
             const mapRef = props.mapRef?.current;
 
@@ -85,28 +96,23 @@ export const Map = (props: IProps): JSX.Element => {
             mapRef?.getMap()?.touchPitch.disable();
             mapRef?.getMap()?.keyboard.disable();
 
-            mapRef?.on('mouseenter', 'unclustered-point-images-clickable', () => {
-                mapRef.getCanvas().style.cursor = 'pointer';
-            });
-            mapRef?.on('mouseleave', 'unclustered-point-images-clickable', () => {
-                mapRef.getCanvas().style.cursor = '';
-            });
-
-            if (props.map.interactiveLayerIds?.includes('clusters')) {
-                mapRef?.on('mouseenter', 'clusters', () => {
+            clickableSourceIds.forEach((sourceId) => {
+                mapRef?.on('mouseleave', sourceId, (e) => {
+                    currentHovered.delete(sourceId);
+                    if (currentHovered.size === 0) {
+                        mapRef.getCanvas().style.cursor = '';
+                    }
+                });
+                mapRef?.on('mouseenter', sourceId, () => {
+                    currentHovered.add(sourceId);
                     mapRef.getCanvas().style.cursor = 'pointer';
                 });
-                mapRef?.on('mouseleave', 'clusters', () => {
-                    mapRef.getCanvas().style.cursor = '';
-                });
-            }
+            });
 
             props.map.onLoad(mapRef);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loaded]);
-
-    const layerIds = (props.map.interactiveLayerIds ?? []).concat(v1MarkersData.layerIds);
 
     function getInitMapStyle() {
         if (props.map.mapStyle) {
@@ -158,11 +164,17 @@ export const Map = (props: IProps): JSX.Element => {
 
                     if (features.length > 0) {
                         const feature = features[0];
-                        const selectableMarkers = props.v1Markers.filter((e) => e.selectable);
+                        const selectableMarkersV1: IWorldMarker[] = props.v1Markers.filter(
+                            (e) => e.selectable
+                        );
+                        const selectableMarkersV2: IWorldMarker[] = props.v2Markers.filter(
+                            (e) => e.selectable
+                        );
 
-                        const marker = selectableMarkers.find(
+                        const marker = [...selectableMarkersV1, ...selectableMarkersV2].find(
                             (marker) => marker.id === feature.source
                         );
+
                         if (marker) {
                             state.callbacks.onMarkersSelected?.([marker.id], clickData);
                             props.map.onClick?.(e);

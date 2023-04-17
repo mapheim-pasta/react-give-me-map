@@ -29,7 +29,7 @@ export const LineV2Marker = (props: Props): JSX.Element => {
 
     return (
         <Source
-            id={`${markerId}|source`}
+            id={`${markerId}`}
             type="geojson"
             data={{
                 type: 'Feature',
@@ -47,6 +47,16 @@ export const LineV2Marker = (props: Props): JSX.Element => {
                 paint={{ ...omitBy(paintAttributes, isNil) }}
                 layout={{ ...omitBy(layoutAttributes, isNil) }}
             />
+
+            {props.marker.selectable && (
+                <Layer
+                    id={`${markerId}|clickable`}
+                    type="line"
+                    source="line"
+                    paint={{ ...omitBy(paintAttributes, isNil), 'line-opacity': 0 }}
+                    layout={{ ...omitBy(layoutAttributes, isNil) }}
+                />
+            )}
         </Source>
     );
 };
