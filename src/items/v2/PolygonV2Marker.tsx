@@ -8,6 +8,8 @@ interface Props {
     mapRef: RefObject<MapRef>;
     marker: IPolygonV2WorldMarker;
     beforeId?: string;
+
+    isHighlighted?: boolean;
 }
 
 export const PolygonV2Marker = (props: Props): JSX.Element => {
@@ -35,47 +37,90 @@ export const PolygonV2Marker = (props: Props): JSX.Element => {
         ...data.border.rawLayoutAttributes
     };
 
-    console.log('ordr', markerId, props.beforeId);
-
-    const ids = {
+    const layerIds = {
         layer: markerId + '|layer',
         layerClick: markerId + '|clickable',
         border: markerId + '|layer-border',
-        borderClick: markerId + '|clickable-border'
+        borderClick: markerId + '|clickable-border',
+        highlight: markerId + '|highlight'
     };
 
     const getBeforeIds = () => {
-        if (data.border.hasBorder) {
-            if (props.marker.selectable) {
-                return {
-                    borderClick: props.beforeId,
-                    border: ids.borderClick,
-                    layerClick: ids.border,
-                    layer: ids.layerClick
-                };
+        if (props.isHighlighted) {
+            if (data.border.hasBorder) {
+                if (props.marker.selectable) {
+                    return {
+                        highlight: props.beforeId,
+                        borderClick: layerIds.highlight,
+                        border: layerIds.borderClick,
+                        layerClick: layerIds.border,
+                        layer: layerIds.layerClick
+                    };
+                } else {
+                    return {
+                        highlight: props.beforeId,
+                        borderClick: undefined,
+                        border: layerIds.highlight,
+                        layerClick: undefined,
+                        layer: layerIds.border
+                    };
+                }
             } else {
-                return {
-                    borderClick: undefined,
-                    border: props.beforeId,
-                    layerClick: undefined,
-                    layer: ids.border
-                };
+                if (props.marker.selectable) {
+                    return {
+                        highlight: props.beforeId,
+                        borderClick: undefined,
+                        border: undefined,
+                        layerClick: layerIds.highlight,
+                        layer: layerIds.layerClick
+                    };
+                } else {
+                    return {
+                        highlight: props.beforeId,
+                        borderClick: undefined,
+                        border: undefined,
+                        layerClick: undefined,
+                        layer: layerIds.highlight
+                    };
+                }
             }
         } else {
-            if (props.marker.selectable) {
-                return {
-                    borderClick: undefined,
-                    border: undefined,
-                    layerClick: props.beforeId,
-                    layer: ids.layerClick
-                };
+            if (data.border.hasBorder) {
+                if (props.marker.selectable) {
+                    return {
+                        highlight: undefined,
+                        borderClick: props.beforeId,
+                        border: layerIds.borderClick,
+                        layerClick: layerIds.border,
+                        layer: layerIds.layerClick
+                    };
+                } else {
+                    return {
+                        highlight: undefined,
+                        borderClick: undefined,
+                        border: props.beforeId,
+                        layerClick: undefined,
+                        layer: layerIds.border
+                    };
+                }
             } else {
-                return {
-                    borderClick: undefined,
-                    border: undefined,
-                    layerClick: undefined,
-                    layer: props.beforeId
-                };
+                if (props.marker.selectable) {
+                    return {
+                        highlight: undefined,
+                        borderClick: undefined,
+                        border: undefined,
+                        layerClick: props.beforeId,
+                        layer: layerIds.layerClick
+                    };
+                } else {
+                    return {
+                        highlight: undefined,
+                        borderClick: undefined,
+                        border: undefined,
+                        layerClick: undefined,
+                        layer: props.beforeId
+                    };
+                }
             }
         }
     };
@@ -88,18 +133,22 @@ export const PolygonV2Marker = (props: Props): JSX.Element => {
             return;
         }
 
+        if (props.isHighlighted) {
+            map.moveLayer(layerIds.highlight, beforeIds.highlight);
+        }
+
         if (data.border.hasBorder) {
-            map.moveLayer(ids.border, beforeIds.border);
+            map.moveLayer(layerIds.border, beforeIds.border);
             if (props.marker.selectable) {
-                map.moveLayer(ids.borderClick, beforeIds.borderClick);
+                map.moveLayer(layerIds.borderClick, beforeIds.borderClick);
             }
         }
 
         if (props.marker.selectable) {
-            map.moveLayer(ids.layerClick, beforeIds.layerClick);
+            map.moveLayer(layerIds.layerClick, beforeIds.layerClick);
         }
 
-        map.moveLayer(ids.layer, beforeIds.layer);
+        map.moveLayer(layerIds.layer, beforeIds.layer);
     }, [props.beforeId, props.mapRef]);
 
     return (
@@ -115,12 +164,29 @@ export const PolygonV2Marker = (props: Props): JSX.Element => {
                 }
             }}
         >
+            {props.isHighlighted && (
+                <Layer
+                    id={layerIds.highlight}
+                    beforeId={beforeIds.highlight}
+                    type="line"
+                    source={markerId}
+                    paint={{
+                        ...omitBy(borderPaintAttributes, isNil),
+                        'line-width': Math.max(Number(borderPaintAttributes['line-width']) / 3, 6),
+                        'line-color': '#F8E71C',
+                        'line-offset': -Number(borderPaintAttributes['line-width']) / 2,
+                        'line-opacity': 1,
+                        'line-blur': 4
+                    }}
+                    layout={{ ...omitBy(borderLayoutAttributes, isNil) }}
+                />
+            )}
             <>
                 {data.border.hasBorder && (
                     <>
                         {props.marker.selectable && (
                             <Layer
-                                id={ids.borderClick}
+                                id={layerIds.borderClick}
                                 type="line"
                                 beforeId={beforeIds.borderClick}
                                 source={`${markerId}`}
@@ -132,7 +198,7 @@ export const PolygonV2Marker = (props: Props): JSX.Element => {
                             />
                         )}
                         <Layer
-                            id={ids.border}
+                            id={layerIds.border}
                             type="line"
                             beforeId={beforeIds.border}
                             source={`${markerId}`}
@@ -143,7 +209,7 @@ export const PolygonV2Marker = (props: Props): JSX.Element => {
                 )}
                 {props.marker.selectable && (
                     <Layer
-                        id={ids.layerClick}
+                        id={layerIds.layerClick}
                         beforeId={beforeIds.layerClick}
                         type="fill"
                         source={`${markerId}`}
@@ -153,7 +219,7 @@ export const PolygonV2Marker = (props: Props): JSX.Element => {
                     />
                 )}
                 <Layer
-                    id={ids.layer}
+                    id={layerIds.layer}
                     beforeId={beforeIds.layer}
                     type="fill"
                     source={`${markerId}`}

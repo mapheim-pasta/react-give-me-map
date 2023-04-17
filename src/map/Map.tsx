@@ -233,7 +233,11 @@ export const Map = (props: IProps): JSX.Element => {
                             highlightedMarkersStyle={props.highlightedMarkersStyle}
                             groupMarkerProps={props.config?.groupMarkerProps ?? {}}
                         />
-                        <WorldMarkersV2 markers={props.v2Markers} mapRef={props.mapRef} />
+                        <WorldMarkersV2
+                            markers={props.v2Markers}
+                            highlightedMarkerIds={props.highlightedMarkers}
+                            mapRef={props.mapRef}
+                        />
                         <WorldMapControl
                             onGeoClick={() => {
                                 if (!geoTriggered) {

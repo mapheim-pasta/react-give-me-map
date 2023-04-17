@@ -9,10 +9,12 @@ import { IWorldV2Marker } from '../utils/world/worldTypes';
 export interface IProps {
     mapRef: RefObject<MapRef>;
     markers: IWorldV2Marker[];
+    highlightedMarkerIds?: string[];
 }
 
 export const WorldMarkersV2 = (props: IProps): JSX.Element => {
     const orderedMarkers = orderBy(props.markers, 'order', 'desc');
+    const highlightedMarkerIds = props.highlightedMarkerIds ?? [];
 
     const layerOrder = orderedMarkers.reduce<string[]>((acc, curr) => {
         if (!curr.visible) {
@@ -34,7 +36,15 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
 
                 switch (marker.elementType) {
                     case 'v2/line':
-                        return <LineV2Marker key={marker.id} marker={marker} beforeId={beforeId} />;
+                        return (
+                            <LineV2Marker
+                                key={marker.id}
+                                marker={marker}
+                                beforeId={beforeId}
+                                mapRef={props.mapRef}
+                                isHighlighted={highlightedMarkerIds.includes(marker.id)}
+                            />
+                        );
                     case 'v2/polygon':
                         return (
                             <PolygonV2Marker
@@ -42,6 +52,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                                 marker={marker}
                                 beforeId={beforeId}
                                 mapRef={props.mapRef}
+                                isHighlighted={highlightedMarkerIds.includes(marker.id)}
                             />
                         );
                     case 'v2/icon':
@@ -51,6 +62,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                                 marker={marker}
                                 beforeId={beforeId}
                                 mapRef={props.mapRef}
+                                isHighlighted={highlightedMarkerIds.includes(marker.id)}
                             />
                         );
                     default:

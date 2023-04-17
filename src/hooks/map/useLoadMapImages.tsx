@@ -1,5 +1,5 @@
 import { uniqBy } from 'lodash';
-import { RefObject, useEffect, useRef } from 'react';
+import { RefObject, useEffect } from 'react';
 import { MapRef } from 'react-map-gl';
 
 interface Image {
@@ -13,6 +13,8 @@ type UseMapImageOptions = {
     images: Image[];
     onLoad?: () => void;
 };
+
+const imageLoadedRef = new Set();
 
 export function loadMapImages(mapRef: MapRef, images: Image[], onLoad: () => void) {
     const map = mapRef.getMap();
@@ -32,17 +34,15 @@ export function loadMapImages(mapRef: MapRef, images: Image[], onLoad: () => voi
 export function useLoadMapImages({ mapRef, images, onLoad }: UseMapImageOptions) {
     const imageHash = images.map((e) => e.url).join(';');
 
-    const imageLoadedRef = useRef<Set<string>>(new Set());
+    console.log('imageLoadedRef', imageLoadedRef.size);
 
     useEffect(() => {
         let loadedCount = 0;
 
         if (mapRef.current) {
-            const uniqueImages = uniqBy(images, 'url').filter(
-                (e) => !imageLoadedRef.current.has(e.name)
-            );
+            const uniqueImages = uniqBy(images, 'url').filter((e) => !imageLoadedRef.has(e.name));
 
-            uniqueImages.forEach((image) => imageLoadedRef.current.add(image.name));
+            uniqueImages.forEach((image) => imageLoadedRef.add(image.name));
 
             loadMapImages(mapRef.current, uniqueImages, () => {
                 loadedCount += 1;
