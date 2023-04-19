@@ -3,6 +3,7 @@ import { FillLayout, FillPaint, LineLayout, LinePaint } from 'mapbox-gl';
 import React, { RefObject, useEffect } from 'react';
 import { Layer, MapRef, Source } from 'react-map-gl';
 import { IPolygonV2WorldMarker } from '../../utils/world/worldTypes';
+import { EmptyLayer } from './EmptyLayer';
 
 interface Props {
     mapRef: RefObject<MapRef>;
@@ -42,118 +43,33 @@ export const PolygonV2Marker = (props: Props): JSX.Element => {
         layerClick: markerId + '|clickable',
         border: markerId + '|layer-border',
         borderClick: markerId + '|clickable-border',
-        highlight: markerId + '|highlight'
+        highlight: markerId + '|highlight',
+        last: markerId + '|last'
     };
 
-    const getBeforeIds = () => {
-        if (props.isHighlighted) {
-            if (data.border.hasBorder) {
-                if (props.marker.selectable) {
-                    return {
-                        highlight: props.beforeId,
-                        borderClick: layerIds.highlight,
-                        border: layerIds.borderClick,
-                        layerClick: layerIds.border,
-                        layer: layerIds.layerClick
-                    };
-                } else {
-                    return {
-                        highlight: props.beforeId,
-                        borderClick: undefined,
-                        border: layerIds.highlight,
-                        layerClick: undefined,
-                        layer: layerIds.border
-                    };
-                }
-            } else {
-                if (props.marker.selectable) {
-                    return {
-                        highlight: props.beforeId,
-                        borderClick: undefined,
-                        border: undefined,
-                        layerClick: layerIds.highlight,
-                        layer: layerIds.layerClick
-                    };
-                } else {
-                    return {
-                        highlight: props.beforeId,
-                        borderClick: undefined,
-                        border: undefined,
-                        layerClick: undefined,
-                        layer: layerIds.highlight
-                    };
-                }
-            }
-        } else {
-            if (data.border.hasBorder) {
-                if (props.marker.selectable) {
-                    return {
-                        highlight: undefined,
-                        borderClick: props.beforeId,
-                        border: layerIds.borderClick,
-                        layerClick: layerIds.border,
-                        layer: layerIds.layerClick
-                    };
-                } else {
-                    return {
-                        highlight: undefined,
-                        borderClick: undefined,
-                        border: props.beforeId,
-                        layerClick: undefined,
-                        layer: layerIds.border
-                    };
-                }
-            } else {
-                if (props.marker.selectable) {
-                    return {
-                        highlight: undefined,
-                        borderClick: undefined,
-                        border: undefined,
-                        layerClick: props.beforeId,
-                        layer: layerIds.layerClick
-                    };
-                } else {
-                    return {
-                        highlight: undefined,
-                        borderClick: undefined,
-                        border: undefined,
-                        layerClick: undefined,
-                        layer: props.beforeId
-                    };
-                }
-            }
-        }
+    const beforeIds = {
+        layer: props.beforeId,
+        layerClick: layerIds.layer,
+        border: layerIds.layerClick,
+        borderClick: layerIds.border,
+        highlight: layerIds.borderClick,
+        last: layerIds.highlight
     };
-
-    const beforeIds = getBeforeIds();
 
     useEffect(() => {
-        const map = props.mapRef?.current;
-        if (!map) {
-            return;
+        if (props.mapRef.current) {
+            props.mapRef.current.moveLayer(layerIds.layer, beforeIds.layer);
+            props.mapRef.current.moveLayer(layerIds.layerClick, beforeIds.layerClick);
+            props.mapRef.current.moveLayer(layerIds.border, beforeIds.border);
+            props.mapRef.current.moveLayer(layerIds.borderClick, beforeIds.borderClick);
+            props.mapRef.current.moveLayer(layerIds.highlight, beforeIds.highlight);
+            props.mapRef.current.moveLayer(layerIds.last, beforeIds.last);
         }
-
-        if (props.isHighlighted) {
-            map.moveLayer(layerIds.highlight, beforeIds.highlight);
-        }
-
-        if (data.border.hasBorder) {
-            map.moveLayer(layerIds.border, beforeIds.border);
-            if (props.marker.selectable) {
-                map.moveLayer(layerIds.borderClick, beforeIds.borderClick);
-            }
-        }
-
-        if (props.marker.selectable) {
-            map.moveLayer(layerIds.layerClick, beforeIds.layerClick);
-        }
-
-        map.moveLayer(layerIds.layer, beforeIds.layer);
-    }, [props.beforeId, props.mapRef]);
+    }, [props.beforeId, props.mapRef?.current]);
 
     return (
         <Source
-            id={`${markerId}`}
+            id={markerId}
             type="geojson"
             data={{
                 type: 'Feature',
@@ -164,50 +80,16 @@ export const PolygonV2Marker = (props: Props): JSX.Element => {
                 }
             }}
         >
-            {props.isHighlighted && (
-                <Layer
-                    id={layerIds.highlight}
-                    beforeId={beforeIds.highlight}
-                    type="line"
-                    source={markerId}
-                    paint={{
-                        ...omitBy(borderPaintAttributes, isNil),
-                        'line-width': Math.max(Number(borderPaintAttributes['line-width']) / 3, 6),
-                        'line-color': '#F8E71C',
-                        'line-offset': -Number(borderPaintAttributes['line-width']) / 2,
-                        'line-opacity': 1,
-                        'line-blur': 4
-                    }}
-                    layout={{ ...omitBy(borderLayoutAttributes, isNil) }}
-                />
-            )}
             <>
-                {data.border.hasBorder && (
-                    <>
-                        {props.marker.selectable && (
-                            <Layer
-                                id={layerIds.borderClick}
-                                type="line"
-                                beforeId={beforeIds.borderClick}
-                                source={`${markerId}`}
-                                paint={{
-                                    ...omitBy(borderPaintAttributes, isNil),
-                                    'line-opacity': 0
-                                }}
-                                layout={{ ...omitBy(borderLayoutAttributes, isNil) }}
-                            />
-                        )}
-                        <Layer
-                            id={layerIds.border}
-                            type="line"
-                            beforeId={beforeIds.border}
-                            source={`${markerId}`}
-                            paint={{ ...omitBy(borderPaintAttributes, isNil) }}
-                            layout={{ ...omitBy(borderLayoutAttributes, isNil) }}
-                        />
-                    </>
-                )}
-                {props.marker.selectable && (
+                <Layer
+                    id={layerIds.layer}
+                    beforeId={beforeIds.layer}
+                    type="fill"
+                    source={`${markerId}`}
+                    paint={{ 'fill-opacity': 0, ...omitBy(fillPaintAttributes, isNil) }}
+                    layout={{ ...omitBy(fillLayoutAttributes, isNil) }}
+                />
+                {props.marker.selectable ? (
                     <Layer
                         id={layerIds.layerClick}
                         beforeId={beforeIds.layerClick}
@@ -217,15 +99,59 @@ export const PolygonV2Marker = (props: Props): JSX.Element => {
                             'fill-opacity': 0
                         }}
                     />
+                ) : (
+                    <EmptyLayer id={layerIds.layerClick} beforeId={beforeIds.layerClick} />
                 )}
-                <Layer
-                    id={layerIds.layer}
-                    beforeId={beforeIds.layer}
-                    type="fill"
-                    source={`${markerId}`}
-                    paint={{ 'fill-opacity': 0, ...omitBy(fillPaintAttributes, isNil) }}
-                    layout={{ ...omitBy(fillLayoutAttributes, isNil) }}
-                />
+                {data.border.hasBorder ? (
+                    <Layer
+                        id={layerIds.border}
+                        type="line"
+                        beforeId={beforeIds.border}
+                        source={`${markerId}`}
+                        paint={{ ...omitBy(borderPaintAttributes, isNil) }}
+                        layout={{ ...omitBy(borderLayoutAttributes, isNil) }}
+                    />
+                ) : (
+                    <EmptyLayer id={layerIds.border} beforeId={beforeIds.border} />
+                )}
+                {data.border.hasBorder && props.marker.selectable ? (
+                    <Layer
+                        id={layerIds.borderClick}
+                        type="line"
+                        beforeId={beforeIds.borderClick}
+                        source={`${markerId}`}
+                        paint={{
+                            ...omitBy(borderPaintAttributes, isNil),
+                            'line-opacity': 0
+                        }}
+                        layout={{ ...omitBy(borderLayoutAttributes, isNil) }}
+                    />
+                ) : (
+                    <EmptyLayer id={layerIds.borderClick} beforeId={beforeIds.borderClick} />
+                )}
+                {props.isHighlighted ? (
+                    <Layer
+                        id={layerIds.highlight}
+                        beforeId={beforeIds.highlight}
+                        type="line"
+                        source={markerId}
+                        paint={{
+                            ...omitBy(borderPaintAttributes, isNil),
+                            'line-width': Math.max(
+                                Number(borderPaintAttributes['line-width']) / 3,
+                                6
+                            ),
+                            'line-color': '#F8E71C',
+                            'line-offset': -Number(borderPaintAttributes['line-width']) / 2,
+                            'line-opacity': 1,
+                            'line-blur': 4
+                        }}
+                        layout={{ ...omitBy(borderLayoutAttributes, isNil) }}
+                    />
+                ) : (
+                    <EmptyLayer id={layerIds.highlight} beforeId={beforeIds.highlight} />
+                )}
+                <EmptyLayer id={layerIds.last} beforeId={beforeIds.last} />
             </>
         </Source>
     );

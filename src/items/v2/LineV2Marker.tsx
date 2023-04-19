@@ -3,6 +3,7 @@ import { LineLayout, LinePaint } from 'mapbox-gl';
 import React, { RefObject, useEffect } from 'react';
 import { Layer, MapRef, Source } from 'react-map-gl';
 import { ILineV2WorldMarker } from '../../utils/world/worldTypes';
+import { EmptyLayer } from './EmptyLayer';
 
 interface Props {
     mapRef: RefObject<MapRef>;
@@ -36,67 +37,31 @@ export const LineV2Marker = (props: Props): JSX.Element => {
         layer: markerId + '|layer',
         layerClick: markerId + '|clickable',
         highlight1: markerId + '|highlight1',
-        highlight2: markerId + '|highlight2'
+        highlight2: markerId + '|highlight2',
+        last: markerId + '|last'
     };
 
-    const getBeforeIds = () => {
-        if (props.isHighlighted) {
-            if (props.marker.selectable) {
-                return {
-                    highlight1: props.beforeId,
-                    highlight2: layerIds.highlight1,
-                    layerClick: layerIds.highlight2,
-                    layer: layerIds.layerClick
-                };
-            } else {
-                return {
-                    highlight1: props.beforeId,
-                    highlight2: layerIds.highlight1,
-                    layerClick: undefined,
-                    layer: layerIds.highlight2
-                };
-            }
-        } else {
-            if (props.marker.selectable) {
-                return {
-                    highlight1: undefined,
-                    highlight2: undefined,
-                    layerClick: props.beforeId,
-                    layer: layerIds.layerClick
-                };
-            } else {
-                return {
-                    highlight1: undefined,
-                    highlight2: undefined,
-                    layerClick: undefined,
-                    layer: props.beforeId
-                };
-            }
-        }
+    const beforeIds = {
+        layer: props.beforeId,
+        layerClick: layerIds.layer,
+        highlight1: layerIds.layerClick,
+        highlight2: layerIds.highlight1,
+        last: layerIds.highlight2
     };
-
-    const beforeIds = getBeforeIds();
 
     useEffect(() => {
-        const map = props.mapRef?.current;
-        if (!map) {
-            return;
+        if (props.mapRef.current) {
+            props.mapRef.current.moveLayer(layerIds.layer, beforeIds.layer);
+            props.mapRef.current.moveLayer(layerIds.layerClick, beforeIds.layerClick);
+            props.mapRef.current.moveLayer(layerIds.highlight1, beforeIds.highlight1);
+            props.mapRef.current.moveLayer(layerIds.highlight2, beforeIds.highlight2);
+            props.mapRef.current.moveLayer(layerIds.last, beforeIds.last);
         }
-
-        if (props.marker.selectable) {
-            map.moveLayer(layerIds.layerClick, beforeIds.layerClick);
-        }
-        if (props.isHighlighted) {
-            map.moveLayer(layerIds.highlight1, beforeIds.highlight1);
-            map.moveLayer(layerIds.highlight2, beforeIds.highlight2);
-        }
-
-        map.moveLayer(layerIds.layer, beforeIds.layer);
-    }, [props.beforeId, props.mapRef]);
+    }, [props.beforeId, props.mapRef?.current]);
 
     return (
         <Source
-            id={`${markerId}`}
+            id={markerId}
             type="geojson"
             data={{
                 type: 'Feature',
@@ -107,7 +72,27 @@ export const LineV2Marker = (props: Props): JSX.Element => {
                 }
             }}
         >
-            {props.isHighlighted && (
+            <Layer
+                id={layerIds.layer}
+                beforeId={beforeIds.layer}
+                type="line"
+                source={markerId}
+                paint={{ ...omitBy(paintAttributes, isNil) }}
+                layout={{ ...omitBy(layoutAttributes, isNil) }}
+            />
+            {props.marker.selectable ? (
+                <Layer
+                    id={layerIds.layerClick}
+                    beforeId={beforeIds.layerClick}
+                    type="line"
+                    source={markerId}
+                    paint={{ ...omitBy(paintAttributes, isNil), 'line-opacity': 0 }}
+                    layout={{ ...omitBy(layoutAttributes, isNil) }}
+                />
+            ) : (
+                <EmptyLayer id={layerIds.layerClick} beforeId={beforeIds.layerClick} />
+            )}
+            {props.isHighlighted ? (
                 <>
                     <Layer
                         id={layerIds.highlight1}
@@ -140,25 +125,14 @@ export const LineV2Marker = (props: Props): JSX.Element => {
                         layout={{ ...omitBy(layoutAttributes, isNil) }}
                     />
                 </>
+            ) : (
+                <>
+                    <EmptyLayer id={layerIds.highlight1} beforeId={beforeIds.highlight1} />
+                    <EmptyLayer id={layerIds.highlight2} beforeId={beforeIds.highlight2} />
+                </>
             )}
-            {props.marker.selectable && (
-                <Layer
-                    id={layerIds.layerClick}
-                    beforeId={beforeIds.layerClick}
-                    type="line"
-                    source={markerId}
-                    paint={{ ...omitBy(paintAttributes, isNil), 'line-opacity': 0 }}
-                    layout={{ ...omitBy(layoutAttributes, isNil) }}
-                />
-            )}
-            <Layer
-                id={layerIds.layer}
-                beforeId={beforeIds.layer}
-                type="line"
-                source={markerId}
-                paint={{ ...omitBy(paintAttributes, isNil) }}
-                layout={{ ...omitBy(layoutAttributes, isNil) }}
-            />
+
+            <EmptyLayer id={layerIds.last} beforeId={beforeIds.last} />
         </Source>
     );
 };

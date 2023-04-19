@@ -44,6 +44,8 @@ export {
     IRouteWorldMarker,
     ITextWorld,
     ITextWorldMarker,
+    IWallV2World,
+    IWallV2WorldMarker,
     IWorldMarker,
     IYoutubeWorld,
     IYoutubeWorldMarker,

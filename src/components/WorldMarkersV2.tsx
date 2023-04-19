@@ -1,9 +1,10 @@
 import { orderBy } from 'lodash';
-import React, { RefObject } from 'react';
-import { MapRef } from 'react-map-gl';
+import React, { RefObject, useEffect } from 'react';
+import { MapRef, Source } from 'react-map-gl';
 import { IconV2Marker } from '../items/v2/IconV2Marker';
 import { LineV2Marker } from '../items/v2/LineV2Marker';
 import { PolygonV2Marker } from '../items/v2/PolygonV2Marker';
+import { WallV2Marker } from '../items/v2/WallV2Marker';
 import { IWorldV2Marker } from '../utils/world/worldTypes';
 
 export interface IProps {
@@ -20,15 +21,35 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
         if (!curr.visible) {
             return acc;
         }
-        return [...acc, `${curr.id}|layer`];
+        return [...acc, curr.id];
     }, []);
 
-    console.log('layerOrder', layerOrder);
+    useEffect(() => {
+        const mapRef = props.mapRef.current;
+        if (!mapRef) {
+            return;
+        }
+
+        for (let i = 1; i < layerOrder.length; i++) {
+            const firstId = layerOrder[i] + '|layer';
+            const secondId = layerOrder[i - 1] + '|last';
+
+            if (mapRef.getLayer(firstId) && mapRef.getLayer(secondId)) {
+                mapRef.moveLayer(firstId, secondId);
+            }
+        }
+    }, [layerOrder.join(';')]);
 
     return (
         <>
+            <Source
+                id={'empty-source'}
+                type="geojson"
+                data={{ type: 'FeatureCollection', features: [] }}
+            ></Source>
             {orderedMarkers.map((marker, index) => {
-                const beforeId = layerOrder[index - 1];
+                const beforeMarkerId = layerOrder[index - 1];
+                const beforeId = beforeMarkerId ? beforeMarkerId + '|last' : undefined;
 
                 if (!marker.visible) {
                     return null;
@@ -58,6 +79,16 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                     case 'v2/icon':
                         return (
                             <IconV2Marker
+                                key={marker.id}
+                                marker={marker}
+                                beforeId={beforeId}
+                                mapRef={props.mapRef}
+                                isHighlighted={highlightedMarkerIds.includes(marker.id)}
+                            />
+                        );
+                    case 'v2/wall':
+                        return (
+                            <WallV2Marker
                                 key={marker.id}
                                 marker={marker}
                                 beforeId={beforeId}

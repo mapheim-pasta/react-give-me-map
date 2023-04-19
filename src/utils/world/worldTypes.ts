@@ -14,7 +14,7 @@ export type WorldV1Elements =
     | 'youtube'
     | 'link';
 
-export type WorldV2Elements = 'v2/line' | 'v2/polygon' | 'v2/icon';
+export type WorldV2Elements = 'v2/line' | 'v2/polygon' | 'v2/icon' | 'v2/wall';
 
 export type WorldElements = WorldV1Elements | WorldV2Elements;
 
@@ -30,7 +30,7 @@ export type ICombinedV1World =
     | ILinkWorld
     | IReactWorld;
 
-export type ICombinedV2World = ILineV2World | IPolygonV2World | IIconV2World;
+export type ICombinedV2World = ILineV2World | IPolygonV2World | IIconV2World | IWallV2World;
 
 export type ICombinedWorld = ICombinedV1World | ICombinedV2World;
 
@@ -286,6 +286,25 @@ export interface IPolygonV2WorldMarker extends BaseMarker {
     ref?: RefObject<HTMLDivElement>;
 }
 
+export interface IWallV2World {
+    coordinates: Array<{ lat: number; lng: number }>;
+    wall: {
+        height: number;
+        color: string;
+        opacity: number;
+    };
+    line: {
+        isLine: boolean;
+        width: number;
+    };
+}
+
+export interface IWallV2WorldMarker extends BaseMarker {
+    elementType: 'v2/wall';
+    elementData: IWallV2World;
+    ref?: RefObject<HTMLDivElement>;
+}
+
 export interface IIconV2World {
     position: { lat: number; lng: number };
     imageUrl: string;
@@ -316,6 +335,10 @@ export type IWorldV1Marker =
     | ILinkWorldMarker
     | IReactWorldMarker;
 
-export type IWorldV2Marker = ILineV2WorldMarker | IPolygonV2WorldMarker | IIconV2WorldMarker;
+export type IWorldV2Marker =
+    | ILineV2WorldMarker
+    | IPolygonV2WorldMarker
+    | IIconV2WorldMarker
+    | IWallV2WorldMarker;
 
 export type IWorldMarker = IWorldV1Marker | IWorldV2Marker;

@@ -44,6 +44,11 @@ export function useLoadMapImages({ mapRef, images, onLoad }: UseMapImageOptions)
 
             uniqueImages.forEach((image) => imageLoadedRef.add(image.name));
 
+            if (uniqueImages.length === 0) {
+                onLoad?.();
+                return;
+            }
+
             loadMapImages(mapRef.current, uniqueImages, () => {
                 loadedCount += 1;
                 if (uniqueImages.length === loadedCount) {
