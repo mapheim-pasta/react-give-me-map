@@ -34,8 +34,6 @@ export function loadMapImages(mapRef: MapRef, images: Image[], onLoad: () => voi
 export function useLoadMapImages({ mapRef, images, onLoad }: UseMapImageOptions) {
     const imageHash = images.map((e) => e.url).join(';');
 
-    console.log('imageLoadedRef', imageLoadedRef.size);
-
     useEffect(() => {
         let loadedCount = 0;
 

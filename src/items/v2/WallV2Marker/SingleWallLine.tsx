@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ICoordinates } from '../../../utils/map/mapTypes';
 import { WallProps, WallSegment } from './WallSegment';
 
@@ -7,7 +7,9 @@ interface Props {
     coordinates: [ICoordinates, ICoordinates];
     width: number;
     wallProps: WallProps;
-    isFirst: boolean;
+    sourceId: string;
+    layerId: string;
+    beforeId?: string;
 }
 
 function transformLineCoordinatesIntoPolygonCoordinates(
@@ -36,14 +38,13 @@ export const SingleLineWall = (props: Props) => {
     const { coordinates, wallProps, width } = props;
     const [start, end] = coordinates;
 
-    const [idRef] = useState(props.markerId + (props.isFirst ? '' : '|wall|' + Math.random()));
-
     const rectangleCoords = transformLineCoordinatesIntoPolygonCoordinates(start, end, width);
 
     return (
         <WallSegment
-            sourceId={idRef.toString()}
-            layerId={idRef.toString() + '|layer'}
+            sourceId={props.sourceId}
+            layerId={props.layerId}
+            beforeId={props.beforeId}
             markerId={props.markerId}
             coordinates={rectangleCoords}
             wallProps={wallProps}

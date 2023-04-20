@@ -77,8 +77,6 @@ export const Map = (props: IProps): JSX.Element => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.selectedIds]);
 
-    console.log('mm');
-
     useEffect(() => {
         if (props.mapRef?.current?.loaded()) {
             setLoaded(true);
@@ -164,6 +162,8 @@ export const Map = (props: IProps): JSX.Element => {
 
                     if (features.length > 0) {
                         const feature = features[0];
+                        const source = feature.source.split('|')[0];
+
                         const selectableMarkersV1: IWorldMarker[] = props.v1Markers.filter(
                             (e) => e.selectable
                         );
@@ -172,7 +172,7 @@ export const Map = (props: IProps): JSX.Element => {
                         );
 
                         const marker = [...selectableMarkersV1, ...selectableMarkersV2].find(
-                            (marker) => marker.id === feature.source
+                            (marker) => marker.id === source
                         );
 
                         if (marker) {

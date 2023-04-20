@@ -16,6 +16,13 @@ export function useWorldMarkersV2Data(markers: IWorldV2Marker[]) {
             }
             if (marker.elementType === 'v2/wall') {
                 if (marker.elementData.line.isLine) {
+                    const firstLayerId = id + '|layer';
+                    const otherLayerIds = marker.elementData.coordinates
+                        .slice(0, marker.elementData.coordinates.length - 2)
+                        .map((_, i) => `${id}|layer|${i + 1}`);
+
+                    console.log('mmm1', [firstLayerId, ...otherLayerIds]);
+                    return [firstLayerId, ...otherLayerIds];
                 } else {
                     return [id + '|layer'];
                 }

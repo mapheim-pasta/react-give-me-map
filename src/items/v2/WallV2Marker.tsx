@@ -17,7 +17,9 @@ export const WallV2Marker = (props: Props): JSX.Element => {
     const markerData = props.marker.elementData;
 
     if (markerData.line?.isLine) {
-        return <MultiLineWall marker={props.marker} />;
+        return (
+            <MultiLineWall mapRef={props.mapRef} marker={props.marker} beforeId={props.beforeId} />
+        );
     }
 
     return (

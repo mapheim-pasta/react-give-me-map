@@ -42,8 +42,9 @@ export const WallSegment = (props: Props) => {
         >
             <Layer
                 id={props.layerId}
-                type="fill-extrusion"
                 source={props.sourceId}
+                beforeId={props.beforeId}
+                type="fill-extrusion"
                 paint={{
                     'fill-extrusion-color': wallData.color,
                     'fill-extrusion-height': wallData.height,
