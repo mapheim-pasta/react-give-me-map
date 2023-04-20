@@ -44,7 +44,8 @@ export const IconV2Marker = (props: Props): JSX.Element => {
         'icon-image': isImageLoaded ? data.imageUrl : undefined,
         'icon-size': data.imageSize,
         'icon-allow-overlap': true,
-        ...data.rawLayoutAttributes
+        ...data.rawLayoutAttributes,
+        visibility: props.marker.visible ? 'visible' : 'none'
     };
 
     const layerIds = {

@@ -25,7 +25,8 @@ export const PolygonV2Marker = (props: Props): JSX.Element => {
         ...data.fill.rawPaintAttributes
     };
     const fillLayoutAttributes: FillLayout = {
-        ...data.fill.rawLayoutAttributes
+        ...data.fill.rawLayoutAttributes,
+        visibility: props.marker.visible ? 'visible' : 'none'
     };
 
     const borderPaintAttributes: LinePaint = {
@@ -35,7 +36,8 @@ export const PolygonV2Marker = (props: Props): JSX.Element => {
         ...data.border.rawPaintAttributes
     };
     const borderLayoutAttributes: LineLayout = {
-        ...data.border.rawLayoutAttributes
+        ...data.border.rawLayoutAttributes,
+        visibility: props.marker.visible ? 'visible' : 'none'
     };
 
     const layerIds = {

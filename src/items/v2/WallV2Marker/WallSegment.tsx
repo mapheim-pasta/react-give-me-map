@@ -9,6 +9,7 @@ interface Props {
     coordinates: ICoordinates[];
     markerId: string;
     wallProps: WallProps;
+    visible: boolean;
 }
 
 export interface WallProps {
@@ -50,6 +51,9 @@ export const WallSegment = (props: Props) => {
                     'fill-extrusion-height': wallData.height,
                     'fill-extrusion-base': 0,
                     'fill-extrusion-opacity': wallData.opacity
+                }}
+                layout={{
+                    visibility: props.visible ? 'visible' : 'none'
                 }}
             />
         </Source>

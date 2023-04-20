@@ -38,10 +38,11 @@ export const PolygonWall = (props: Props): JSX.Element => {
             <WallSegment
                 sourceId={props.marker.id}
                 layerId={layerIds.layer}
-                beforeId={props.beforeId}
+                beforeId={beforeIds.layer}
                 markerId={props.marker.id}
                 coordinates={props.marker.elementData.coordinates}
                 wallProps={markerData.wall}
+                visible={props.marker.visible ?? false}
             />
             <EmptyLayer id={layerIds.last} beforeId={beforeIds.last} />
         </>

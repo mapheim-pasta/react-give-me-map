@@ -10,6 +10,7 @@ interface Props {
     sourceId: string;
     layerId: string;
     beforeId?: string;
+    visible: boolean;
 }
 
 function transformLineCoordinatesIntoPolygonCoordinates(
@@ -48,6 +49,7 @@ export const SingleLineWall = (props: Props) => {
             markerId={props.markerId}
             coordinates={rectangleCoords}
             wallProps={wallProps}
+            visible={props.visible}
         />
     );
 };

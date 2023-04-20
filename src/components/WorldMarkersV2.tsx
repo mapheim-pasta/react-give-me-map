@@ -17,12 +17,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
     const orderedMarkers = orderBy(props.markers, 'order', 'desc');
     const highlightedMarkerIds = props.highlightedMarkerIds ?? [];
 
-    const layerOrder = orderedMarkers.reduce<string[]>((acc, curr) => {
-        if (!curr.visible) {
-            return acc;
-        }
-        return [...acc, curr.id];
-    }, []);
+    const layerOrder = orderedMarkers.map((e) => e.id);
 
     useEffect(() => {
         const mapRef = props.mapRef.current;
@@ -50,10 +45,6 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
             {orderedMarkers.map((marker, index) => {
                 const beforeMarkerId = layerOrder[index - 1];
                 const beforeId = beforeMarkerId ? beforeMarkerId + '|last' : undefined;
-
-                if (!marker.visible) {
-                    return null;
-                }
 
                 switch (marker.elementType) {
                     case 'v2/line':

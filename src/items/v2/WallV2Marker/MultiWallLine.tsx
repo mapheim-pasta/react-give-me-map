@@ -62,6 +62,7 @@ export const MultiLineWall = (props: Props) => {
                             height: markerData.wall.height
                         }}
                         width={markerData.line.width}
+                        visible={marker.visible ?? false}
                     />
                 );
             })}

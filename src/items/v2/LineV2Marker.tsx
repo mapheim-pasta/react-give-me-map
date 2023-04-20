@@ -30,7 +30,8 @@ export const LineV2Marker = (props: Props): JSX.Element => {
     };
 
     const layoutAttributes: LineLayout = {
-        ...data.rawLayoutAttributes
+        ...data.rawLayoutAttributes,
+        visibility: props.marker.visible ? 'visible' : 'none'
     };
 
     const layerIds = {
