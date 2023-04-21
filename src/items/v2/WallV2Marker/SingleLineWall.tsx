@@ -13,7 +13,7 @@ interface Props {
     visible: boolean;
 }
 
-function transformLineCoordinatesIntoPolygonCoordinates(
+export function transformLineCoordinatesIntoPolygonCoordinates(
     start: ICoordinates,
     end: ICoordinates,
     width: number
