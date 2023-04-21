@@ -28,17 +28,12 @@ export const WallSegment = (props: Props) => {
             id={props.sourceId}
             type="geojson"
             data={{
-                type: 'FeatureCollection',
-                features: [
-                    {
-                        type: 'Feature',
-                        properties: {},
-                        geometry: {
-                            coordinates: [coordsToArrays(closedCoordinates)],
-                            type: 'Polygon'
-                        }
-                    }
-                ]
+                type: 'Feature',
+                properties: {},
+                geometry: {
+                    coordinates: [coordsToArrays(closedCoordinates)],
+                    type: 'Polygon'
+                }
             }}
         >
             <Layer
