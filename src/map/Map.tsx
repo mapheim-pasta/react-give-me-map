@@ -51,11 +51,16 @@ export const Map = (props: IProps): JSX.Element => {
     const [selectedMapStyle, setSelectedMapStyle] = useState<
         MapboxStyle | string | ImmutableLike | EMapStyle
     >(getInitMapStyle());
+    const mapRef = props.mapRef?.current;
+
     const [geoTriggered, setGeoTriggered] = useState<boolean>(false);
     const [geoShow, setGeoShow] = useState(true);
 
     const v1MarkersData = useWorldMarkersV1Data(props.v1Markers);
     const v2MarkersData = useWorldMarkersV2Data(props.v2Markers);
+
+    const clickableLayersRef = useRef(new Set<string>());
+    const currentHoveredRef = useRef(new Set<string>());
 
     const layerIds = (props.map.interactiveLayerIds ?? [])
         .concat(v1MarkersData.layerIds)
@@ -84,9 +89,25 @@ export const Map = (props: IProps): JSX.Element => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.mapRef?.current?.loaded()]);
 
-    useEffect(() => {
-        const currentHovered = new Set<string>();
+    function registerClickEvents(sourceIds: string[]) {
+        sourceIds.forEach((sourceId) => {
+            if (!clickableLayersRef.current.has(sourceId)) {
+                clickableLayersRef.current.add(sourceId);
+                mapRef?.on('mouseleave', sourceId, (e) => {
+                    currentHoveredRef.current.delete(sourceId);
+                    if (currentHoveredRef.current.size === 0) {
+                        mapRef.getCanvas().style.cursor = '';
+                    }
+                });
+                mapRef?.on('mouseenter', sourceId, () => {
+                    currentHoveredRef.current.add(sourceId);
+                    mapRef.getCanvas().style.cursor = 'pointer';
+                });
+            }
+        });
+    }
 
+    useEffect(() => {
         if (loaded) {
             const mapRef = props.mapRef?.current;
 
@@ -94,23 +115,18 @@ export const Map = (props: IProps): JSX.Element => {
             mapRef?.getMap()?.touchPitch.disable();
             mapRef?.getMap()?.keyboard.disable();
 
-            clickableSourceIds.forEach((sourceId) => {
-                mapRef?.on('mouseleave', sourceId, (e) => {
-                    currentHovered.delete(sourceId);
-                    if (currentHovered.size === 0) {
-                        mapRef.getCanvas().style.cursor = '';
-                    }
-                });
-                mapRef?.on('mouseenter', sourceId, () => {
-                    currentHovered.add(sourceId);
-                    mapRef.getCanvas().style.cursor = 'pointer';
-                });
-            });
+            registerClickEvents(clickableSourceIds);
 
             props.map.onLoad(mapRef);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loaded]);
+
+    useEffect(() => {
+        if (loaded) {
+            registerClickEvents(clickableSourceIds);
+        }
+    }, [clickableSourceIds]);
 
     function getInitMapStyle() {
         if (props.map.mapStyle) {

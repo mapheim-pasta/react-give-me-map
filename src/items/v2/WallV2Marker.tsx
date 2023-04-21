@@ -1,7 +1,7 @@
 import React, { RefObject } from 'react';
 import { MapRef } from 'react-map-gl';
 import { IWallV2WorldMarker } from '../../utils/world/worldTypes';
-import { MultiLineWall } from './WallV2Marker/MultiWallLine';
+import { MultiLineWall } from './WallV2Marker/MultiLineWall';
 import { PolygonWall } from './WallV2Marker/PolygonWall';
 
 interface Props {

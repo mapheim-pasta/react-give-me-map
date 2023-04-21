@@ -3,7 +3,7 @@ import { MapRef } from 'react-map-gl';
 import { ICoordinates } from '../../../utils/map/mapTypes';
 import { IWallV2WorldMarker } from '../../../utils/world/worldTypes';
 import { EmptyLayer } from '../EmptyLayer';
-import { SingleLineWall } from './SingleWallLine';
+import { SingleLineWall } from './SingleLineWall';
 interface Props {
     marker: IWallV2WorldMarker;
     mapRef: RefObject<MapRef>;
