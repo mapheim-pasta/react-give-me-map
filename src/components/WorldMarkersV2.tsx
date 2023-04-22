@@ -54,9 +54,15 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                 type="geojson"
                 data={{ type: 'FeatureCollection', features: [] }}
             ></Source>
+            <IconV2Markers
+                markers={iconMarkers}
+                mapRef={props.mapRef}
+                beforeId={undefined}
+                groupMarkerProps={props.groupMarkerProps}
+            />
             {nonIconMarkers.map((marker, index) => {
                 const beforeMarkerId = layerOrder[index - 1];
-                const beforeId = beforeMarkerId ? beforeMarkerId + '|last' : undefined;
+                const beforeId = beforeMarkerId ? beforeMarkerId + '|last' : 'icons|last';
 
                 switch (marker.elementType) {
                     case 'v2/line':
@@ -93,16 +99,6 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                         return null;
                 }
             })}
-            {/* 
-                Icons need to be rendered last because they take time to render
-                due to pre-loading the images before they are shown
-            */}
-            <IconV2Markers
-                markers={iconMarkers}
-                mapRef={props.mapRef}
-                beforeId={layerOrder[layerOrder.length - 1]}
-                groupMarkerProps={props.groupMarkerProps}
-            />
         </>
     );
 };

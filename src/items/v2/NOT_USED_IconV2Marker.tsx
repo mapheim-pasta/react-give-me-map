@@ -21,13 +21,7 @@ export const NOT_USER_IconV2Marker = (props: Props): JSX.Element => {
 
     useLoadMapImages({
         mapRef: props.mapRef,
-        images: [
-            {
-                name: data.imageUrl,
-                url: data.imageUrl
-                // sdf: true
-            }
-        ],
+        imageUrls: [data.imageUrl],
         onLoad: () => setIsImageLoaded(true)
     });
 

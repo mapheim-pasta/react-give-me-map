@@ -16,16 +16,13 @@ export const GroupMarkers = (props: {
 }) => {
     const [areImagesLoaded, setAreImagesLoaded] = useState(false);
 
-    const images = props.groupableMarkers
+    const imageUrls = props.groupableMarkers
         .filter((marker): marker is IImageWorldMarker => marker.elementType === 'image')
-        .map((marker) => ({
-            url: marker.elementData.src,
-            name: marker.elementData.src
-        }));
+        .map((marker) => marker.elementData.src);
 
     useLoadMapImages({
         mapRef: props.mapRef,
-        images,
+        imageUrls,
         onLoad: () => {
             setAreImagesLoaded(true);
         }

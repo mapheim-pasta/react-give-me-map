@@ -1,5 +1,6 @@
 export { Package as GiveMeMap } from './Package';
 export { CustomMarkerBuilders, PinIconBuilder } from './context/dynamic/actions';
+export { useLoadMapImages } from './hooks/map/useLoadMapImages';
 export { useContainComputation } from './hooks/mouse/useContainComputation';
 export { DrawWorld } from './items/DrawWorld';
 export { ImageWorld } from './items/ImageWorld';

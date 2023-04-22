@@ -1,6 +1,6 @@
 import { isNil, omitBy } from 'lodash';
 import { SymbolLayout, SymbolPaint } from 'mapbox-gl';
-import React, { RefObject, useState } from 'react';
+import React, { RefObject, useEffect, useState } from 'react';
 import { MapRef, Source } from 'react-map-gl';
 import { useLoadMapImages } from '../../hooks/map/useLoadMapImages';
 import { IIconV2WorldMarker } from '../../utils/world/worldTypes';
@@ -57,10 +57,7 @@ export const IconV2Markers = (props: {
 }) => {
     const [areImagesLoaded, setAreImagesLoaded] = useState(false);
 
-    const images = props.markers.map((marker) => ({
-        url: marker.elementData.imageUrl,
-        name: marker.elementData.imageUrl
-    }));
+    const imageUrls = props.markers.map((marker) => marker.elementData.imageUrl);
 
     const layerIds = {
         icons: 'icons|layer',
@@ -78,17 +75,23 @@ export const IconV2Markers = (props: {
         last: layerIds.cluster
     };
 
+    useEffect(() => {
+        if (props.mapRef.current && areImagesLoaded) {
+            props.mapRef.current.moveLayer(layerIds.icons, beforeIds.icons);
+            props.mapRef.current.moveLayer(layerIds.iconsClickable, beforeIds.iconsClickable);
+            props.mapRef.current.moveLayer(layerIds.clusterCount, beforeIds.clusterCount);
+            props.mapRef.current.moveLayer(layerIds.cluster, beforeIds.cluster);
+            props.mapRef.current.moveLayer(layerIds.last, beforeIds.last);
+        }
+    }, [props.beforeId, props.mapRef?.current, areImagesLoaded]);
+
     useLoadMapImages({
         mapRef: props.mapRef,
-        images,
+        imageUrls,
         onLoad: () => {
             setAreImagesLoaded(true);
         }
     });
-
-    if (!areImagesLoaded) {
-        return null;
-    }
 
     const globalLayoutProps = {
         'text-font': ['Open Sans Bold'],
