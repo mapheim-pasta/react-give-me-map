@@ -1,0 +1,58 @@
+export const AvailableSymbolLayoutKeys = [
+    'symbol-sort-key' as const,
+    'icon-size' as const,
+    'icon-image' as const,
+    'icon-rotate' as const,
+    'icon-offset' as const,
+    'icon-anchor' as const,
+    'text-field' as const,
+    'text-size' as const,
+    'text-max-width' as const,
+    'text-line-height' as const,
+    'text-letter-spacing' as const,
+    'text-justify' as const,
+    'text-radial-offset' as const,
+    'text-anchor' as const,
+    'text-rotate' as const,
+    'text-transform' as const,
+    'text-offset' as const
+];
+export const UnavailableSymboLayoutKeys = [
+    'symbol-placement' as const,
+    'symbol-spacing' as const,
+    'symbol-avoid-edges' as const,
+    'symbol-z-order' as const,
+    'icon-allow-overlap' as const,
+    'text-font' as const,
+    'icon-ignore-placement' as const,
+    'icon-optional' as const,
+    'icon-rotation-alignment' as const,
+    'icon-text-fit' as const,
+    'icon-text-fit-padding' as const,
+    'icon-padding' as const,
+    'icon-keep-upright' as const,
+    'icon-pitch-alignment' as const,
+    'text-pitch-alignment' as const,
+    'text-rotation-alignment' as const,
+    'text-max-angle' as const,
+    'text-padding' as const,
+    'text-keep-upright' as const,
+    'text-allow-overlap' as const,
+    'text-ignore-placement' as const,
+    'text-optional' as const,
+    'text-variable-anchor' as const,
+    'text-writing-mode' as const
+];
+
+export const AvailableSymbolPaintKeys: string[] = [
+    'icon-opacity' as const,
+    'icon-color' as const,
+    'icon-halo-color' as const,
+    'icon-halo-width' as const,
+    'icon-halo-blur' as const,
+    'text-opacity' as const,
+    'text-color' as const,
+    'text-halo-color' as const,
+    'text-halo-width' as const,
+    'text-halo-blur' as const
+];

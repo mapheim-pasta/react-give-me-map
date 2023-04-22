@@ -13,7 +13,7 @@ interface Props {
     isHighlighted?: boolean;
 }
 
-export const IconV2Marker = (props: Props): JSX.Element => {
+export const NOT_USER_IconV2Marker = (props: Props): JSX.Element => {
     const markerId = props.marker.id;
     const data = props.marker.elementData;
 
@@ -44,8 +44,11 @@ export const IconV2Marker = (props: Props): JSX.Element => {
         'icon-image': isImageLoaded ? data.imageUrl : undefined,
         'icon-size': data.imageSize,
         'icon-allow-overlap': true,
+        'icon-anchor': 'bottom',
+        'text-anchor': 'top',
         ...data.rawLayoutAttributes,
-        visibility: props.marker.visible ? 'visible' : 'none'
+        // visibility: props.marker.visible ? 'visible' : 'none',
+        visibility: 'none'
     };
 
     const layerIds = {

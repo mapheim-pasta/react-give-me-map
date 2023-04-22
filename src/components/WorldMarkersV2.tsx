@@ -1,23 +1,35 @@
 import { orderBy } from 'lodash';
 import React, { RefObject, useEffect } from 'react';
 import { MapRef, Source } from 'react-map-gl';
-import { IconV2Marker } from '../items/v2/IconV2Marker';
+import { IconV2Markers } from '../items/v2/IconV2Markers';
+import { GroupMarkerProps } from '../items/v2/IconV2Markers/ClusterLayers';
 import { LineV2Marker } from '../items/v2/LineV2Marker';
 import { PolygonV2Marker } from '../items/v2/PolygonV2Marker';
 import { WallV2Marker } from '../items/v2/WallV2Marker';
-import { IWorldV2Marker } from '../utils/world/worldTypes';
+import { IIconV2WorldMarker, IWorldV2Marker } from '../utils/world/worldTypes';
 
 export interface IProps {
     mapRef: RefObject<MapRef>;
     markers: IWorldV2Marker[];
     highlightedMarkerIds?: string[];
+    groupMarkerProps: GroupMarkerProps;
 }
 
 export const WorldMarkersV2 = (props: IProps): JSX.Element => {
-    const orderedMarkers = orderBy(props.markers, 'order', 'desc');
+    const nonIconMarkers = orderBy(
+        props.markers.filter((e) => e.elementType !== 'v2/icon'),
+        'order',
+        'desc'
+    );
+    const iconMarkers = orderBy(
+        props.markers.filter((e): e is IIconV2WorldMarker => e.elementType === 'v2/icon'),
+        'order',
+        'desc'
+    );
+
     const highlightedMarkerIds = props.highlightedMarkerIds ?? [];
 
-    const layerOrder = orderedMarkers.map((e) => e.id);
+    const layerOrder = nonIconMarkers.map((e) => e.id);
 
     useEffect(() => {
         const mapRef = props.mapRef.current;
@@ -42,9 +54,15 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                 type="geojson"
                 data={{ type: 'FeatureCollection', features: [] }}
             ></Source>
-            {orderedMarkers.map((marker, index) => {
+            {/* IconV2Markers is the first one and doesn't have any beforeId! */}
+            <IconV2Markers
+                markers={iconMarkers}
+                mapRef={props.mapRef}
+                groupMarkerProps={props.groupMarkerProps}
+            />
+            {nonIconMarkers.map((marker, index) => {
                 const beforeMarkerId = layerOrder[index - 1];
-                const beforeId = beforeMarkerId ? beforeMarkerId + '|last' : undefined;
+                const beforeId = beforeMarkerId ? beforeMarkerId + '|last' : 'icons|last';
 
                 switch (marker.elementType) {
                     case 'v2/line':
@@ -60,16 +78,6 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                     case 'v2/polygon':
                         return (
                             <PolygonV2Marker
-                                key={marker.id}
-                                marker={marker}
-                                beforeId={beforeId}
-                                mapRef={props.mapRef}
-                                isHighlighted={highlightedMarkerIds.includes(marker.id)}
-                            />
-                        );
-                    case 'v2/icon':
-                        return (
-                            <IconV2Marker
                                 key={marker.id}
                                 marker={marker}
                                 beforeId={beforeId}

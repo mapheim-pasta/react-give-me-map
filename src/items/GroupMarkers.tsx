@@ -72,7 +72,8 @@ export const GroupMarkers = (props: {
         source: 'earthquakes',
         filter: ['has', 'point_count'],
         paint: {
-            'circle-color': '#' + (props.groupMarkerProps.backgroundColor ?? 'f28cb1'),
+            'circle-color':
+                '#' + (props.groupMarkerProps.backgroundColor?.replace('#', '') ?? 'f28cb1'),
             'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40]
         }
     };
@@ -88,7 +89,7 @@ export const GroupMarkers = (props: {
             'text-size': 12
         },
         paint: {
-            'text-color': '#' + (props.groupMarkerProps.textColor ?? 'fff')
+            'text-color': '#' + (props.groupMarkerProps.textColor?.replace('#', '') ?? 'fff')
         }
     };
 

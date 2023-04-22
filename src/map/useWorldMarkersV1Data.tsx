@@ -17,12 +17,7 @@ export function useWorldMarkersV1Data(markers: IWorldV1Marker[]) {
 
     const hasClusters = markers.some((e) => e.elementType === 'image' && e.isGroupable);
 
-    const clickableSourceIds = hasClusters
-        ? ['unclustered-point-images-clickable', 'clusters']
-        : [];
-
     return {
-        layerIds,
-        clickableSourceIds
+        layerIds: [...layerIds, ...(hasClusters ? ['unclustered-point-images-clickable'] : [])]
     };
 }

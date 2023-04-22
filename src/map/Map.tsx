@@ -62,12 +62,9 @@ export const Map = (props: IProps): JSX.Element => {
     const clickableLayersRef = useRef(new Set<string>());
     const currentHoveredRef = useRef(new Set<string>());
 
-    const layerIds = (props.map.interactiveLayerIds ?? [])
+    const interactiveLayerIds = (props.map.interactiveLayerIds ?? [])
         .concat(v1MarkersData.layerIds)
         .concat(v2MarkersData.layerIds);
-    const clickableSourceIds = v1MarkersData.clickableSourceIds.concat(
-        v2MarkersData.clickableSourceIds
-    );
 
     useEffect(() => {
         if (props.map.mapStyle) {
@@ -115,7 +112,7 @@ export const Map = (props: IProps): JSX.Element => {
             mapRef?.getMap()?.touchPitch.disable();
             mapRef?.getMap()?.keyboard.disable();
 
-            registerClickEvents(clickableSourceIds);
+            registerClickEvents(interactiveLayerIds);
 
             props.map.onLoad(mapRef);
         }
@@ -124,9 +121,9 @@ export const Map = (props: IProps): JSX.Element => {
 
     useEffect(() => {
         if (loaded) {
-            registerClickEvents(clickableSourceIds);
+            registerClickEvents(interactiveLayerIds);
         }
-    }, [clickableSourceIds]);
+    }, [interactiveLayerIds]);
 
     function getInitMapStyle() {
         if (props.map.mapStyle) {
@@ -206,25 +203,36 @@ export const Map = (props: IProps): JSX.Element => {
                             return;
                         }
 
-                        if (feature?.layer?.id === 'clusters') {
-                            const clusterId = feature?.properties?.cluster_id;
+                        const possibleClusters = [
+                            { id: 'v1', layerId: 'clusters', sourceId: 'clusters-source' },
+                            { id: 'v2', layerId: 'icons|cluster', sourceId: 'icons' }
+                        ];
 
-                            const clusterSource =
-                                props.mapRef.current?.getSource('clusters-source');
+                        possibleClusters.forEach(({ layerId, sourceId }) => {
+                            if (feature?.layer?.id === layerId) {
+                                const clusterId = feature?.properties?.cluster_id;
 
-                            clusterSource?.type === 'geojson' &&
-                                clusterSource.getClusterLeaves(
-                                    clusterId,
-                                    99999,
-                                    0,
-                                    (err, leaves) => {
-                                        const markerIds = leaves.map((e) => e.properties?.markerId);
-                                        state.callbacks.onMarkersSelected?.(markerIds, clickData);
-                                    }
-                                );
+                                const clusterSource = props.mapRef.current?.getSource(sourceId);
 
-                            return;
-                        }
+                                clusterSource?.type === 'geojson' &&
+                                    clusterSource.getClusterLeaves(
+                                        clusterId,
+                                        99999,
+                                        0,
+                                        (err, leaves) => {
+                                            const markerIds = leaves.map(
+                                                (e) => e.properties?.markerId
+                                            );
+                                            state.callbacks.onMarkersSelected?.(
+                                                markerIds,
+                                                clickData
+                                            );
+                                        }
+                                    );
+
+                                return;
+                            }
+                        });
                     }
                     props.map.onClick?.(e);
                 }}
@@ -235,7 +243,7 @@ export const Map = (props: IProps): JSX.Element => {
                     event.target.resize();
                     props.map.onRender?.(event);
                 }}
-                interactiveLayerIds={layerIds ?? []}
+                interactiveLayerIds={interactiveLayerIds}
                 mapStyle={selectedMapStyle}
             >
                 {loaded && (
@@ -253,6 +261,7 @@ export const Map = (props: IProps): JSX.Element => {
                             markers={props.v2Markers}
                             highlightedMarkerIds={props.highlightedMarkers}
                             mapRef={props.mapRef}
+                            groupMarkerProps={props.config?.groupMarkerProps ?? {}}
                         />
                         <WorldMapControl
                             onGeoClick={() => {
