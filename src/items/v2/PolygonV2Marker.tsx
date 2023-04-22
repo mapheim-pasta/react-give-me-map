@@ -26,7 +26,8 @@ export const PolygonV2Marker = (props: Props): JSX.Element => {
     };
     const fillLayoutAttributes: FillLayout = {
         ...data.fill.rawLayoutAttributes,
-        visibility: props.marker.visible ? 'visible' : 'none'
+        visibility:
+            props.marker.visible && props.marker.elementData.fill.isFilled ? 'visible' : 'none'
     };
 
     const borderPaintAttributes: LinePaint = {
@@ -88,7 +89,7 @@ export const PolygonV2Marker = (props: Props): JSX.Element => {
                     beforeId={beforeIds.layer}
                     type="fill"
                     source={`${markerId}`}
-                    paint={{ 'fill-opacity': 0, ...omitBy(fillPaintAttributes, isNil) }}
+                    paint={{ ...omitBy(fillPaintAttributes, isNil) }}
                     layout={{ ...omitBy(fillLayoutAttributes, isNil) }}
                 />
                 {props.marker.selectable ? (

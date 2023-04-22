@@ -6,7 +6,7 @@ interface Props {
     sourceId: string;
     layerId: string;
     beforeId?: string;
-    coordinates: ICoordinates[];
+    coordinates: ICoordinates[][];
     markerId: string;
     wallProps: WallProps;
     visible: boolean;
@@ -21,19 +21,24 @@ export interface WallProps {
 export const WallSegment = (props: Props) => {
     const wallData = props.wallProps;
 
-    const closedCoordinates = [...props.coordinates, props.coordinates[0]].filter(Boolean);
+    const closedCoordinates = props.coordinates
+        .map((coordinates) => [...coordinates, coordinates[0]].filter(Boolean))
+        .map(coordsToArrays);
 
     return (
         <Source
             id={props.sourceId}
             type="geojson"
             data={{
-                type: 'Feature',
-                properties: {},
-                geometry: {
-                    coordinates: [coordsToArrays(closedCoordinates)],
-                    type: 'Polygon'
-                }
+                type: 'FeatureCollection',
+                features: closedCoordinates.map((c) => ({
+                    type: 'Feature',
+                    properties: {},
+                    geometry: {
+                        coordinates: [c],
+                        type: 'Polygon'
+                    }
+                }))
             }}
         >
             <Layer

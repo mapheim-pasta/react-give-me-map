@@ -40,7 +40,7 @@ export const PolygonWall = (props: Props): JSX.Element => {
                 layerId={layerIds.layer}
                 beforeId={beforeIds.layer}
                 markerId={props.marker.id}
-                coordinates={props.marker.elementData.coordinates}
+                coordinates={[props.marker.elementData.coordinates]}
                 wallProps={markerData.wall}
                 visible={props.marker.visible ?? false}
             />
