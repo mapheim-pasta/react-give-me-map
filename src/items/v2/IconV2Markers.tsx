@@ -8,6 +8,47 @@ import { EmptyLayer } from './EmptyLayer';
 import { ClusterLayers, GroupMarkerProps } from './IconV2Markers/ClusterLayers';
 import { IconLayers } from './IconV2Markers/IconLayers';
 
+export function getSourceFeaturesForIcons(markers: IIconV2WorldMarker[]) {
+    return (
+        markers
+            .filter((e) => e.visible)
+            .map((marker, i) => {
+                const data = marker.elementData;
+
+                const paintAttributes: SymbolPaint = {
+                    'text-color': data.textColor,
+                    ...data.rawPaintAttributes
+                };
+
+                const layoutAttributes: SymbolLayout = {
+                    'text-field': data.text,
+                    'text-size': data.textSize,
+                    'icon-image': data.imageUrl,
+                    'icon-size': data.imageSize,
+                    'icon-anchor': 'bottom',
+                    'text-anchor': 'top',
+                    ...data.rawLayoutAttributes
+                };
+
+                return {
+                    type: 'Feature' as const,
+                    properties: {
+                        markerId: marker.id,
+                        clickable: marker.selectable ? '1' : '0',
+                        layout: omitBy(layoutAttributes, isNil),
+                        paint: omitBy(paintAttributes, isNil)
+                    },
+                    geometry: {
+                        type: 'Point' as const,
+                        coordinates: [marker.lng, marker.lat, i]
+                    }
+                };
+            })
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            .filter((e): e is GeoJSON.Feature<GeoJSON.Point, any> => Boolean(e))
+    );
+}
+
 export const IconV2Markers = (props: {
     mapRef: RefObject<MapRef>;
     markers: IIconV2WorldMarker[];
@@ -55,42 +96,7 @@ export const IconV2Markers = (props: {
         'icon-allow-overlap': true
     };
 
-    const sourceFeatures = props.markers
-        .filter((e) => e.visible)
-        .map((marker, i) => {
-            const data = marker.elementData;
-
-            const paintAttributes: SymbolPaint = {
-                'text-color': data.textColor,
-                ...data.rawPaintAttributes
-            };
-
-            const layoutAttributes: SymbolLayout = {
-                'text-field': data.text,
-                'text-size': data.textSize,
-                'icon-image': data.imageUrl,
-                'icon-size': data.imageSize,
-                'icon-anchor': 'bottom',
-                'text-anchor': 'top',
-                ...data.rawLayoutAttributes
-            };
-
-            return {
-                type: 'Feature' as const,
-                properties: {
-                    markerId: marker.id,
-                    clickable: marker.selectable ? '1' : '0',
-                    layout: omitBy(layoutAttributes, isNil),
-                    paint: omitBy(paintAttributes, isNil)
-                },
-                geometry: {
-                    type: 'Point' as const,
-                    coordinates: [marker.lng, marker.lat, i]
-                }
-            };
-        })
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .filter((e): e is GeoJSON.Feature<GeoJSON.Point, any> => Boolean(e));
+    const sourceFeatures = getSourceFeaturesForIcons(props.markers);
 
     return (
         <>

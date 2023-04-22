@@ -9,6 +9,7 @@ export { PolygonWorld } from './items/PolygonWorld';
 export { ReactWorld } from './items/ReactWorld';
 export { TextWorld } from './items/TextWorld';
 export { YoutubeWorld } from './items/YoutubeWorld';
+export { getSourceFeaturesForIcons } from './items/v2/IconV2Markers';
 export { transformLineCoordinatesIntoPolygonCoordinates } from './items/v2/WallV2Marker/MultiLineWall';
 export { ClickEventData } from './map/RegisterPropsToGlobalState';
 export { EMapStyle, ICoordinates, IViewportExtended } from './utils/map/mapTypes';
