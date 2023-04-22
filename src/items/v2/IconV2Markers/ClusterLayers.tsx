@@ -19,18 +19,6 @@ interface Props {
 }
 
 export const ClusterLayers = (props: Props) => {
-    const clusterLayer: LayerProps = {
-        id: props.layerIds.cluster,
-        beforeId: props.beforeIds.cluster,
-        type: 'circle' as const,
-        source: 'icons',
-        filter: ['has', 'point_count'],
-        paint: {
-            'circle-color': props.groupMarkerStyle.backgroundColor ?? '#f28cb1',
-            'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40]
-        }
-    };
-
     const clusterCountLayer: LayerProps = {
         id: props.layerIds.clusterCount,
         beforeId: props.beforeIds.clusterCount,
@@ -47,10 +35,22 @@ export const ClusterLayers = (props: Props) => {
         }
     };
 
+    const clusterLayer: LayerProps = {
+        id: props.layerIds.cluster,
+        beforeId: props.beforeIds.cluster,
+        type: 'circle' as const,
+        source: 'icons',
+        filter: ['has', 'point_count'],
+        paint: {
+            'circle-color': props.groupMarkerStyle.backgroundColor ?? '#f28cb1',
+            'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40]
+        }
+    };
+
     return (
         <>
-            <Layer {...clusterLayer} />
             <Layer {...clusterCountLayer} />
+            <Layer {...clusterLayer} />
         </>
     );
 };

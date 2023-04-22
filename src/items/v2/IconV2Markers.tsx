@@ -12,6 +12,7 @@ export const IconV2Markers = (props: {
     mapRef: RefObject<MapRef>;
     markers: IIconV2WorldMarker[];
     groupMarkerProps: GroupMarkerProps;
+    beforeId?: string;
 }) => {
     const [areImagesLoaded, setAreImagesLoaded] = useState(false);
 
@@ -29,7 +30,7 @@ export const IconV2Markers = (props: {
     };
 
     const beforeIds = {
-        icons: undefined,
+        icons: props.beforeId,
         iconsClickable: layerIds.icons,
         clusterCount: layerIds.iconsClickable,
         cluster: layerIds.clusterCount,
