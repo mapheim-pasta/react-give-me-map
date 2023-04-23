@@ -4,21 +4,25 @@ import ReactMapGL, {
     GeolocateControl,
     GeolocateControlRef,
     ImmutableLike,
-    MapboxStyle,
-    MapRef
+    MapRef,
+    MapboxStyle
 } from 'react-map-gl';
 import { WorldMapControl } from '../components/WorldMapControl';
-import { WorldMarkers } from '../components/WorldMarkers';
+import { WorldMarkersV1 } from '../components/WorldMarkersV1';
+import { WorldMarkersV2 } from '../components/WorldMarkersV2';
 import { useActions } from '../context/dynamic/actions';
 import { useCtx } from '../context/dynamic/provider';
 import { useMouseListener } from '../hooks/mouse/useMouseListener';
 import { EMapStyle, IMapConfig, IMapProps, MarkerStyle } from '../utils/map/mapTypes';
-import { IWorldMarker } from '../utils/world/worldTypes';
+import { IWorldMarker, IWorldV1Marker, IWorldV2Marker } from '../utils/world/worldTypes';
+import { useWorldMarkersV1Data } from './useWorldMarkersV1Data';
+import { useWorldMarkersV2Data } from './useWorldMarkersV2Data';
 
 interface IProps {
     map: IMapProps;
     mapRef: React.RefObject<MapRef>;
-    markers: IWorldMarker[];
+    v1Markers: IWorldV1Marker[];
+    v2Markers: IWorldV2Marker[];
     selectedIds: string[];
     children?: React.ReactNode;
     config?: IMapConfig;
@@ -47,8 +51,20 @@ export const Map = (props: IProps): JSX.Element => {
     const [selectedMapStyle, setSelectedMapStyle] = useState<
         MapboxStyle | string | ImmutableLike | EMapStyle
     >(getInitMapStyle());
+    const mapRef = props.mapRef?.current;
+
     const [geoTriggered, setGeoTriggered] = useState<boolean>(false);
     const [geoShow, setGeoShow] = useState(true);
+
+    const v1MarkersData = useWorldMarkersV1Data(props.v1Markers);
+    const v2MarkersData = useWorldMarkersV2Data(props.v2Markers);
+
+    const clickableLayersRef = useRef(new Set<string>());
+    const currentHoveredRef = useRef(new Set<string>());
+
+    const interactiveLayerIds = (props.map.interactiveLayerIds ?? [])
+        .concat(v1MarkersData.layerIds)
+        .concat(v2MarkersData.layerIds);
 
     useEffect(() => {
         if (props.map.mapStyle) {
@@ -70,6 +86,24 @@ export const Map = (props: IProps): JSX.Element => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.mapRef?.current?.loaded()]);
 
+    function registerClickEvents(sourceIds: string[]) {
+        sourceIds.forEach((sourceId) => {
+            if (!clickableLayersRef.current.has(sourceId)) {
+                clickableLayersRef.current.add(sourceId);
+                mapRef?.on('mouseleave', sourceId, (e) => {
+                    currentHoveredRef.current.delete(sourceId);
+                    if (currentHoveredRef.current.size === 0) {
+                        mapRef.getCanvas().style.cursor = '';
+                    }
+                });
+                mapRef?.on('mouseenter', sourceId, () => {
+                    currentHoveredRef.current.add(sourceId);
+                    mapRef.getCanvas().style.cursor = 'pointer';
+                });
+            }
+        });
+    }
+
     useEffect(() => {
         if (loaded) {
             const mapRef = props.mapRef?.current;
@@ -78,42 +112,18 @@ export const Map = (props: IProps): JSX.Element => {
             mapRef?.getMap()?.touchPitch.disable();
             mapRef?.getMap()?.keyboard.disable();
 
-            mapRef?.on('mouseenter', 'unclustered-point-images-clickable', () => {
-                mapRef.getCanvas().style.cursor = 'pointer';
-            });
-            mapRef?.on('mouseleave', 'unclustered-point-images-clickable', () => {
-                mapRef.getCanvas().style.cursor = '';
-            });
-
-            if (props.map.interactiveLayerIds?.includes('clusters')) {
-                mapRef?.on('mouseenter', 'clusters', () => {
-                    mapRef.getCanvas().style.cursor = 'pointer';
-                });
-                mapRef?.on('mouseleave', 'clusters', () => {
-                    mapRef.getCanvas().style.cursor = '';
-                });
-            }
+            registerClickEvents(interactiveLayerIds);
 
             props.map.onLoad(mapRef);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loaded]);
 
-    const layerIds = props.markers
-        .filter((e) => e.visible)
-        .map((marker) => {
-            if (marker.elementType === 'route' || marker.elementType === 'direction') {
-                return marker.id + '|line-click';
-            }
-            if (marker.elementType === 'polygon' && marker.elementData.renderAs3d) {
-                return marker.id + '|layer';
-            }
-        })
-        .filter((val): val is string => {
-            return val !== undefined;
-        })
-        .concat(['unclustered-point-images-clickable'])
-        .concat(props.map.interactiveLayerIds ?? []);
+    useEffect(() => {
+        if (loaded) {
+            registerClickEvents(interactiveLayerIds);
+        }
+    }, [interactiveLayerIds]);
 
     function getInitMapStyle() {
         if (props.map.mapStyle) {
@@ -125,15 +135,7 @@ export const Map = (props: IProps): JSX.Element => {
         }
     }
 
-    // Fill in default values
-    const markers = props.markers.map((m, i) => ({
-        ...m,
-        order: m.order ?? i,
-        scalable: m.scalable ?? true,
-        scale: m.scale ?? 1
-    }));
-
-    const mouseListener = useMouseListener(markers, props.mapRef, wrapperMapRef);
+    const mouseListener = useMouseListener(props.v1Markers, props.mapRef, wrapperMapRef);
 
     useEffect(() => {
         if (props.mapRef?.current && wrapperMapRef.current) {
@@ -173,11 +175,19 @@ export const Map = (props: IProps): JSX.Element => {
 
                     if (features.length > 0) {
                         const feature = features[0];
-                        const selectableMarkers = markers.filter((e) => e.selectable);
+                        const source = feature.source.split('|')[0];
 
-                        const marker = selectableMarkers.find(
-                            (marker) => marker.id === feature.source
+                        const selectableMarkersV1: IWorldMarker[] = props.v1Markers.filter(
+                            (e) => e.selectable
                         );
+                        const selectableMarkersV2: IWorldMarker[] = props.v2Markers.filter(
+                            (e) => e.selectable
+                        );
+
+                        const marker = [...selectableMarkersV1, ...selectableMarkersV2].find(
+                            (marker) => marker.id === source
+                        );
+
                         if (marker) {
                             state.callbacks.onMarkersSelected?.([marker.id], clickData);
                             props.map.onClick?.(e);
@@ -193,25 +203,36 @@ export const Map = (props: IProps): JSX.Element => {
                             return;
                         }
 
-                        if (feature?.layer?.id === 'clusters') {
-                            const clusterId = feature?.properties?.cluster_id;
+                        const possibleClusters = [
+                            { id: 'v1', layerId: 'clusters', sourceId: 'clusters-source' },
+                            { id: 'v2', layerId: 'icons|cluster', sourceId: 'icons' }
+                        ];
 
-                            const clusterSource =
-                                props.mapRef.current?.getSource('clusters-source');
+                        possibleClusters.forEach(({ layerId, sourceId }) => {
+                            if (feature?.layer?.id === layerId) {
+                                const clusterId = feature?.properties?.cluster_id;
 
-                            clusterSource?.type === 'geojson' &&
-                                clusterSource.getClusterLeaves(
-                                    clusterId,
-                                    99999,
-                                    0,
-                                    (err, leaves) => {
-                                        const markerIds = leaves.map((e) => e.properties?.markerId);
-                                        state.callbacks.onMarkersSelected?.(markerIds, clickData);
-                                    }
-                                );
+                                const clusterSource = props.mapRef.current?.getSource(sourceId);
 
-                            return;
-                        }
+                                clusterSource?.type === 'geojson' &&
+                                    clusterSource.getClusterLeaves(
+                                        clusterId,
+                                        99999,
+                                        0,
+                                        (err, leaves) => {
+                                            const markerIds = leaves.map(
+                                                (e) => e.properties?.markerId
+                                            );
+                                            state.callbacks.onMarkersSelected?.(
+                                                markerIds,
+                                                clickData
+                                            );
+                                        }
+                                    );
+
+                                return;
+                            }
+                        });
                     }
                     props.map.onClick?.(e);
                 }}
@@ -222,18 +243,24 @@ export const Map = (props: IProps): JSX.Element => {
                     event.target.resize();
                     props.map.onRender?.(event);
                 }}
-                interactiveLayerIds={layerIds ?? []}
+                interactiveLayerIds={interactiveLayerIds}
                 mapStyle={selectedMapStyle}
             >
                 {loaded && (
                     <>
-                        <WorldMarkers
+                        <WorldMarkersV1
                             mapRef={props.mapRef}
-                            markers={markers}
+                            markers={props.v1Markers}
                             zoom={props.map.zoom ?? 1}
                             selectableMarkersStyle={props.selectableMarkersStyle}
                             highlightedMarkers={props.highlightedMarkers}
                             highlightedMarkersStyle={props.highlightedMarkersStyle}
+                            groupMarkerProps={props.config?.groupMarkerProps ?? {}}
+                        />
+                        <WorldMarkersV2
+                            markers={props.v2Markers}
+                            highlightedMarkerIds={props.highlightedMarkers}
+                            mapRef={props.mapRef}
                             groupMarkerProps={props.config?.groupMarkerProps ?? {}}
                         />
                         <WorldMapControl

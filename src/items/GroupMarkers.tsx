@@ -16,16 +16,13 @@ export const GroupMarkers = (props: {
 }) => {
     const [areImagesLoaded, setAreImagesLoaded] = useState(false);
 
-    const images = props.groupableMarkers
+    const imageUrls = props.groupableMarkers
         .filter((marker): marker is IImageWorldMarker => marker.elementType === 'image')
-        .map((marker) => ({
-            url: marker.elementData.src,
-            name: marker.elementData.src
-        }));
+        .map((marker) => marker.elementData.src);
 
     useLoadMapImages({
         mapRef: props.mapRef,
-        images,
+        imageUrls,
         onLoad: () => {
             setAreImagesLoaded(true);
         }
@@ -72,7 +69,8 @@ export const GroupMarkers = (props: {
         source: 'earthquakes',
         filter: ['has', 'point_count'],
         paint: {
-            'circle-color': '#' + (props.groupMarkerProps.backgroundColor ?? 'f28cb1'),
+            'circle-color':
+                '#' + (props.groupMarkerProps.backgroundColor?.replace('#', '') ?? 'f28cb1'),
             'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40]
         }
     };
@@ -88,7 +86,7 @@ export const GroupMarkers = (props: {
             'text-size': 12
         },
         paint: {
-            'text-color': '#' + (props.groupMarkerProps.textColor ?? 'fff')
+            'text-color': '#' + (props.groupMarkerProps.textColor?.replace('#', '') ?? 'fff')
         }
     };
 

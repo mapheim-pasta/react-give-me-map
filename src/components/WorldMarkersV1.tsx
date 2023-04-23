@@ -17,11 +17,11 @@ import { YoutubeWorld } from '../items/YoutubeWorld';
 import { GroupMarkerProps, MarkerStyle } from '../utils/map/mapTypes';
 import { isMarkerElement } from '../utils/marker/markerUtils';
 import { ORIGIN_ZOOM } from '../utils/world/worldConfig';
-import { IWorldMarker } from '../utils/world/worldTypes';
+import { IWorldMarker, IWorldV1Marker } from '../utils/world/worldTypes';
 import { getInScale } from '../utils/world/worldUtils';
 
 export interface IProps {
-    markers: IWorldMarker[];
+    markers: IWorldV1Marker[];
     zoom: number;
     selectableMarkersStyle?: MarkerStyle;
     highlightedMarkers: string[];
@@ -31,7 +31,7 @@ export interface IProps {
     mapRef: RefObject<MapRef>;
 }
 
-export const WorldMarkers = (props: IProps): JSX.Element => {
+export const WorldMarkersV1 = (props: IProps): JSX.Element => {
     const [markers, setMarkers] = useStateCallback<IWorldMarker[]>([]);
     const [order, setOrder] = useState<number[]>([]);
     const { state } = useCtx();
