@@ -40,7 +40,7 @@ export function getSourceFeaturesForIcons(markers: IIconV2WorldMarker[]) {
                     },
                     geometry: {
                         type: 'Point' as const,
-                        coordinates: [data.position.lng, data.position.lat, i]
+                        coordinates: [marker.lng, marker.lat, i]
                     }
                 };
             })
