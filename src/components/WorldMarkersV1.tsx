@@ -32,7 +32,7 @@ export interface IProps {
 }
 
 export const WorldMarkersV1 = (props: IProps): JSX.Element => {
-    const [markers, setMarkers] = useStateCallback<IWorldMarker[] | null>([]);
+    const [markers, setMarkers] = useStateCallback<IWorldMarker[] | null>(null);
     const [order, setOrder] = useState<number[]>([]);
     const { state } = useCtx();
 
@@ -54,6 +54,10 @@ export const WorldMarkersV1 = (props: IProps): JSX.Element => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.markers]);
+
+    if (!markers) {
+        return <></>;
+    }
 
     function isMarkerHighlighted(markerId: string): boolean {
         const found = props.highlightedMarkers.find((id) => id === markerId);
@@ -88,18 +92,13 @@ export const WorldMarkersV1 = (props: IProps): JSX.Element => {
 
     return (
         <>
-            {/* 
-                It's important not to render GroupMarkers before we can send them there,
-                otherwise the preloading of images may fail
-            */}
-            {groupMarkers.length && (
-                <GroupMarkers
-                    mapRef={props.mapRef}
-                    selectedMarkers={state.selectedIds}
-                    groupableMarkers={groupMarkers}
-                    groupMarkerProps={props.groupMarkerProps}
-                />
-            )}
+            <GroupMarkers
+                mapRef={props.mapRef}
+                selectedMarkers={state.selectedIds}
+                groupableMarkers={groupMarkers}
+                groupMarkerProps={props.groupMarkerProps}
+            />
+
             {[...nonGroupNativeMarkers, ...nonGroupNonNativeMarkers].map((marker: IWorldMarker) => {
                 const adjustedScale = marker.scalable
                     ? getInScale(marker.scale as number, ORIGIN_ZOOM, props.zoom)
