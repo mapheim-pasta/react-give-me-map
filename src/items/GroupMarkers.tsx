@@ -66,7 +66,7 @@ export const GroupMarkers = (props: {
     const clusterLayer: LayerProps = {
         id: 'clusters',
         type: 'circle' as const,
-        source: 'earthquakes',
+        source: 'clusters-source',
         filter: ['has', 'point_count'],
         paint: {
             'circle-color':
@@ -78,7 +78,7 @@ export const GroupMarkers = (props: {
     const clusterCountLayer: LayerProps = {
         id: 'cluster-count',
         type: 'symbol' as const,
-        source: 'earthquakes',
+        source: 'clusters-source',
         filter: ['has', 'point_count'],
         layout: {
             'text-field': '{point_count_abbreviated}',
@@ -86,14 +86,14 @@ export const GroupMarkers = (props: {
             'text-size': 12
         },
         paint: {
-            'text-color': '#' + (props.groupMarkerProps.textColor?.replace('#', '') ?? 'fff')
+            'text-color': '#' + (props.groupMarkerProps.textColor?.replace('#', '') ?? 'ffffff')
         }
     };
 
     const imagesClickableLayer: LayerProps = {
         id: 'unclustered-point-images-clickable',
         type: 'symbol' as const,
-        source: '1',
+        source: 'clusters-source',
         filter: [
             'all',
             ['!', ['has', 'point_count']],
@@ -111,7 +111,7 @@ export const GroupMarkers = (props: {
     const imagesLayer: LayerProps = {
         id: 'unclustered-point-images',
         type: 'symbol' as const,
-        source: '1',
+        source: 'clusters-source',
         filter: [
             'all',
             ['!', ['has', 'point_count']],
@@ -138,8 +138,8 @@ export const GroupMarkers = (props: {
             >
                 <Layer {...clusterLayer} />
                 <Layer {...clusterCountLayer} />
-                <Layer {...imagesClickableLayer} />
                 <Layer {...imagesLayer} />
+                <Layer {...imagesClickableLayer} />
             </Source>
         </>
     );

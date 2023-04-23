@@ -31,7 +31,7 @@ export const ClusterLayers = (props: Props) => {
             'text-size': 12
         },
         paint: {
-            'text-color': props.groupMarkerStyle.textColor ?? '#fff'
+            'text-color': '#' + (props.groupMarkerStyle.textColor?.replace('#', '') ?? 'fff')
         }
     };
 
@@ -42,7 +42,8 @@ export const ClusterLayers = (props: Props) => {
         source: 'icons',
         filter: ['has', 'point_count'],
         paint: {
-            'circle-color': props.groupMarkerStyle.backgroundColor ?? '#f28cb1',
+            'circle-color':
+                '#' + props.groupMarkerStyle.backgroundColor?.replace('#', '') ?? 'f28cb1',
             'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40]
         }
     };
