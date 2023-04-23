@@ -53,7 +53,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                 id={'empty-source'}
                 type="geojson"
                 data={{ type: 'FeatureCollection', features: [] }}
-            ></Source>
+            />
             <IconV2Markers
                 markers={iconMarkers}
                 mapRef={props.mapRef}
