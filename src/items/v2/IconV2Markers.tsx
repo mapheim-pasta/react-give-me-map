@@ -83,13 +83,15 @@ export const IconV2Markers = (props: {
             props.mapRef.current.moveLayer(layerIds.cluster, beforeIds.cluster);
             props.mapRef.current.moveLayer(layerIds.last, beforeIds.last);
         }
-    }, [props.beforeId, props.mapRef?.current, areImagesLoaded]);
+    }, [props.beforeId, props.mapRef?.current]);
 
     useLoadMapImages({
         mapRef: props.mapRef,
         imageUrls,
         onLoad: () => {
-            setAreImagesLoaded(true);
+            if (props.markers?.length) {
+                setAreImagesLoaded(true);
+            }
         }
     });
 
@@ -100,6 +102,18 @@ export const IconV2Markers = (props: {
     };
 
     const sourceFeatures = getSourceFeaturesForIcons(props.markers);
+
+    if (!areImagesLoaded) {
+        return (
+            <>
+                <EmptyLayer id={layerIds.icons} beforeId={beforeIds.icons} />
+                <EmptyLayer id={layerIds.iconsClickable} beforeId={beforeIds.iconsClickable} />
+                <EmptyLayer id={layerIds.clusterCount} beforeId={beforeIds.clusterCount} />
+                <EmptyLayer id={layerIds.cluster} beforeId={beforeIds.cluster} />
+                <EmptyLayer id={layerIds.last} beforeId={beforeIds.last} />
+            </>
+        );
+    }
 
     return (
         <>
@@ -114,17 +128,33 @@ export const IconV2Markers = (props: {
                 clusterMaxZoom={10}
                 clusterRadius={50}
             >
-                <IconLayers
-                    layerIds={{ icons: layerIds.icons, iconsClickable: layerIds.iconsClickable }}
-                    beforeIds={{ icons: beforeIds.icons, iconsClickable: beforeIds.iconsClickable }}
-                    globalLayoutProps={globalLayoutProps}
-                />
-                <ClusterLayers
-                    layerIds={{ cluster: layerIds.cluster, clusterCount: layerIds.clusterCount }}
-                    beforeIds={{ cluster: beforeIds.cluster, clusterCount: beforeIds.clusterCount }}
-                    groupMarkerStyle={props.groupMarkerProps}
-                />
-                <EmptyLayer id={layerIds.last} beforeId={beforeIds.last} />
+                {areImagesLoaded && (
+                    <>
+                        <IconLayers
+                            layerIds={{
+                                icons: layerIds.icons,
+                                iconsClickable: layerIds.iconsClickable
+                            }}
+                            beforeIds={{
+                                icons: beforeIds.icons,
+                                iconsClickable: beforeIds.iconsClickable
+                            }}
+                            globalLayoutProps={globalLayoutProps}
+                        />
+                        <ClusterLayers
+                            layerIds={{
+                                cluster: layerIds.cluster,
+                                clusterCount: layerIds.clusterCount
+                            }}
+                            beforeIds={{
+                                cluster: beforeIds.cluster,
+                                clusterCount: beforeIds.clusterCount
+                            }}
+                            groupMarkerStyle={props.groupMarkerProps}
+                        />
+                        <EmptyLayer id={layerIds.last} beforeId={beforeIds.last} />
+                    </>
+                )}
             </Source>
         </>
     );
