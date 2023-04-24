@@ -306,7 +306,6 @@ export interface IWallV2WorldMarker extends BaseMarker {
 }
 
 export interface IIconV2World {
-    position: { lat: number; lng: number };
     imageUrl: string;
 
     text: string;
