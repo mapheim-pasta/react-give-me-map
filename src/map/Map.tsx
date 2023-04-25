@@ -291,7 +291,11 @@ export const Map = (props: IProps): JSX.Element => {
                             }}
                         />
                         {props.config?.geolocate && geoShow && (
-                            <GeolocateControl ref={geoRef} style={{ display: 'none' }} />
+                            <GeolocateControl
+                                ref={geoRef}
+                                style={{ display: 'none' }}
+                                trackUserLocation={true}
+                            />
                         )}
                         {props.children}
                     </>
