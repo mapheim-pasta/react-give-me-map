@@ -1,4 +1,13 @@
-import { FillLayout, FillPaint, LineLayout, LinePaint, SymbolLayout, SymbolPaint } from 'mapbox-gl';
+import {
+    FillLayout,
+    FillPaint,
+    LineLayout,
+    LinePaint,
+    RasterLayout,
+    RasterPaint,
+    SymbolLayout,
+    SymbolPaint
+} from 'mapbox-gl';
 import { RefObject } from 'react';
 import { ICoordinates } from '../map/mapTypes';
 
@@ -14,7 +23,7 @@ export type WorldV1Elements =
     | 'youtube'
     | 'link';
 
-export type WorldV2Elements = 'v2/line' | 'v2/polygon' | 'v2/icon' | 'v2/wall';
+export type WorldV2Elements = 'v2/line' | 'v2/polygon' | 'v2/icon' | 'v2/wall' | 'v2/image';
 
 export type WorldElements = WorldV1Elements | WorldV2Elements;
 
@@ -30,7 +39,12 @@ export type ICombinedV1World =
     | ILinkWorld
     | IReactWorld;
 
-export type ICombinedV2World = ILineV2World | IPolygonV2World | IIconV2World | IWallV2World;
+export type ICombinedV2World =
+    | ILineV2World
+    | IPolygonV2World
+    | IIconV2World
+    | IWallV2World
+    | IImageV2World;
 
 export type ICombinedWorld = ICombinedV1World | ICombinedV2World;
 
@@ -322,6 +336,19 @@ export interface IIconV2WorldMarker extends BaseMarker {
     ref?: RefObject<HTMLDivElement>;
 }
 
+export interface IImageV2World {
+    imageUrl: string;
+    coordinates: Array<{ lat: number; lng: number }>;
+    rawPaintAttributes: RasterPaint;
+    rawLayoutAttributes: RasterLayout;
+}
+
+export interface IImageV2WorldMarker extends BaseMarker {
+    elementType: 'v2/image';
+    elementData: IImageV2World;
+    ref?: RefObject<HTMLDivElement>;
+}
+
 export type IWorldV1Marker =
     | ITextWorldMarker
     | IImageWorldMarker
@@ -338,6 +365,7 @@ export type IWorldV2Marker =
     | ILineV2WorldMarker
     | IPolygonV2WorldMarker
     | IIconV2WorldMarker
-    | IWallV2WorldMarker;
+    | IWallV2WorldMarker
+    | IImageV2WorldMarker;
 
 export type IWorldMarker = IWorldV1Marker | IWorldV2Marker;

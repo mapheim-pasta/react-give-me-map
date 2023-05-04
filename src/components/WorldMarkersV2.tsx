@@ -3,6 +3,7 @@ import React, { RefObject, useEffect } from 'react';
 import { MapRef, Source } from 'react-map-gl';
 import { IconV2Markers } from '../items/v2/IconV2Markers';
 import { GroupMarkerProps } from '../items/v2/IconV2Markers/ClusterLayers';
+import { ImageV2Marker } from '../items/v2/ImageV2Marker';
 import { LineV2Marker } from '../items/v2/LineV2Marker';
 import { PolygonV2Marker } from '../items/v2/PolygonV2Marker';
 import { WallV2Marker } from '../items/v2/WallV2Marker';
@@ -95,6 +96,17 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                                 isHighlighted={highlightedMarkerIds.includes(marker.id)}
                             />
                         );
+                    case 'v2/image':
+                        return (
+                            <ImageV2Marker
+                                key={marker.id}
+                                marker={marker}
+                                beforeId={beforeId}
+                                mapRef={props.mapRef}
+                                isHighlighted={highlightedMarkerIds.includes(marker.id)}
+                            />
+                        );
+
                     default:
                         return null;
                 }
