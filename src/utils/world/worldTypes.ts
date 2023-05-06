@@ -1,13 +1,4 @@
-import {
-    FillLayout,
-    FillPaint,
-    LineLayout,
-    LinePaint,
-    RasterLayout,
-    RasterPaint,
-    SymbolLayout,
-    SymbolPaint
-} from 'mapbox-gl';
+import { FillLayout, FillPaint, LineLayout, LinePaint, SymbolLayout, SymbolPaint } from 'mapbox-gl';
 import { RefObject } from 'react';
 import { ICoordinates } from '../map/mapTypes';
 
@@ -339,8 +330,11 @@ export interface IIconV2WorldMarker extends BaseMarker {
 export interface IImageV2World {
     imageUrl: string;
     coordinates: Array<{ lat: number; lng: number }>;
-    rawPaintAttributes: RasterPaint;
-    rawLayoutAttributes: RasterLayout;
+    nonRotatedCoordinates: Array<{ lat: number; lng: number }>;
+    rotation: number;
+    opacity: number;
+    flipHorizontal: boolean;
+    flipVertical: boolean;
 }
 
 export interface IImageV2WorldMarker extends BaseMarker {
