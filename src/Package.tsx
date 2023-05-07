@@ -31,7 +31,8 @@ const isV2Marker = (marker: IWorldMarker): marker is IWorldV2Marker =>
     marker.elementType === 'v2/line' ||
     marker.elementType === 'v2/icon' ||
     marker.elementType === 'v2/polygon' ||
-    marker.elementType === 'v2/wall';
+    marker.elementType === 'v2/wall' ||
+    marker.elementType === 'v2/image';
 
 const isV1Marker = (marker: IWorldMarker): marker is IWorldV1Marker => !isV2Marker(marker);
 

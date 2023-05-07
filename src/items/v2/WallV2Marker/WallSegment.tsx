@@ -10,6 +10,7 @@ interface Props {
     markerId: string;
     wallProps: WallProps;
     visible: boolean;
+    orderIndex: number;
 }
 
 export interface WallProps {
@@ -33,7 +34,9 @@ export const WallSegment = (props: Props) => {
                 type: 'FeatureCollection',
                 features: closedCoordinates.map((c) => ({
                     type: 'Feature',
-                    properties: {},
+                    properties: {
+                        orderIndex: props.orderIndex
+                    },
                     geometry: {
                         coordinates: [c],
                         type: 'Polygon'

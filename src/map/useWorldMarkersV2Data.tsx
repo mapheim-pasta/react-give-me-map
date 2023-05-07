@@ -14,6 +14,9 @@ export function useWorldMarkersV2Data(markers: IWorldV2Marker[]) {
             if (marker.elementType === 'v2/wall') {
                 return [id + '|layer'];
             }
+            if (marker.elementType === 'v2/image') {
+                return [id + '_click' + '|clickable'];
+            }
         })
         .flat()
         .concat('icons|clickable')
