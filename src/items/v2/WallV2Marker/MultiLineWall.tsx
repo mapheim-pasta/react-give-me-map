@@ -8,6 +8,7 @@ interface Props {
     marker: IWallV2WorldMarker;
     mapRef: RefObject<MapRef>;
     beforeId?: string;
+    orderIndex: number;
 }
 
 const coordinatesToWalls = (coords: ICoordinates[]): [ICoordinates, ICoordinates][] => {
@@ -76,6 +77,7 @@ export const MultiLineWall = (props: Props) => {
                     opacity: markerData.wall.opacity,
                     height: markerData.wall.height
                 }}
+                orderIndex={props.orderIndex}
                 visible={marker.visible ?? false}
             />
             <EmptyLayer id={marker.id + '|last'} beforeId={layerId} />

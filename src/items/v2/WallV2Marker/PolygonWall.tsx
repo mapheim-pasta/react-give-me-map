@@ -11,6 +11,7 @@ interface Props {
     beforeId?: string;
 
     isHighlighted?: boolean;
+    orderIndex: number;
 }
 
 export const PolygonWall = (props: Props): JSX.Element => {
@@ -43,6 +44,7 @@ export const PolygonWall = (props: Props): JSX.Element => {
                 coordinates={[props.marker.elementData.coordinates]}
                 wallProps={markerData.wall}
                 visible={props.marker.visible ?? false}
+                orderIndex={props.orderIndex}
             />
             <EmptyLayer id={layerIds.last} beforeId={beforeIds.last} />
         </>

@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _, { orderBy } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactMapGL, {
     GeolocateControl,
@@ -169,11 +169,16 @@ export const Map = (props: IProps): JSX.Element => {
                     ...props.map.style
                 }}
                 onClick={(e) => {
-                    const features = e.features ?? [];
+                    const hasFeatures = e.features && e.features.length;
 
                     const clickData = { lat: e.lngLat.lat, lng: e.lngLat.lng };
 
-                    if (features.length > 0) {
+                    if (hasFeatures) {
+                        const features = orderBy(
+                            e.features,
+                            (e) => e.properties?.orderIndex,
+                            'desc'
+                        );
                         const feature = features[0];
                         const source = feature.source.split('|')[0];
 

@@ -11,6 +11,7 @@ interface Props {
     beforeId?: string;
 
     isHighlighted?: boolean;
+    orderIndex: number;
 }
 
 export const PolygonV2Marker = (props: Props): JSX.Element => {
@@ -76,7 +77,9 @@ export const PolygonV2Marker = (props: Props): JSX.Element => {
             type="geojson"
             data={{
                 type: 'Feature',
-                properties: {},
+                properties: {
+                    orderIndex: props.orderIndex
+                },
                 geometry: {
                     type: 'Polygon',
                     coordinates: [closedCoordinates.map(({ lng, lat }) => [lng, lat])]

@@ -64,6 +64,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
             {nonIconMarkers.map((marker, index) => {
                 const beforeMarkerId = layerOrder[index - 1];
                 const beforeId = beforeMarkerId ? beforeMarkerId + '|last' : 'icons|last';
+                const orderIndex = nonIconMarkers.length - index;
 
                 switch (marker.elementType) {
                     case 'v2/line':
@@ -73,6 +74,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                                 marker={marker}
                                 beforeId={beforeId}
                                 mapRef={props.mapRef}
+                                orderIndex={orderIndex}
                                 isHighlighted={highlightedMarkerIds.includes(marker.id)}
                             />
                         );
@@ -83,6 +85,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                                 marker={marker}
                                 beforeId={beforeId}
                                 mapRef={props.mapRef}
+                                orderIndex={orderIndex}
                                 isHighlighted={highlightedMarkerIds.includes(marker.id)}
                             />
                         );
@@ -93,6 +96,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                                 marker={marker}
                                 beforeId={beforeId}
                                 mapRef={props.mapRef}
+                                orderIndex={orderIndex}
                                 isHighlighted={highlightedMarkerIds.includes(marker.id)}
                             />
                         );
@@ -103,6 +107,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                                 marker={marker}
                                 beforeId={beforeId}
                                 mapRef={props.mapRef}
+                                orderIndex={orderIndex}
                                 isHighlighted={highlightedMarkerIds.includes(marker.id)}
                             />
                         );

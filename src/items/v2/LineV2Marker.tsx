@@ -12,6 +12,7 @@ interface Props {
     beforeId?: string;
 
     isHighlighted?: boolean;
+    orderIndex: number;
 }
 
 export const LineV2Marker = (props: Props): JSX.Element => {
@@ -66,7 +67,9 @@ export const LineV2Marker = (props: Props): JSX.Element => {
             type="geojson"
             data={{
                 type: 'Feature',
-                properties: {},
+                properties: {
+                    orderIndex: props.orderIndex
+                },
                 geometry: {
                     type: 'LineString',
                     coordinates: data.coordinates.map(({ lng, lat }) => [lng, lat])

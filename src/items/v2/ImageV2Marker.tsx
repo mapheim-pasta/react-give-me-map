@@ -13,6 +13,7 @@ interface Props {
     beforeId?: string;
 
     isHighlighted?: boolean;
+    orderIndex: number;
 }
 
 export const getFlippedCoordinates = (data: {
@@ -94,7 +95,8 @@ export const ImageV2Marker = (props: Props): JSX.Element => {
                 data={{
                     type: 'Feature',
                     properties: {
-                        markerId
+                        markerId,
+                        orderIndex: props.orderIndex
                     },
                     geometry: {
                         type: 'Polygon',
