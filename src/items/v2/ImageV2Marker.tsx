@@ -84,7 +84,8 @@ export const ImageV2Marker = (props: Props): JSX.Element => {
                         visibility: props.marker.visible ? 'visible' : 'none'
                     }}
                     paint={{
-                        'raster-opacity': data.opacity ?? 1
+                        'raster-opacity': data.opacity ?? 1,
+                        'raster-fade-duration': 0
                     }}
                 />
                 <EmptyLayer id={layerIds.last} beforeId={beforeIds.last} />
