@@ -40,21 +40,24 @@ export const ImageV2Marker = (props: Props): JSX.Element => {
     const sourceIdClick = markerId + '_click';
 
     const layerIds = {
-        layer: markerId + '|layer',
         layerClick: sourceIdClick + '|clickable',
+        highlight: sourceIdClick + '|highlight',
+        layer: markerId + '|layer',
         last: markerId + '|last'
     };
 
     const beforeIds = {
-        layer: props.beforeId,
-        layerClick: layerIds.layer,
+        layerClick: props.beforeId,
+        highlight: layerIds.layerClick,
+        layer: layerIds.highlight,
         last: layerIds.layer
     };
 
     useEffect(() => {
         if (props.mapRef.current) {
-            props.mapRef.current.moveLayer(layerIds.layer, beforeIds.layer);
             props.mapRef.current.moveLayer(layerIds.layerClick, beforeIds.layerClick);
+            props.mapRef.current.moveLayer(layerIds.highlight, beforeIds.highlight);
+            props.mapRef.current.moveLayer(layerIds.layer, beforeIds.layer);
             props.mapRef.current.moveLayer(layerIds.last, beforeIds.last);
         }
     }, [props.beforeId, props.mapRef?.current]);
@@ -69,27 +72,6 @@ export const ImageV2Marker = (props: Props): JSX.Element => {
 
     return (
         <>
-            <Source
-                id={markerId}
-                type="image"
-                url={data.imageUrl}
-                coordinates={coordsToArrays(coordinates)}
-            >
-                <Layer
-                    id={layerIds.layer}
-                    beforeId={beforeIds.layer}
-                    type="raster"
-                    source={markerId}
-                    layout={{
-                        visibility: props.marker.visible ? 'visible' : 'none'
-                    }}
-                    paint={{
-                        'raster-opacity': data.opacity ?? 1,
-                        'raster-fade-duration': 0
-                    }}
-                />
-                <EmptyLayer id={layerIds.last} beforeId={beforeIds.last} />
-            </Source>
             <Source
                 id={sourceIdClick}
                 type="geojson"
@@ -114,11 +96,52 @@ export const ImageV2Marker = (props: Props): JSX.Element => {
                         paint={{
                             'fill-opacity': 0
                         }}
+                        layout={{
+                            visibility: props.marker.visible ? 'visible' : 'none'
+                        }}
                     />
                 ) : (
                     <EmptyLayer id={layerIds.layerClick} beforeId={beforeIds.layerClick} />
                 )}
+                {props.isHighlighted ? (
+                    <Layer
+                        id={layerIds.highlight}
+                        beforeId={beforeIds.highlight}
+                        type="fill"
+                        source={sourceIdClick}
+                        layout={{
+                            visibility: props.marker.visible ? 'visible' : 'none'
+                        }}
+                        paint={{
+                            'fill-color': '#F8E71C',
+                            'fill-opacity': 0.1
+                        }}
+                    />
+                ) : (
+                    <EmptyLayer id={layerIds.highlight} beforeId={beforeIds.highlight} />
+                )}
             </Source>
+            <Source
+                id={markerId}
+                type="image"
+                url={data.imageUrl}
+                coordinates={coordsToArrays(coordinates)}
+            >
+                <Layer
+                    id={layerIds.layer}
+                    beforeId={beforeIds.layer}
+                    type="raster"
+                    source={markerId}
+                    layout={{
+                        visibility: props.marker.visible ? 'visible' : 'none'
+                    }}
+                    paint={{
+                        'raster-opacity': data.opacity ?? 1,
+                        'raster-fade-duration': 0
+                    }}
+                />
+            </Source>
+            <EmptyLayer id={layerIds.last} beforeId={beforeIds.last} />
         </>
     );
 };
