@@ -2,12 +2,12 @@ import React from 'react';
 import { Marker } from 'react-map-gl';
 import { useCtx } from '../context/dynamic/provider';
 import { IDirectionWorldMarker } from '../utils/world/worldTypes';
-import { FeatureRoute } from './geojson/FeatureRoute';
 import { S_DotPin } from './PinWorld';
+import { FeatureRoute } from './geojson/FeatureRoute';
 
 interface Props {
     marker: IDirectionWorldMarker;
-    onClick?: () => void;
+    onClick?: (e: MouseEvent) => void;
 }
 
 export const DirectionWorld = (props: Props): JSX.Element => {
@@ -20,7 +20,9 @@ export const DirectionWorld = (props: Props): JSX.Element => {
             <Marker
                 longitude={elementData.start.lng}
                 latitude={elementData.start.lat}
-                onClick={props.onClick}
+                onClick={(e) => {
+                    props.onClick?.(e.originalEvent);
+                }}
                 style={{
                     opacity: state.selectedIds.includes(id) ? 0.25 : 1
                 }}
@@ -43,7 +45,9 @@ export const DirectionWorld = (props: Props): JSX.Element => {
             <Marker
                 longitude={elementData.end.lng}
                 latitude={elementData.end.lat}
-                onClick={props.onClick}
+                onClick={(e) => {
+                    props.onClick?.(e.originalEvent);
+                }}
                 style={{
                     opacity: state.selectedIds.includes(id) ? 0.25 : 1
                 }}

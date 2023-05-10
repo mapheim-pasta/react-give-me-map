@@ -6,7 +6,7 @@ import { PolygonWorld3d } from './geojson/PolygonWorld3d';
 
 interface Props {
     markerId: string;
-    onClick?: () => void;
+    onClick?: (e: React.MouseEvent) => void;
     elementData: IPolygonWorld;
     adjustedScale: number;
 

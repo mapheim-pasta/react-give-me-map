@@ -239,6 +239,7 @@ export const Map = (props: IProps): JSX.Element => {
                             }
                         });
                     }
+                    state.callbacks.onMarkersSelected?.([]);
                     props.map.onClick?.(e);
                 }}
                 onLoad={() => {

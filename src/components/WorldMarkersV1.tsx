@@ -108,9 +108,11 @@ export const WorldMarkersV1 = (props: IProps): JSX.Element => {
                     return null;
                 }
 
-                const onClick = () => {
+                const onClick = (e: React.MouseEvent | MouseEvent) => {
                     if (marker.selectable) {
                         state.callbacks.onMarkersSelected?.([marker.id]);
+                        e.preventDefault();
+                        e.stopPropagation();
                     }
                 };
 

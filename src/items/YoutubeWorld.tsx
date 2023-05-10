@@ -7,7 +7,7 @@ import { IYoutubeWorld } from '../utils/world/worldTypes';
 
 interface Props {
     elementData: IYoutubeWorld;
-    onClick?: () => void;
+    onClick?: (e: React.MouseEvent) => void;
 }
 
 export const YoutubeWorld = (props: Props): JSX.Element => {

@@ -7,7 +7,7 @@ interface Props {
 
     customMarkerBuilders?: CustomMarkerBuilders;
 
-    onClick?: () => void;
+    onClick?: (e: React.MouseEvent) => void;
 }
 
 export const ReactWorld = (props: Props): JSX.Element => {

@@ -6,7 +6,7 @@ import { ILinkWorld } from '../utils/world/worldTypes';
 
 export interface ILinkWorldProps {
     elementData: ILinkWorld;
-    onClick?: () => void;
+    onClick?: (e: React.MouseEvent) => void;
 }
 
 export const LinkWorld = (props: ILinkWorldProps): JSX.Element => {

@@ -8,7 +8,7 @@ interface Props {
     adjustedScale: number;
     onResizeNeeded?: () => void;
 
-    onClick?: () => void;
+    onClick?: (e: React.MouseEvent) => void;
 
     nativeMarkerIdsOrder: string[];
 }

@@ -6,7 +6,7 @@ import { IPinWorld } from '../utils/world/worldTypes';
 
 interface Props {
     elementData: IPinWorld;
-    onClick?: () => void;
+    onClick?: (e: React.MouseEvent) => void;
     pinIconBuilder?: PinIconBuilder;
 }
 

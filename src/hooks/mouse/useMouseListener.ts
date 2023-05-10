@@ -56,7 +56,7 @@ export const useMouseListener = (
     return {
         onMouseUp: (e: MouseEvent) => {
             if (detectAfterClick(e)) {
-                handleSingleClick(e);
+                // handleSingleClick(e);
             }
         },
         onMouseDown

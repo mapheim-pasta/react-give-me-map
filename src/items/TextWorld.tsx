@@ -7,7 +7,7 @@ import { ITextWorld } from '../utils/world/worldTypes';
 export interface ITextWorldProps {
     elementData: ITextWorld;
 
-    onClick?: () => void;
+    onClick?: (e: React.MouseEvent) => void;
 }
 
 export const TextWorld = (props: ITextWorldProps): JSX.Element => {

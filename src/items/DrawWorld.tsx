@@ -2,7 +2,7 @@ import React from 'react';
 import { IDrawWorld } from '../utils/world/worldTypes';
 
 interface Props {
-    onClick?: () => void;
+    onClick?: (e: React.MouseEvent) => void;
     elementData: IDrawWorld;
 }
 
