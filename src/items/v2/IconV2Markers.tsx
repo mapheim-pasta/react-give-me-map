@@ -2,10 +2,12 @@ import { isNil, omitBy } from 'lodash';
 import { SymbolLayout, SymbolPaint } from 'mapbox-gl';
 import React, { RefObject, useEffect, useState } from 'react';
 import { MapRef, Source } from 'react-map-gl';
+import { useUpdateEffect } from '../../hooks/general/useUpdateEffect';
 import { useLoadMapImages } from '../../hooks/map/useLoadMapImages';
+import { GroupMarkerProps } from '../../utils/map/mapTypes';
 import { IIconV2WorldMarker } from '../../utils/world/worldTypes';
 import { EmptyLayer } from './EmptyLayer';
-import { ClusterLayers, GroupMarkerProps } from './IconV2Markers/ClusterLayers';
+import { ClusterLayers } from './IconV2Markers/ClusterLayers';
 import { IconLayers } from './IconV2Markers/IconLayers';
 
 export function getSourceFeaturesForIcons(markers: IIconV2WorldMarker[]) {
@@ -56,6 +58,7 @@ export const IconV2Markers = (props: {
     beforeId?: string;
 }) => {
     const [areImagesLoaded, setAreImagesLoaded] = useState(false);
+    const [temporaryEmptyRender, setTemporaryEmptyRender] = useState(false);
 
     const imageUrls = props.markers.map((marker) => marker.elementData.imageUrl);
 
@@ -95,6 +98,18 @@ export const IconV2Markers = (props: {
         }
     });
 
+    useUpdateEffect(() => {
+        setTimeout(() => {
+            setTemporaryEmptyRender(true);
+        }, 500);
+    }, [props.groupMarkerProps?.clusterMaxZoom, props.groupMarkerProps.clusterRadius]);
+
+    useEffect(() => {
+        if (temporaryEmptyRender) {
+            setTemporaryEmptyRender(false);
+        }
+    }, [temporaryEmptyRender]);
+
     const globalLayoutProps = {
         'text-font': ['Open Sans Bold'],
         'text-allow-overlap': true,
@@ -103,7 +118,7 @@ export const IconV2Markers = (props: {
 
     const sourceFeatures = getSourceFeaturesForIcons(props.markers);
 
-    if (!areImagesLoaded) {
+    if (!areImagesLoaded || temporaryEmptyRender) {
         return (
             <>
                 <EmptyLayer id={layerIds.icons} beforeId={beforeIds.icons} />
@@ -125,8 +140,8 @@ export const IconV2Markers = (props: {
                     features: sourceFeatures
                 }}
                 cluster={true}
-                clusterMaxZoom={10}
-                clusterRadius={50}
+                clusterMaxZoom={props.groupMarkerProps?.clusterMaxZoom ?? 20}
+                clusterRadius={props.groupMarkerProps.clusterRadius ?? 50}
             >
                 {areImagesLoaded && (
                     <>

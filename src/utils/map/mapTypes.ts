@@ -1,4 +1,4 @@
-import { MapProps as OriginalMapProps, MapRef } from 'react-map-gl';
+import { MapRef, MapProps as OriginalMapProps } from 'react-map-gl';
 
 export type IMapProps = OriginalMapProps & {
     onLoad: (mapRef: MapRef | null) => void;
@@ -33,6 +33,9 @@ export enum EMapStyle {
 export interface GroupMarkerProps {
     textColor?: string;
     backgroundColor?: string;
+    clusterMaxZoom?: number;
+
+    clusterRadius?: number;
 }
 
 export interface IMapConfig {

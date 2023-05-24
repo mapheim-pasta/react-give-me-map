@@ -1,10 +1,6 @@
 import React from 'react';
 import { Layer, LayerProps } from 'react-map-gl';
-
-export interface GroupMarkerProps {
-    textColor?: string;
-    backgroundColor?: string;
-}
+import { GroupMarkerProps } from '../../../utils/map/mapTypes';
 
 interface Props {
     groupMarkerStyle: GroupMarkerProps;

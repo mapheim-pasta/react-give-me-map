@@ -1,12 +1,8 @@
 import React, { RefObject, useState } from 'react';
 import { Layer, LayerProps, MapRef, Source } from 'react-map-gl';
 import { useLoadMapImages } from '../hooks/map/useLoadMapImages';
+import { GroupMarkerProps } from '../utils/map/mapTypes';
 import { IImageWorldMarker, IWorldMarker } from '../utils/world/worldTypes';
-
-interface GroupMarkerProps {
-    textColor?: string;
-    backgroundColor?: string;
-}
 
 export const GroupMarkers = (props: {
     mapRef: RefObject<MapRef>;
