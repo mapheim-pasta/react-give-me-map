@@ -10,6 +10,7 @@ export { PolygonWorld } from './items/PolygonWorld';
 export { ReactWorld } from './items/ReactWorld';
 export { TextWorld } from './items/TextWorld';
 export { YoutubeWorld } from './items/YoutubeWorld';
+export { getSegmentsForDirectionMarker } from './items/v2/DirectionV2Marker';
 export { getSourceFeaturesForIcons } from './items/v2/IconV2Markers';
 export { getFlippedCoordinates } from './items/v2/ImageV2Marker';
 export { transformLineCoordinatesIntoPolygonCoordinates } from './items/v2/WallV2Marker/MultiLineWall';

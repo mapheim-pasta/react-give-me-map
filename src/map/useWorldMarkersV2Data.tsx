@@ -18,7 +18,9 @@ export function useWorldMarkersV2Data(markers: IWorldV2Marker[]) {
                 return [id + '_click' + '|clickable'];
             }
             if (marker.elementType === 'direction') {
-                return [id + '|clickable'];
+                return new Array(marker.elementData.coordinates.length - 1)
+                    .fill(0)
+                    .map((_, i) => `${id}|${i}|clickable`);
             }
         })
         .flat()

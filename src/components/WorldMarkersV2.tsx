@@ -115,7 +115,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                     case 'direction':
                         return (
                             <DirectionWorld
-                                key={marker.id}
+                                key={marker.id + '|' + marker.elementData.coordinates.length}
                                 marker={marker}
                                 beforeId={beforeId}
                                 mapRef={props.mapRef}
