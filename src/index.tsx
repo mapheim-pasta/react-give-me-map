@@ -1,4 +1,4 @@
-export { Package as GiveMeMap } from './Package';
+export { Package as GiveMeMap, isV1Marker, isV2Marker } from './Package';
 export { CustomMarkerBuilders, PinIconBuilder } from './context/dynamic/actions';
 export { useLoadMapImages } from './hooks/map/useLoadMapImages';
 export { useContainComputation } from './hooks/mouse/useContainComputation';

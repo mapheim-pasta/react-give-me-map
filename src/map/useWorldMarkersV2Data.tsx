@@ -17,6 +17,9 @@ export function useWorldMarkersV2Data(markers: IWorldV2Marker[]) {
             if (marker.elementType === 'v2/image') {
                 return [id + '_click' + '|clickable'];
             }
+            if (marker.elementType === 'direction') {
+                return [id + '|clickable'];
+            }
         })
         .flat()
         .concat('icons|clickable')

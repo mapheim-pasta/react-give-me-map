@@ -1,6 +1,7 @@
 import { orderBy } from 'lodash';
 import React, { RefObject, useEffect } from 'react';
 import { MapRef, Source } from 'react-map-gl';
+import { DirectionWorld } from '../items/v2/DirectionV2Marker';
 import { IconV2Markers } from '../items/v2/IconV2Markers';
 import { ImageV2Marker } from '../items/v2/ImageV2Marker';
 import { LineV2Marker } from '../items/v2/LineV2Marker';
@@ -111,7 +112,16 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                                 isHighlighted={highlightedMarkerIds.includes(marker.id)}
                             />
                         );
-
+                    case 'direction':
+                        return (
+                            <DirectionWorld
+                                key={marker.id}
+                                marker={marker}
+                                beforeId={beforeId}
+                                mapRef={props.mapRef}
+                                orderIndex={orderIndex}
+                            />
+                        );
                     default:
                         return null;
                 }

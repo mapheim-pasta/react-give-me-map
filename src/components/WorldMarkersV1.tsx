@@ -3,7 +3,6 @@ import React, { CSSProperties, RefObject, useEffect, useState } from 'react';
 import { MapRef, Marker } from 'react-map-gl';
 import { useCtx } from '../context/dynamic/provider';
 import { useStateCallback } from '../hooks/general/useStateCallback';
-import { DirectionWorld } from '../items/DirectionWorld';
 import { DrawWorld } from '../items/DrawWorld';
 import { GroupMarkers } from '../items/GroupMarkers';
 import { ImageWorld } from '../items/ImageWorld';
@@ -227,8 +226,6 @@ export const WorldMarkersV1 = (props: IProps): JSX.Element => {
                     );
                 } else if (marker.elementType === 'route') {
                     return <RouteWorld key={marker.id} marker={marker} />;
-                } else if (marker.elementType === 'direction') {
-                    return <DirectionWorld key={marker.id} marker={marker} onClick={onClick} />;
                 }
             })}
         </>

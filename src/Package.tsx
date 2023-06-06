@@ -27,14 +27,15 @@ interface IProps {
     customBuilders?: CustomBuilders;
 }
 
-const isV2Marker = (marker: IWorldMarker): marker is IWorldV2Marker =>
+export const isV2Marker = (marker: IWorldMarker): marker is IWorldV2Marker =>
     marker.elementType === 'v2/line' ||
     marker.elementType === 'v2/icon' ||
     marker.elementType === 'v2/polygon' ||
     marker.elementType === 'v2/wall' ||
-    marker.elementType === 'v2/image';
+    marker.elementType === 'v2/image' ||
+    marker.elementType === 'direction';
 
-const isV1Marker = (marker: IWorldMarker): marker is IWorldV1Marker => !isV2Marker(marker);
+export const isV1Marker = (marker: IWorldMarker): marker is IWorldV1Marker => !isV2Marker(marker);
 
 export const Package = (props: IProps): JSX.Element => {
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -51,17 +52,8 @@ export const Package = (props: IProps): JSX.Element => {
     const v2Markers = markers.filter<IWorldV2Marker>(isV2Marker);
 
     for (const marker of v1Markers) {
-        if (marker.elementType === 'direction') {
-            if (!marker.refs) {
-                // first is "start"
-                // TODO: 1...n-1 will be stops on the way
-                // last is "end"
-                marker.refs = new Array(2).fill(0).map(() => React.createRef<HTMLDivElement>());
-            }
-        } else {
-            if (!marker.ref) {
-                marker.ref = React.createRef<HTMLDivElement>();
-            }
+        if (!marker.ref) {
+            marker.ref = React.createRef<HTMLDivElement>();
         }
     }
 

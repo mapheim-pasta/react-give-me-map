@@ -10,11 +10,16 @@ export type WorldV1Elements =
     | 'draw'
     | 'pin'
     | 'polygon'
-    | 'direction'
     | 'youtube'
     | 'link';
 
-export type WorldV2Elements = 'v2/line' | 'v2/polygon' | 'v2/icon' | 'v2/wall' | 'v2/image';
+export type WorldV2Elements =
+    | 'v2/line'
+    | 'v2/polygon'
+    | 'v2/icon'
+    | 'v2/wall'
+    | 'v2/image'
+    | 'direction';
 
 export type WorldElements = WorldV1Elements | WorldV2Elements;
 
@@ -205,13 +210,13 @@ export interface IPolygonWorldMarker extends BaseMarker {
 }
 
 interface IDirectionWorld {
-    start: ICoordinates;
-    end: ICoordinates;
+    // start, middle, stop, used for dragging the right path
     coordinates: ICoordinates[];
+    // used for rendering
+    path: ICoordinates[];
     transport: Transport;
-    lineColor?: string;
-    lineOpacity?: number;
-    dropShadowColor?: string;
+    color?: string;
+    opacity?: number;
 }
 
 export interface IDirectionWorldMarker extends BaseMarker {
@@ -350,7 +355,6 @@ export type IWorldV1Marker =
     | IDrawWorldMarker
     | IPinWorldMarker
     | IPolygonWorldMarker
-    | IDirectionWorldMarker
     | IYoutubeWorldMarker
     | ILinkWorldMarker
     | IReactWorldMarker;
@@ -360,6 +364,7 @@ export type IWorldV2Marker =
     | IPolygonV2WorldMarker
     | IIconV2WorldMarker
     | IWallV2WorldMarker
-    | IImageV2WorldMarker;
+    | IImageV2WorldMarker
+    | IDirectionWorldMarker;
 
 export type IWorldMarker = IWorldV1Marker | IWorldV2Marker;
