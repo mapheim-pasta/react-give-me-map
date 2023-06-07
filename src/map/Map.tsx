@@ -114,7 +114,7 @@ export const Map = (props: IProps): JSX.Element => {
 
             registerClickEvents(interactiveLayerIds);
 
-            props.map.onLoad(mapRef);
+            props.map.onLoad?.(mapRef);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loaded]);
@@ -257,7 +257,6 @@ export const Map = (props: IProps): JSX.Element => {
                         <WorldMarkersV1
                             mapRef={props.mapRef}
                             markers={props.v1Markers}
-                            zoom={props.map.zoom ?? 1}
                             selectableMarkersStyle={props.selectableMarkersStyle}
                             highlightedMarkers={props.highlightedMarkers}
                             highlightedMarkersStyle={props.highlightedMarkersStyle}

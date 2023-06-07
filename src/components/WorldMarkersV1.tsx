@@ -21,7 +21,6 @@ import { getInScale } from '../utils/world/worldUtils';
 
 export interface IProps {
     markers: IWorldV1Marker[];
-    zoom: number;
     selectableMarkersStyle?: MarkerStyle;
     highlightedMarkers: string[];
     highlightedMarkersStyle?: MarkerStyle;
@@ -100,7 +99,11 @@ export const WorldMarkersV1 = (props: IProps): JSX.Element => {
 
             {[...nonGroupNativeMarkers, ...nonGroupNonNativeMarkers].map((marker: IWorldMarker) => {
                 const adjustedScale = marker.scalable
-                    ? getInScale(marker.scale as number, ORIGIN_ZOOM, props.zoom)
+                    ? getInScale(
+                          marker.scale as number,
+                          ORIGIN_ZOOM,
+                          props.mapRef.current?.getZoom() ?? 1
+                      )
                     : marker.scale ?? 1;
 
                 if (!marker.visible) {
