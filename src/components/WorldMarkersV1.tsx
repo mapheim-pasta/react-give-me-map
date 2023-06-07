@@ -1,4 +1,5 @@
 import { orderBy } from 'lodash';
+import mapboxgl from 'mapbox-gl';
 import React, { CSSProperties, RefObject, useEffect, useState } from 'react';
 import { MapRef, Marker } from 'react-map-gl';
 import { useCtx } from '../context/dynamic/provider';
@@ -33,6 +34,28 @@ export const WorldMarkersV1 = (props: IProps): JSX.Element => {
     const [markers, setMarkers] = useStateCallback<IWorldMarker[] | null>(null);
     const [order, setOrder] = useState<number[]>([]);
     const { state } = useCtx();
+
+    useEffect(() => {
+        function onZoom(e: mapboxgl.MapboxEvent<MouseEvent> & mapboxgl.EventData) {
+            const newZoom = props.mapRef?.current?.getZoom() ?? 1;
+            props.markers?.forEach((marker) => {
+                const adjustedScale = marker.scalable
+                    ? getInScale(marker.scale as number, ORIGIN_ZOOM, newZoom)
+                    : marker.scale ?? 1;
+                if ('ref' in marker) {
+                    if (marker.ref?.current) {
+                        marker.ref.current.style.transform = `scale(${adjustedScale}) rotate(${marker.rotate}deg)`;
+                    }
+                }
+            });
+        }
+
+        props.mapRef?.current?.on('zoom', onZoom);
+
+        return () => {
+            props.mapRef?.current?.off('zoom', onZoom);
+        };
+    }, [props.mapRef, props.markers, props.mapRef.current]);
 
     useEffect(() => {
         setMarkers(props.markers);
@@ -97,7 +120,11 @@ export const WorldMarkersV1 = (props: IProps): JSX.Element => {
                 groupMarkerProps={props.groupMarkerProps}
             />
 
-            {[...nonGroupNativeMarkers, ...nonGroupNonNativeMarkers].map((marker: IWorldMarker) => {
+            {[...nonGroupNativeMarkers, ...nonGroupNonNativeMarkers].map((marker) => {
+                if (!marker.visible) {
+                    return null;
+                }
+
                 const adjustedScale = marker.scalable
                     ? getInScale(
                           marker.scale as number,
@@ -105,10 +132,6 @@ export const WorldMarkersV1 = (props: IProps): JSX.Element => {
                           props.mapRef.current?.getZoom() ?? 1
                       )
                     : marker.scale ?? 1;
-
-                if (!marker.visible) {
-                    return null;
-                }
 
                 const onClick = (e: React.MouseEvent | MouseEvent) => {
                     if (marker.selectable) {
@@ -131,7 +154,7 @@ export const WorldMarkersV1 = (props: IProps): JSX.Element => {
                             <div
                                 ref={marker.ref}
                                 style={{
-                                    transform: `rotate(${marker.rotate}deg)`,
+                                    transform: `scale(${adjustedScale}) rotate(${marker.rotate}deg)`,
                                     pointerEvents: marker.selectable ? 'all' : 'none',
                                     cursor: marker.selectable ? 'pointer' : 'inherit',
                                     ...(marker.selectable
@@ -146,7 +169,7 @@ export const WorldMarkersV1 = (props: IProps): JSX.Element => {
                                     markerId={marker.id}
                                     nativeMarkerIdsOrder={nativeMarkerIdsOrder}
                                     elementData={marker.elementData}
-                                    adjustedScale={adjustedScale}
+                                    adjustedScale={1}
                                     onClick={onClick}
                                 />
                             </div>
