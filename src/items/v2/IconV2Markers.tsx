@@ -19,7 +19,7 @@ export function getSourceFeaturesForIcons(markers: IIconV2WorldMarker[]) {
 
                 const paintAttributes: SymbolPaint = {
                     'text-color': data.textColor,
-                    'text-halo-blur': 0,
+                    'text-halo-blur': 1,
                     'text-halo-color': data.textHaloColor,
                     'text-halo-width': data.textHaloWidth,
                     ...data.rawPaintAttributes
