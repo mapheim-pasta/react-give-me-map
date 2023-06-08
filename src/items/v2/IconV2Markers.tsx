@@ -30,7 +30,7 @@ export function getSourceFeaturesForIcons(markers: IIconV2WorldMarker[]) {
                     'text-size': data.textSize,
                     'icon-image': data.imageUrl,
                     'icon-size': data.imageSize,
-                    'text-offset': [0, 0.2],
+                    'text-offset': [0, 0.3],
                     'icon-anchor': 'bottom',
                     'text-anchor': 'top',
                     ...data.rawLayoutAttributes
