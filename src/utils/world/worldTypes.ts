@@ -322,6 +322,8 @@ export interface IIconV2World {
     imageSize: number;
     textSize: number;
     textColor: string;
+    textHaloColor: string;
+    textHaloWidth: number;
     rawPaintAttributes: SymbolPaint;
     rawLayoutAttributes: SymbolLayout;
 }

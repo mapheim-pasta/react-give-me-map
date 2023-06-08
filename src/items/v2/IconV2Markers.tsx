@@ -19,6 +19,9 @@ export function getSourceFeaturesForIcons(markers: IIconV2WorldMarker[]) {
 
                 const paintAttributes: SymbolPaint = {
                     'text-color': data.textColor,
+                    'text-halo-blur': 0,
+                    'text-halo-color': data.textHaloColor,
+                    'text-halo-width': data.textHaloWidth,
                     ...data.rawPaintAttributes
                 };
 
@@ -27,6 +30,7 @@ export function getSourceFeaturesForIcons(markers: IIconV2WorldMarker[]) {
                     'text-size': data.textSize,
                     'icon-image': data.imageUrl,
                     'icon-size': data.imageSize,
+                    'text-offset': [0, 0.2],
                     'icon-anchor': 'bottom',
                     'text-anchor': 'top',
                     ...data.rawLayoutAttributes
