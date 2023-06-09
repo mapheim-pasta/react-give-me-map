@@ -9,6 +9,7 @@ import { IIconV2WorldMarker } from '../../utils/world/worldTypes';
 import { EmptyLayer } from './EmptyLayer';
 import { ClusterLayers } from './IconV2Markers/ClusterLayers';
 import { IconLayers } from './IconV2Markers/IconLayers';
+import { automoveMarkers } from './automoveMarkers';
 
 export function getSourceFeaturesForIcons(markers: IIconV2WorldMarker[]) {
     return (
@@ -64,6 +65,7 @@ export const IconV2Markers = (props: {
     const [areImagesLoaded, setAreImagesLoaded] = useState(false);
     const [temporaryEmptyRender, setTemporaryEmptyRender] = useState(false);
 
+    const mapRef = props.mapRef.current;
     const imageUrls = props.markers.map((marker) => marker.elementData.imageUrl);
 
     const layerIds = {
@@ -83,12 +85,9 @@ export const IconV2Markers = (props: {
     };
 
     useEffect(() => {
-        if (props.mapRef.current && areImagesLoaded) {
-            props.mapRef.current.moveLayer(layerIds.icons, beforeIds.icons);
-            props.mapRef.current.moveLayer(layerIds.iconsClickable, beforeIds.iconsClickable);
-            props.mapRef.current.moveLayer(layerIds.clusterCount, beforeIds.clusterCount);
-            props.mapRef.current.moveLayer(layerIds.cluster, beforeIds.cluster);
-            props.mapRef.current.moveLayer(layerIds.last, beforeIds.last);
+        if (mapRef && areImagesLoaded) {
+            const mapRef = props.mapRef.current;
+            automoveMarkers({ layerIds, beforeIds, mapRef });
         }
     }, [props.beforeId, props.mapRef?.current]);
 

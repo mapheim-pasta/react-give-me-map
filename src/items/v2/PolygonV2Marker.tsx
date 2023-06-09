@@ -4,6 +4,7 @@ import React, { RefObject, useEffect } from 'react';
 import { Layer, MapRef, Source } from 'react-map-gl';
 import { IPolygonV2WorldMarker } from '../../utils/world/worldTypes';
 import { EmptyLayer } from './EmptyLayer';
+import { automoveMarkers } from './automoveMarkers';
 
 interface Props {
     mapRef: RefObject<MapRef>;
@@ -61,14 +62,8 @@ export const PolygonV2Marker = (props: Props): JSX.Element => {
     };
 
     useEffect(() => {
-        if (props.mapRef.current) {
-            props.mapRef.current.moveLayer(layerIds.layer, beforeIds.layer);
-            props.mapRef.current.moveLayer(layerIds.layerClick, beforeIds.layerClick);
-            props.mapRef.current.moveLayer(layerIds.border, beforeIds.border);
-            props.mapRef.current.moveLayer(layerIds.borderClick, beforeIds.borderClick);
-            props.mapRef.current.moveLayer(layerIds.highlight, beforeIds.highlight);
-            props.mapRef.current.moveLayer(layerIds.last, beforeIds.last);
-        }
+        const mapRef = props.mapRef.current;
+        automoveMarkers({ layerIds, beforeIds, mapRef });
     }, [props.beforeId, props.mapRef?.current]);
 
     return (

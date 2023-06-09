@@ -3,6 +3,7 @@ import { MapRef } from 'react-map-gl';
 import { ICoordinates } from '../../../utils/map/mapTypes';
 import { IWallV2WorldMarker } from '../../../utils/world/worldTypes';
 import { EmptyLayer } from '../EmptyLayer';
+import { automoveMarkers } from '../automoveMarkers';
 import { WallSegment } from './WallSegment';
 interface Props {
     marker: IWallV2WorldMarker;
@@ -48,20 +49,24 @@ export const MultiLineWall = (props: Props) => {
     const sourceId = props.marker.id;
     const layerId = `${props.marker.id}|layer`;
 
+    const layerIds = {
+        layer: `${props.marker.id}|layer`,
+        last: `${props.marker.id}|last`
+    };
+
+    const beforeIds = {
+        layer: props.beforeId,
+        last: layerIds.layer
+    };
+
     const walls = coordinatesToWalls(marker.elementData.coordinates);
     const rectangleCoords = walls.map(([start, end]) =>
         transformLineCoordinatesIntoPolygonCoordinates(start, end, marker.elementData.line.width)
     );
 
     useEffect(() => {
-        if (!props.mapRef.current) {
-            return;
-        }
-
-        if (props.mapRef.current) {
-            props.mapRef.current.moveLayer(layerId, props.beforeId);
-            props.mapRef.current.moveLayer(marker.id + '|last', layerId);
-        }
+        const mapRef = props.mapRef.current;
+        automoveMarkers({ layerIds, beforeIds, mapRef });
     }, [props.beforeId, props.mapRef?.current]);
 
     return (

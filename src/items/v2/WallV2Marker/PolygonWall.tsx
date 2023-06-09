@@ -3,6 +3,7 @@ import { MapRef } from 'react-map-gl';
 import { IWallV2WorldMarker } from '../../../utils/world/worldTypes';
 import { EmptyLayer } from '../EmptyLayer';
 import { WallSegment } from '../WallV2Marker/WallSegment';
+import { automoveMarkers } from '../automoveMarkers';
 
 interface Props {
     mapRef: RefObject<MapRef>;
@@ -28,10 +29,8 @@ export const PolygonWall = (props: Props): JSX.Element => {
     };
 
     useEffect(() => {
-        if (props.mapRef.current) {
-            props.mapRef.current.moveLayer(layerIds.layer, beforeIds.layer);
-            props.mapRef.current.moveLayer(layerIds.last, beforeIds.last);
-        }
+        const mapRef = props.mapRef.current;
+        automoveMarkers({ layerIds, beforeIds, mapRef });
     }, [props.beforeId, props.mapRef?.current]);
 
     return (

@@ -107,7 +107,8 @@ export const DirectionWorld = (props: Props): JSX.Element => {
                             }}
                             layout={{
                                 'line-cap': 'round',
-                                'line-join': 'round'
+                                'line-join': 'round',
+                                visibility: props.marker.visible ? 'visible' : 'none'
                             }}
                         />
                         <Layer
@@ -122,6 +123,9 @@ export const DirectionWorld = (props: Props): JSX.Element => {
                                 'line-color': 'black',
                                 'line-width': extraWidth,
                                 'line-opacity': 0
+                            }}
+                            layout={{
+                                visibility: props.marker.visible ? 'visible' : 'none'
                             }}
                         />
                         <EmptyLayer id={layerIds[i].last} beforeId={beforeIds[i].last} />

@@ -5,6 +5,7 @@ import { coordsToArrays } from '../../utils/geojson/coordsToArrays';
 import { ICoordinates } from '../../utils/map/mapTypes';
 import { IImageV2WorldMarker } from '../../utils/world/worldTypes';
 import { EmptyLayer } from './EmptyLayer';
+import { automoveMarkers } from './automoveMarkers';
 
 interface Props {
     mapRef: RefObject<MapRef>;
@@ -54,12 +55,8 @@ export const ImageV2Marker = (props: Props): JSX.Element => {
     };
 
     useEffect(() => {
-        if (props.mapRef.current) {
-            props.mapRef.current.moveLayer(layerIds.layerClick, beforeIds.layerClick);
-            props.mapRef.current.moveLayer(layerIds.highlight, beforeIds.highlight);
-            props.mapRef.current.moveLayer(layerIds.layer, beforeIds.layer);
-            props.mapRef.current.moveLayer(layerIds.last, beforeIds.last);
-        }
+        const mapRef = props.mapRef.current;
+        automoveMarkers({ layerIds, beforeIds, mapRef });
     }, [props.beforeId, props.mapRef?.current]);
 
     const coordinates = getFlippedCoordinates({ ...data });
