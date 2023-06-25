@@ -36,6 +36,7 @@ export interface GroupMarkerProps {
     clusterMaxZoom?: number;
 
     clusterRadius?: number;
+    autoHideIcons?: boolean;
 }
 
 export interface IMapConfig {

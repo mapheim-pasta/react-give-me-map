@@ -113,10 +113,20 @@ export const IconV2Markers = (props: {
         }
     }, [temporaryEmptyRender]);
 
+    const autoHideIconsProps = {
+        'text-allow-overlap': false,
+        'icon-allow-overlap': false,
+        'text-optional': true,
+        'icon-optional': false,
+        'icon-padding': 2,
+        'text-padding': 2
+    };
+
     const globalLayoutProps = {
         'text-font': ['Open Sans Bold'],
         'text-allow-overlap': true,
-        'icon-allow-overlap': true
+        'icon-allow-overlap': true,
+        ...(props.groupMarkerProps?.autoHideIcons ? autoHideIconsProps : {})
     };
 
     const sourceFeatures = getSourceFeaturesForIcons(props.markers);
