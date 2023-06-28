@@ -9,6 +9,8 @@ interface Props {
 export const DrawWorld = (props: Props): JSX.Element => {
     const elementData = props.elementData as IDrawWorld;
 
+    const color = '#' + elementData.color.replace('#', '');
+
     return (
         <svg
             style={{
@@ -20,13 +22,13 @@ export const DrawWorld = (props: Props): JSX.Element => {
         >
             <path
                 style={{
-                    stroke: '#' + elementData.color,
+                    stroke: color,
                     strokeWidth: elementData.strokeWidth,
                     strokeLinejoin: 'round',
                     strokeLinecap: 'round',
                     opacity: elementData.opacity / 100,
                     pointerEvents: 'painted',
-                    fill: elementData?.fill ? '#' + elementData.color : 'none',
+                    fill: elementData?.fill ? color : 'none',
                     fillOpacity: 1
                 }}
                 onClick={props.onClick}

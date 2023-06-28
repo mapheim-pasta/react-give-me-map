@@ -115,10 +115,7 @@ export const IconV2Markers = (props: {
 
     const autoHideIconsProps = {
         'text-allow-overlap': false,
-        'icon-allow-overlap': false,
         'text-optional': true,
-        'icon-optional': false,
-        'icon-padding': 2,
         'text-padding': 2
     };
 
