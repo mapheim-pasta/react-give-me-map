@@ -326,6 +326,7 @@ export interface IIconV2World {
     textHaloWidth: number;
     generatedBackgroundColor: string;
     generatedIconUrl: string;
+    generatedImageUrl: string;
     generatedEmoji: string;
     generatedIconColor: string;
     rawPaintAttributes: SymbolPaint;
