@@ -324,6 +324,10 @@ export interface IIconV2World {
     textColor: string;
     textHaloColor: string;
     textHaloWidth: number;
+    generatedBackgroundColor: string;
+    generatedIconUrl: string;
+    generatedEmoji: string;
+    generatedIconColor: string;
     rawPaintAttributes: SymbolPaint;
     rawLayoutAttributes: SymbolLayout;
 }

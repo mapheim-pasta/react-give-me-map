@@ -11,12 +11,18 @@ export interface ITextWorldProps {
 }
 
 export const TextWorld = (props: ITextWorldProps): JSX.Element => {
+    const color = '#' + (props.elementData.color?.replace('#', '') ?? EWorldColor.WHITE);
+    const textColor =
+        '#' +
+        (props.elementData.textColor?.replace('#', '') ??
+            props.elementData.color?.replace('#', ''));
+
     return (
         <S_TextWorld
             fill={props.elementData.fill.toString()}
             width={300 + props.elementData.width * 100}
-            color={props.elementData.color}
-            textColor={props.elementData.textColor}
+            color={color}
+            textColor={textColor}
             textShadow={props.elementData.textShadow}
             borderRadiusPx={props.elementData.borderRadiusPx}
             borderSize={props.elementData.borderSize}
@@ -50,17 +56,17 @@ const S_TextWorld = styled.div<{
             border-radius: ${props.borderRadiusPx ?? TEXT_BORDER_RADIUS}px;
             border-width: ${props.borderSize}px;
             border-style: solid;
-            border-color: #${props.borderColor};
+            border-color: ${props.borderColor};
             box-shadow: ${props.dropShadowCombined};
         `;
     }}
     ${(props) => {
         if (props.fill === 'true') {
             return css`
-                background-color: ${(props: { color: string }) => '#' + props.color};
+                background-color: ${(props: { color: string }) => props.color};
                 padding: 20px;
                 > pre {
-                    color: #${props.textColor ?? EWorldColor.WHITE};
+                    color: ${props.textColor};
                     text-shadow: ${props.textShadow ?? '1px 1px 2px rgba(0, 0, 0, 0.5)'};
                 }
             `;
@@ -68,7 +74,7 @@ const S_TextWorld = styled.div<{
             return css`
                 padding: 5px;
                 > pre {
-                    color: #${props.textColor ?? props.color};
+                    color: ${props.textColor ?? props.color};
                     text-shadow: ${props.textShadow ?? '1px 1px 2px rgba(0, 0, 0, 0.25)'};
                 }
             `;
