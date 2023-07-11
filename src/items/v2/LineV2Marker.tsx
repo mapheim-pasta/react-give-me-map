@@ -86,7 +86,11 @@ export const LineV2Marker = (props: Props): JSX.Element => {
                     beforeId={beforeIds.layerClick}
                     type="line"
                     source={markerId}
-                    paint={{ ...omitBy(paintAttributes, isNil), 'line-opacity': 0 }}
+                    paint={{
+                        ...omitBy(paintAttributes, isNil),
+                        'line-opacity': 0,
+                        'line-width': Math.max(data.width, 30)
+                    }}
                     layout={{ ...omitBy(layoutAttributes, isNil) }}
                 />
             ) : (
