@@ -63,7 +63,7 @@ export const ImageV2Marker = (props: Props): JSX.Element => {
     const closedCoordinates = [...coordinates, coordinates[0]].filter(Boolean);
 
     if (coordinates.length !== 4 || uniqWith(coordinates, isEqual).length !== 4) {
-        console.log('Cannot render Image card - invalid coordinates', coordinates);
+        console.log('Cannot render Image card - invalid coordinates', markerId, coordinates);
         return (
             <>
                 <EmptyLayer id={layerIds.layer} beforeId={beforeIds.layer} />
