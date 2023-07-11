@@ -24,7 +24,7 @@ export const getSegmentsForDirectionMarker = (
         const waypoint = coordinates[segments.length + 1];
         currentSegment.push(point);
 
-        if (point.lat === waypoint.lat && point.lng && waypoint.lng) {
+        if (!waypoint || (point.lat === waypoint.lat && point.lng && waypoint.lng)) {
             segments.push(currentSegment);
             currentSegment = [point];
         }
