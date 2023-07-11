@@ -11,18 +11,22 @@ import { ClusterLayers } from './IconV2Markers/ClusterLayers';
 import { IconLayers } from './IconV2Markers/IconLayers';
 import { automoveMarkers } from './automoveMarkers';
 
-export function getSourceFeaturesForIcons(markers: IIconV2WorldMarker[]) {
+export function getSourceFeaturesForIcons(
+    markers: IIconV2WorldMarker[],
+    highlightedMarkerIds?: string[]
+) {
     return (
         markers
             .filter((e) => e.visible)
             .map((marker, i) => {
                 const data = marker.elementData;
+                const isHighlighted = highlightedMarkerIds?.includes(marker.id);
 
                 const paintAttributes: SymbolPaint = {
                     'text-color': data.textColor,
-                    'text-halo-blur': 1,
-                    'text-halo-color': data.textHaloColor,
-                    'text-halo-width': data.textHaloWidth,
+                    'text-halo-blur': isHighlighted ? 2 : 1,
+                    'text-halo-color': isHighlighted ? '#F8E71C' : data.textHaloColor,
+                    'text-halo-width': isHighlighted ? 1 : data.textHaloWidth,
                     ...data.rawPaintAttributes
                 };
 
@@ -61,6 +65,7 @@ export const IconV2Markers = (props: {
     markers: IIconV2WorldMarker[];
     groupMarkerProps: GroupMarkerProps;
     beforeId?: string;
+    highlightedMarkerIds?: string[];
 }) => {
     const [areImagesLoaded, setAreImagesLoaded] = useState(false);
     const [temporaryEmptyRender, setTemporaryEmptyRender] = useState(false);
@@ -128,7 +133,7 @@ export const IconV2Markers = (props: {
         ...(props.groupMarkerProps?.autoHideIcons ? autoHideIconsProps : {})
     };
 
-    const sourceFeatures = getSourceFeaturesForIcons(props.markers);
+    const sourceFeatures = getSourceFeaturesForIcons(props.markers, props.highlightedMarkerIds);
 
     if (!areImagesLoaded || temporaryEmptyRender) {
         return (

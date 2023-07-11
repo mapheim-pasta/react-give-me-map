@@ -61,6 +61,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                 mapRef={props.mapRef}
                 beforeId={undefined}
                 groupMarkerProps={props.groupMarkerProps}
+                highlightedMarkerIds={props.highlightedMarkerIds}
             />
             {nonIconMarkers.map((marker, index) => {
                 const beforeMarkerId = layerOrder[index - 1];
