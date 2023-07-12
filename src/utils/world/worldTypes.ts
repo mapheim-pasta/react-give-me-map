@@ -347,6 +347,8 @@ export interface IImageV2World {
     opacity: number;
     flipHorizontal: boolean;
     flipVertical: boolean;
+    generatedImageUrl: string;
+    generatedBackgroundColor: string;
 }
 
 export interface IImageV2WorldMarker extends BaseMarker {
