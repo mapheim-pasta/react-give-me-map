@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react';
+import React, { RefObject, useEffect } from 'react';
 import { Layer, MapRef, Source } from 'react-map-gl';
 import { coordsToArrays } from '../../utils/geojson/coordsToArrays';
 import { ICoordinates } from '../../utils/map/mapTypes';
@@ -53,15 +53,15 @@ export const DirectionWorld = (props: Props): JSX.Element => {
 
     const width = elementData.width ?? 5;
 
-    // useEffect(() => {
-    //     segments.forEach((_, i) => {
-    //         if (props.mapRef.current) {
-    //             props.mapRef.current.moveLayer(layerIds[i].layer, beforeIds[i].layer);
-    //             props.mapRef.current.moveLayer(layerIds[i].layerClick, beforeIds[i].layerClick);
-    //             props.mapRef.current.moveLayer(layerIds[i].last, beforeIds[i].last);
-    //         }
-    //     });
-    // }, [props.beforeId, props.mapRef?.current]);
+    useEffect(() => {
+        segments.forEach((_, i) => {
+            if (props.mapRef.current) {
+                props.mapRef.current.moveLayer(layerIds[i].layer, beforeIds[i].layer);
+                props.mapRef.current.moveLayer(layerIds[i].layerClick, beforeIds[i].layerClick);
+                props.mapRef.current.moveLayer(layerIds[i].last, beforeIds[i].last);
+            }
+        });
+    }, [props.beforeId, props.mapRef?.current]);
 
     if (elementData.coordinates.length < 2) {
         return <></>;
