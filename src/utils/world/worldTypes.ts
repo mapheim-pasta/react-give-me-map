@@ -349,6 +349,9 @@ export interface IImageV2World {
     flipVertical: boolean;
     generatedImageUrl: string;
     generatedBackgroundColor: string;
+    generatedIconColor: string;
+    generatedIconUrl: string;
+    generatedEmoji: string;
 }
 
 export interface IImageV2WorldMarker extends BaseMarker {
