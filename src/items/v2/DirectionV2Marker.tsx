@@ -2,9 +2,7 @@ import React, { RefObject } from 'react';
 import { Layer, MapRef, Source } from 'react-map-gl';
 import { coordsToArrays } from '../../utils/geojson/coordsToArrays';
 import { ICoordinates } from '../../utils/map/mapTypes';
-import { MAX_ZOOM, ROUTE_LINE_WIDTH } from '../../utils/world/worldConfig';
 import { IDirectionWorldMarker } from '../../utils/world/worldTypes';
-import { getInScaleReverse } from '../../utils/world/worldUtils';
 import { EmptyLayer } from './EmptyLayer';
 interface Props {
     mapRef: RefObject<MapRef>;
@@ -37,14 +35,6 @@ export const DirectionWorld = (props: Props): JSX.Element => {
     const elementData = props.marker.elementData;
     const markerId = props.marker.id;
 
-    let width = getInScaleReverse(
-        ROUTE_LINE_WIDTH,
-        props.mapRef?.current?.getZoom() ?? 1,
-        MAX_ZOOM
-    );
-    const extraWidth = width < 40 ? 40 : width;
-    width = width < 5 ? 5 : width;
-
     const segments = getSegmentsForDirectionMarker(elementData.coordinates, elementData.path);
 
     const sourceIds = segments.map((_, i) => `${markerId}|${i}`);
@@ -60,6 +50,8 @@ export const DirectionWorld = (props: Props): JSX.Element => {
         layerClick: layerIds[i].layer,
         last: layerIds[i].layerClick
     }));
+
+    const width = elementData.width ?? 5;
 
     // useEffect(() => {
     //     segments.forEach((_, i) => {
@@ -121,7 +113,7 @@ export const DirectionWorld = (props: Props): JSX.Element => {
                             }}
                             paint={{
                                 'line-color': 'black',
-                                'line-width': extraWidth,
+                                'line-width': Math.max(width, 30),
                                 'line-opacity': 0
                             }}
                             layout={{

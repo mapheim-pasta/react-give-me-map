@@ -217,6 +217,7 @@ interface IDirectionWorld {
     transport: Transport;
     color?: string;
     opacity?: number;
+    width?: number;
 }
 
 export interface IDirectionWorldMarker extends BaseMarker {
