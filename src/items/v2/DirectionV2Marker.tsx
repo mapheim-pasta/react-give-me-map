@@ -4,6 +4,7 @@ import { coordsToArrays } from '../../utils/geojson/coordsToArrays';
 import { ICoordinates } from '../../utils/map/mapTypes';
 import { IDirectionWorldMarker } from '../../utils/world/worldTypes';
 import { EmptyLayer } from './EmptyLayer';
+import { automoveMarkers } from './automoveMarkers';
 interface Props {
     mapRef: RefObject<MapRef>;
     marker: IDirectionWorldMarker;
@@ -32,6 +33,7 @@ export const getSegmentsForDirectionMarker = (
 };
 
 export const DirectionWorld = (props: Props): JSX.Element => {
+    const mapRef = props.mapRef;
     const elementData = props.marker.elementData;
     const markerId = props.marker.id;
 
@@ -54,12 +56,16 @@ export const DirectionWorld = (props: Props): JSX.Element => {
     const width = elementData.width ?? 5;
 
     useEffect(() => {
+        if (!props.mapRef.current) {
+            return;
+        }
+
         segments.forEach((_, i) => {
-            if (props.mapRef.current) {
-                props.mapRef.current.moveLayer(layerIds[i].layer, beforeIds[i].layer);
-                props.mapRef.current.moveLayer(layerIds[i].layerClick, beforeIds[i].layerClick);
-                props.mapRef.current.moveLayer(layerIds[i].last, beforeIds[i].last);
-            }
+            automoveMarkers({
+                mapRef: mapRef.current,
+                layerIds: layerIds[i],
+                beforeIds: beforeIds[i]
+            });
         });
     }, [props.beforeId, props.mapRef?.current]);
 
