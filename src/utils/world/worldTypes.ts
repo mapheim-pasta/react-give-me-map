@@ -57,6 +57,7 @@ interface BaseMarker {
     rotate?: number;
     order?: number;
     visible?: boolean;
+    storyIds?: string[];
 
     gptContextId?: string;
     isGroupable?: boolean;
