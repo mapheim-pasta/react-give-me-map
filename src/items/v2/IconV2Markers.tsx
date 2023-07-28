@@ -72,7 +72,7 @@ export const IconV2Markers = (props: {
     const mapRef = props.mapRef.current;
     const imageUrls = props.markers
         .map((marker) => marker.elementData.imageUrl)
-        .filter((e) => !e.startsWith('temp-icon'));
+        .filter((e) => e && !e.startsWith('temp-icon'));
 
     const layerIds = {
         icons: 'icons|layer',
