@@ -19,7 +19,8 @@ export type WorldV2Elements =
     | 'v2/icon'
     | 'v2/wall'
     | 'v2/image'
-    | 'direction';
+    | 'direction'
+    | 'v2/text';
 
 export type WorldElements = WorldV1Elements | WorldV2Elements;
 
@@ -40,6 +41,7 @@ export type ICombinedV2World =
     | IPolygonV2World
     | IIconV2World
     | IWallV2World
+    | ITextV2World
     | IImageV2World;
 
 export type ICombinedWorld = ICombinedV1World | ICombinedV2World;
@@ -362,6 +364,27 @@ export interface IImageV2WorldMarker extends BaseMarker {
     ref?: RefObject<HTMLDivElement>;
 }
 
+export interface ITextV2World {
+    imageUrl: string;
+    coordinates: Array<{ lat: number; lng: number }>;
+    nonRotatedCoordinates: Array<{ lat: number; lng: number }>;
+    rotation: number;
+    opacity: number;
+    generatedText: string;
+    generatedTextColor: string;
+    generatedBackgroundColor: string;
+    generatedWidth: number;
+    lineLength: number;
+    rawPaintAttributes: SymbolPaint;
+    rawLayoutAttributes: SymbolLayout;
+}
+
+export interface ITextV2WorldMarker extends BaseMarker {
+    elementType: 'v2/text';
+    elementData: ITextV2World;
+    ref?: RefObject<HTMLDivElement>;
+}
+
 export type IWorldV1Marker =
     | ITextWorldMarker
     | IImageWorldMarker
@@ -379,6 +402,7 @@ export type IWorldV2Marker =
     | IIconV2WorldMarker
     | IWallV2WorldMarker
     | IImageV2WorldMarker
-    | IDirectionWorldMarker;
+    | IDirectionWorldMarker
+    | ITextV2WorldMarker;
 
 export type IWorldMarker = IWorldV1Marker | IWorldV2Marker;

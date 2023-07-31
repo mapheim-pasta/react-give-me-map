@@ -12,7 +12,7 @@ export { TextWorld } from './items/TextWorld';
 export { YoutubeWorld } from './items/YoutubeWorld';
 export { getSegmentsForDirectionMarker } from './items/v2/DirectionV2Marker';
 export { getSourceFeaturesForIcons } from './items/v2/IconV2Markers';
-export { getFlippedCoordinates } from './items/v2/ImageV2Marker';
+export { getFlippedCoordinates } from './items/v2/ImageTextV2Marker';
 export { transformLineCoordinatesIntoPolygonCoordinates } from './items/v2/WallV2Marker/MultiLineWall';
 export { ClickEventData } from './map/RegisterPropsToGlobalState';
 export { EMapStyle, ICoordinates, IViewportExtended } from './utils/map/mapTypes';
@@ -31,6 +31,8 @@ export {
     IDrawWorldMarker,
     IIconV2World,
     IIconV2WorldMarker,
+    IImageV2World,
+    IImageV2WorldMarker,
     IImageWorld,
     IImageWorldMarker,
     ILineV2World,
@@ -47,6 +49,8 @@ export {
     IReactWorldMarker,
     IRouteWorld,
     IRouteWorldMarker,
+    ITextV2World,
+    ITextV2WorldMarker,
     ITextWorld,
     ITextWorldMarker,
     IWallV2World,

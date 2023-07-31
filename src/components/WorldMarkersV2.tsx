@@ -3,7 +3,7 @@ import React, { RefObject, useEffect } from 'react';
 import { MapRef, Source } from 'react-map-gl';
 import { DirectionWorld } from '../items/v2/DirectionV2Marker';
 import { IconV2Markers } from '../items/v2/IconV2Markers';
-import { ImageV2Marker } from '../items/v2/ImageV2Marker';
+import { ImageTextV2Marker } from '../items/v2/ImageTextV2Marker';
 import { LineV2Marker } from '../items/v2/LineV2Marker';
 import { PolygonV2Marker } from '../items/v2/PolygonV2Marker';
 import { WallV2Marker } from '../items/v2/WallV2Marker';
@@ -103,8 +103,9 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                             />
                         );
                     case 'v2/image':
+                    case 'v2/text':
                         return (
-                            <ImageV2Marker
+                            <ImageTextV2Marker
                                 key={marker.id}
                                 marker={marker}
                                 beforeId={beforeId}
@@ -123,6 +124,16 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                                 orderIndex={orderIndex}
                             />
                         );
+                    // case 'v2/text':
+                    //     return (
+                    //         <TextV2Marker
+                    //             key={marker.id}
+                    //             marker={marker}
+                    //             beforeId={beforeId}
+                    //             mapRef={props.mapRef}
+                    //             orderIndex={orderIndex}
+                    //         />
+                    //     );
                     default:
                         return null;
                 }

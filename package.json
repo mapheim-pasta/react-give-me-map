@@ -1,6 +1,6 @@
 {
     "name": "react-give-me-map",
-    "version": "1.0.4103",
+    "version": "1.0.4104",
     "description": "React wrapper for Mapbox with predefined markers and other quick actions",
     "main": "dist/index.js",
     "module": "dist/index.js",
@@ -41,7 +41,7 @@
         "@rollup/plugin-node-resolve": "^14.0.1",
         "@svgr/rollup": "^6.3.1",
         "@types/lodash": "^4.14.184",
-        "@types/mapbox-gl": "^2.7.10",
+        "@types/mapbox-gl": "^2.7.12",
         "@types/node": "^18.7.14",
         "@types/react": "^18.0.17",
         "@types/react-dom": "^18.0.6",

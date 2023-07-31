@@ -3,13 +3,13 @@ import React, { RefObject, useEffect } from 'react';
 import { Layer, MapRef, Source } from 'react-map-gl';
 import { coordsToArrays } from '../../utils/geojson/coordsToArrays';
 import { ICoordinates } from '../../utils/map/mapTypes';
-import { IImageV2WorldMarker } from '../../utils/world/worldTypes';
+import { IImageV2WorldMarker, ITextV2WorldMarker } from '../../utils/world/worldTypes';
 import { EmptyLayer } from './EmptyLayer';
 import { automoveMarkers } from './automoveMarkers';
 
 interface Props {
     mapRef: RefObject<MapRef>;
-    marker: IImageV2WorldMarker;
+    marker: IImageV2WorldMarker | ITextV2WorldMarker;
 
     beforeId?: string;
 
@@ -18,8 +18,8 @@ interface Props {
 }
 
 export const getFlippedCoordinates = (data: {
-    flipHorizontal: boolean;
-    flipVertical: boolean;
+    flipHorizontal?: boolean;
+    flipVertical?: boolean;
     coordinates: ICoordinates[];
 }) => {
     if (data.flipHorizontal && data.flipVertical) {
@@ -34,7 +34,7 @@ export const getFlippedCoordinates = (data: {
     return data.coordinates;
 };
 
-export const ImageV2Marker = (props: Props): JSX.Element => {
+export const ImageTextV2Marker = (props: Props): JSX.Element => {
     const markerId = props.marker.id;
     const data = props.marker.elementData;
 

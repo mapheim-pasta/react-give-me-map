@@ -14,7 +14,7 @@ export function useWorldMarkersV2Data(markers: IWorldV2Marker[]) {
             if (marker.elementType === 'v2/wall') {
                 return [id + '|layer'];
             }
-            if (marker.elementType === 'v2/image') {
+            if (marker.elementType === 'v2/image' || marker.elementType === 'v2/text') {
                 return [id + '_click' + '|clickable'];
             }
             if (marker.elementType === 'direction') {
