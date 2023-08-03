@@ -34,7 +34,8 @@ export const isV2Marker = (marker: IWorldMarker): marker is IWorldV2Marker =>
     marker.elementType === 'v2/wall' ||
     marker.elementType === 'v2/image' ||
     marker.elementType === 'direction' ||
-    marker.elementType === 'v2/text';
+    marker.elementType === 'v2/text' ||
+    marker.elementType === 'v2/route';
 
 export const isV1Marker = (marker: IWorldMarker): marker is IWorldV1Marker => !isV2Marker(marker);
 

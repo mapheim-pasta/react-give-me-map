@@ -22,6 +22,9 @@ export function useWorldMarkersV2Data(markers: IWorldV2Marker[]) {
                     .fill(0)
                     .map((_, i) => `${id}|${i}|clickable`);
             }
+            if (marker.elementType === 'v2/route') {
+                return [id + '|clickable'];
+            }
         })
         .flat()
         .concat('icons|clickable')

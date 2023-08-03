@@ -1,11 +1,12 @@
 import { orderBy } from 'lodash';
 import React, { RefObject, useEffect } from 'react';
 import { MapRef, Source } from 'react-map-gl';
-import { DirectionWorld } from '../items/v2/DirectionV2Marker';
+import { DirectionV2Marker } from '../items/v2/DirectionV2Marker';
 import { IconV2Markers } from '../items/v2/IconV2Markers';
 import { ImageTextV2Marker } from '../items/v2/ImageTextV2Marker';
 import { LineV2Marker } from '../items/v2/LineV2Marker';
 import { PolygonV2Marker } from '../items/v2/PolygonV2Marker';
+import { RouteV2Marker } from '../items/v2/RouteMarker';
 import { WallV2Marker } from '../items/v2/WallV2Marker';
 import { GroupMarkerProps } from '../utils/map/mapTypes';
 import { IIconV2WorldMarker, IWorldV2Marker } from '../utils/world/worldTypes';
@@ -116,7 +117,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                         );
                     case 'direction':
                         return (
-                            <DirectionWorld
+                            <DirectionV2Marker
                                 key={marker.id + '|' + marker.elementData.coordinates.length}
                                 marker={marker}
                                 beforeId={beforeId}
@@ -124,16 +125,16 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                                 orderIndex={orderIndex}
                             />
                         );
-                    // case 'v2/text':
-                    //     return (
-                    //         <TextV2Marker
-                    //             key={marker.id}
-                    //             marker={marker}
-                    //             beforeId={beforeId}
-                    //             mapRef={props.mapRef}
-                    //             orderIndex={orderIndex}
-                    //         />
-                    //     );
+                    case 'v2/route':
+                        return (
+                            <RouteV2Marker
+                                key={marker.id + '|' + marker.elementData.coordinates.length}
+                                marker={marker}
+                                beforeId={beforeId}
+                                mapRef={props.mapRef}
+                                orderIndex={orderIndex}
+                            />
+                        );
                     default:
                         return null;
                 }

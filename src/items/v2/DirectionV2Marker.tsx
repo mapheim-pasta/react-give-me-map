@@ -32,7 +32,7 @@ export const getSegmentsForDirectionMarker = (
     return segments;
 };
 
-export const DirectionWorld = (props: Props): JSX.Element => {
+export const DirectionV2Marker = (props: Props): JSX.Element => {
     const mapRef = props.mapRef;
     const elementData = props.marker.elementData;
     const markerId = props.marker.id;

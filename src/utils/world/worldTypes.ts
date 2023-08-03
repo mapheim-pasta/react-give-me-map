@@ -20,7 +20,8 @@ export type WorldV2Elements =
     | 'v2/wall'
     | 'v2/image'
     | 'direction'
-    | 'v2/text';
+    | 'v2/text'
+    | 'v2/route';
 
 export type WorldElements = WorldV1Elements | WorldV2Elements;
 
@@ -42,7 +43,8 @@ export type ICombinedV2World =
     | IIconV2World
     | IWallV2World
     | ITextV2World
-    | IImageV2World;
+    | IImageV2World
+    | IRouteV2World;
 
 export type ICombinedWorld = ICombinedV1World | ICombinedV2World;
 
@@ -150,6 +152,19 @@ export interface IRouteWorldMarker extends BaseMarker {
     elementType: 'route';
     elementData: IRouteWorld;
     ref?: RefObject<HTMLDivElement>;
+}
+
+export interface IRouteV2WorldMarker extends BaseMarker {
+    elementType: 'v2/route';
+    elementData: IRouteV2World;
+    ref?: RefObject<HTMLDivElement>;
+}
+
+export interface IRouteV2World {
+    coordinates: ICoordinates[];
+    opacity: number;
+    color: string;
+    width: number;
 }
 
 export interface IDrawWorld {
@@ -403,6 +418,7 @@ export type IWorldV2Marker =
     | IWallV2WorldMarker
     | IImageV2WorldMarker
     | IDirectionWorldMarker
-    | ITextV2WorldMarker;
+    | ITextV2WorldMarker
+    | IRouteV2WorldMarker;
 
 export type IWorldMarker = IWorldV1Marker | IWorldV2Marker;
