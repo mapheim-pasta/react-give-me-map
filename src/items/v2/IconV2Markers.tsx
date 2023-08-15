@@ -101,6 +101,7 @@ export const IconV2Markers = (props: {
     useLoadMapImages({
         mapRef: props.mapRef,
         imageUrls,
+        hash: props.markers.length,
         onLoad: () => {
             if (props.markers?.length) {
                 setAreImagesLoaded(true);

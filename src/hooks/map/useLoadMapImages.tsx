@@ -6,6 +6,7 @@ type UseMapImageOptions = {
     mapRef: RefObject<MapRef>;
     imageUrls: string[];
     onLoad?: () => void;
+    hash?: string | number;
 };
 
 const imageLoadedRef = new Set();
@@ -25,7 +26,7 @@ export function loadMapImages(mapRef: MapRef, imageUrls: string[], onLoad: () =>
     });
 }
 
-export function useLoadMapImages({ mapRef, imageUrls, onLoad }: UseMapImageOptions) {
+export function useLoadMapImages({ mapRef, imageUrls, onLoad, hash }: UseMapImageOptions) {
     const imageHash = imageUrls.join(';');
 
     useEffect(() => {
@@ -48,5 +49,5 @@ export function useLoadMapImages({ mapRef, imageUrls, onLoad }: UseMapImageOptio
                 }
             });
         }
-    }, [mapRef.current, imageHash]);
+    }, [mapRef.current, imageHash, hash]);
 }
