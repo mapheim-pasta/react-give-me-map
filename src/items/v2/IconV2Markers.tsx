@@ -115,15 +115,6 @@ export const IconV2Markers = (props: {
         }, 500);
     }, [props.groupMarkerProps?.clusterMaxZoom, props.groupMarkerProps.clusterRadius]);
 
-    // Hack for placing the first marker
-    useUpdateEffect(() => {
-        if (props.markers.length === 1) {
-            setTimeout(() => {
-                setTemporaryEmptyRender(true);
-            }, 500);
-        }
-    }, [props.markers.length]);
-
     useEffect(() => {
         if (temporaryEmptyRender) {
             setTemporaryEmptyRender(false);
