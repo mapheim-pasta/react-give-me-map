@@ -47,6 +47,8 @@ export {
     IPolygonWorldMarker,
     IReactWorld,
     IReactWorldMarker,
+    IRouteV2World,
+    IRouteV2WorldMarker,
     IRouteWorld,
     IRouteWorldMarker,
     ITextV2World,
