@@ -1,3 +1,5 @@
+import turfBuffer from '@turf/buffer';
+import * as turf from '@turf/helpers';
 import React, { RefObject, useEffect } from 'react';
 import { MapRef } from 'react-map-gl';
 import { ICoordinates } from '../../../utils/map/mapTypes';
@@ -12,34 +14,75 @@ interface Props {
     orderIndex: number;
 }
 
-const coordinatesToWalls = (coords: ICoordinates[]): [ICoordinates, ICoordinates][] => {
-    const res: [ICoordinates, ICoordinates][] = [];
-    for (let i = 0; i < coords.length - 1; i++) {
-        res.push([coords[i], coords[i + 1]]);
-    }
-    return res;
-};
-
 export function transformLineCoordinatesIntoPolygonCoordinates(
-    start: ICoordinates,
-    end: ICoordinates,
+    coordinates: ICoordinates[],
     width: number
 ) {
-    const latMove = Math.abs(end.lat - start.lat);
-    const lngMove = Math.abs(end.lng - start.lng);
+    function createConnectedLinePolygons(points: number[][]) {
+        if (points.length < 2 || width <= 0) {
+            return null;
+        }
 
-    const latToLng = lngMove !== 0 ? latMove / (latMove + lngMove) : 1;
-    const lngToLat = latMove !== 0 ? lngMove / (latMove + lngMove) : 1;
+        const polygons = [];
 
-    const lngDelta = 0.000001 * width;
-    const latDelta = lngDelta / 2;
+        for (let i = 0; i < points.length - 1; i++) {
+            const point1 = points[i];
+            const point2 = points[i + 1];
 
-    const new1 = { lat: start.lat - latDelta * lngToLat, lng: start.lng - lngDelta * latToLng };
-    const new2 = { lat: start.lat + latDelta * lngToLat, lng: start.lng + lngDelta * latToLng };
-    const new3 = { lat: end.lat + latDelta * lngToLat, lng: end.lng + lngDelta * latToLng };
-    const new4 = { lat: end.lat - latDelta * lngToLat, lng: end.lng - lngDelta * latToLng };
+            // Convert latitude and longitude to Turf.js Points
+            const lat1 = point1[1];
+            const lon1 = point1[0];
+            const lat2 = point2[1];
+            const lon2 = point2[0];
 
-    return [new1, new2, new3, new4];
+            const linePolygon = createLinePolygon(lat1, lon1, lat2, lon2, width);
+            polygons.push(linePolygon);
+        }
+
+        return polygons;
+    }
+
+    function createLinePolygon(
+        lat1: number,
+        lon1: number,
+        lat2: number,
+        lon2: number,
+        width: number
+    ) {
+        // Convert latitude and longitude to Turf.js Points
+        // const point1 = turf.point([lon1, lat1]);
+        // const point2 = turf.point([lon2, lat2]);
+
+        // // Calculate the bearing (angle) between the two points
+        // const bearing = turf.bearing(point1, point2);
+
+        // Calculate the half-width in meters
+        const halfWidth = width / 2;
+
+        // Create a Turf.js LineString
+        const line = turf.lineString([
+            [lon1, lat1],
+            [lon2, lat2]
+        ]);
+
+        // Create a Turf.js buffer around the line to represent the width
+        const bufferedLine = turfBuffer(line, halfWidth, { units: 'meters' });
+
+        // Convert the buffered line to a Polygon
+        const polygon = turf.polygon(bufferedLine.geometry.coordinates);
+
+        return polygon;
+    }
+
+    // Example usage with a list of points:
+    const points = coordinates.map((e) => [e.lng, e.lat]);
+
+    const resultPolygons = createConnectedLinePolygons(points);
+    return (
+        resultPolygons?.map((e) =>
+            e.geometry.coordinates[0].map((e) => ({ lat: e[1], lng: e[0] }))
+        ) ?? []
+    );
 }
 
 export const MultiLineWall = (props: Props) => {
@@ -59,9 +102,9 @@ export const MultiLineWall = (props: Props) => {
         last: layerIds.layer
     };
 
-    const walls = coordinatesToWalls(marker.elementData.coordinates);
-    const rectangleCoords = walls.map(([start, end]) =>
-        transformLineCoordinatesIntoPolygonCoordinates(start, end, marker.elementData.line.width)
+    const rectangleCoords = transformLineCoordinatesIntoPolygonCoordinates(
+        marker.elementData.coordinates,
+        marker.elementData.line.width
     );
 
     useEffect(() => {

@@ -1,6 +1,6 @@
 {
     "name": "react-give-me-map",
-    "version": "1.0.4110",
+    "version": "1.0.4112",
     "description": "React wrapper for Mapbox with predefined markers and other quick actions",
     "main": "dist/index.js",
     "module": "dist/index.js",
@@ -93,6 +93,8 @@
         "fs": false
     },
     "dependencies": {
+        "@turf/buffer": "^6.5.0",
+        "@turf/helpers": "^6.5.0",
         "dompurify": "^2.4.0",
         "lodash": "^4.17.21",
         "react-youtube": "^9.0.3"

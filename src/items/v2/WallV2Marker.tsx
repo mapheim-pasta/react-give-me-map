@@ -17,7 +17,7 @@ interface Props {
 export const WallV2Marker = (props: Props): JSX.Element => {
     const markerData = props.marker.elementData;
 
-    if (markerData.line?.isLine) {
+    if (markerData.line?.isLine || markerData.coordinates.length < 3) {
         return (
             <MultiLineWall
                 mapRef={props.mapRef}
