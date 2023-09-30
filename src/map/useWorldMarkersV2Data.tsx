@@ -12,6 +12,9 @@ export function useWorldMarkersV2Data(markers: IWorldV2Marker[]) {
                 return [id + '|clickable'];
             }
             if (marker.elementType === 'v2/wall') {
+                if (marker.elementData.line.isLine && marker.elementData.line.hasFloor) {
+                    return [id + '|layer', id + '|layer-floor'];
+                }
                 return [id + '|layer'];
             }
             if (marker.elementType === 'v2/image' || marker.elementType === 'v2/text') {

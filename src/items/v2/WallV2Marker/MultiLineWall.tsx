@@ -6,6 +6,7 @@ import { ICoordinates } from '../../../utils/map/mapTypes';
 import { IWallV2WorldMarker } from '../../../utils/world/worldTypes';
 import { EmptyLayer } from '../EmptyLayer';
 import { automoveMarkers } from '../automoveMarkers';
+import { GroundFloor } from './GroundFloor';
 import { WallSegment } from './WallSegment';
 interface Props {
     marker: IWallV2WorldMarker;
@@ -89,21 +90,33 @@ export const MultiLineWall = (props: Props) => {
     const marker = props.marker;
     const markerData = marker.elementData;
 
-    const sourceId = props.marker.id;
+    const sourceIds = {
+        source: props.marker.id,
+        sourceFloor: `${props.marker.id}|source-floor`
+    };
+
     const layerId = `${props.marker.id}|layer`;
 
     const layerIds = {
         layer: `${props.marker.id}|layer`,
+        layerFloor: `${props.marker.id}|layer-floor`,
         last: `${props.marker.id}|last`
     };
 
     const beforeIds = {
         layer: props.beforeId,
-        last: layerIds.layer
+        layerFloor: layerIds.layer,
+        last: layerIds.layerFloor
     };
 
+    const coordinates = [...marker.elementData.coordinates];
+
+    if (markerData.line.hasFloor) {
+        coordinates.push(coordinates[0]);
+    }
+
     const rectangleCoords = transformLineCoordinatesIntoPolygonCoordinates(
-        marker.elementData.coordinates,
+        coordinates,
         marker.elementData.line.width
     );
 
@@ -115,7 +128,7 @@ export const MultiLineWall = (props: Props) => {
     return (
         <>
             <WallSegment
-                sourceId={sourceId}
+                sourceId={sourceIds.source}
                 layerId={layerId}
                 beforeId={props.beforeId}
                 markerId={marker.id}
@@ -125,6 +138,17 @@ export const MultiLineWall = (props: Props) => {
                     opacity: markerData.wall.opacity,
                     height: markerData.wall.height
                 }}
+                orderIndex={props.orderIndex}
+                visible={marker.visible ?? false}
+            />
+            <GroundFloor
+                markerId={marker.id}
+                sourceId={sourceIds.sourceFloor}
+                layerId={layerIds.layerFloor}
+                beforeId={beforeIds.layerFloor}
+                coordinates={coordinates}
+                color={markerData.line.fillColor}
+                hasFloor={markerData.line.hasFloor}
                 orderIndex={props.orderIndex}
                 visible={marker.visible ?? false}
             />

@@ -324,6 +324,8 @@ export interface IWallV2World {
     };
     line: {
         isLine: boolean;
+        hasFloor: boolean;
+        fillColor: string;
         width: number;
     };
 }
