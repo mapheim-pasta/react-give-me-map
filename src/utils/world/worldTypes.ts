@@ -21,7 +21,8 @@ export type WorldV2Elements =
     | 'v2/image'
     | 'direction'
     | 'v2/text'
-    | 'v2/route';
+    | 'v2/route'
+    | 'indoor_stand';
 
 export type WorldElements = WorldV1Elements | WorldV2Elements;
 
@@ -44,7 +45,8 @@ export type ICombinedV2World =
     | IWallV2World
     | ITextV2World
     | IImageV2World
-    | IRouteV2World;
+    | IRouteV2World
+    | IIndoorStandWorld;
 
 export type ICombinedWorld = ICombinedV1World | ICombinedV2World;
 
@@ -336,6 +338,21 @@ export interface IWallV2WorldMarker extends BaseMarker {
     ref?: RefObject<HTMLDivElement>;
 }
 
+export interface IIndoorStandWorld {
+    text: string;
+    textColor: string;
+    textHaloColor: string;
+    textHaloWidth: number;
+    pinSrc: string;
+    imageSrc: string;
+}
+
+export interface IIndoorStandWorldMarker extends BaseMarker {
+    elementType: 'indoor_stand';
+    elementData: IIndoorStandWorld;
+    ref?: RefObject<HTMLDivElement>;
+}
+
 export interface IIconV2World {
     imageUrl: string;
 
@@ -421,6 +438,7 @@ export type IWorldV2Marker =
     | IImageV2WorldMarker
     | IDirectionWorldMarker
     | ITextV2WorldMarker
-    | IRouteV2WorldMarker;
+    | IRouteV2WorldMarker
+    | IIndoorStandWorldMarker;
 
 export type IWorldMarker = IWorldV1Marker | IWorldV2Marker;

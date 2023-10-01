@@ -1,9 +1,8 @@
 import React from 'react';
 import { Layer, Source } from 'react-map-gl';
 import { ICoordinates } from '../../../utils/map/mapTypes';
+import { EmptyLayer } from '../EmptyLayer';
 interface Props {
-    sourceId: string;
-    layerId: string;
     beforeId?: string;
     coordinates: ICoordinates[];
     color: string;
@@ -14,11 +13,21 @@ interface Props {
 }
 
 export const GroundFloor = (props: Props) => {
-    const { layerId, beforeId } = props;
+    const sourceId = props.markerId + '|floor';
+
+    const layerIds = {
+        layer: props.markerId + '|floor|layer',
+        last: props.markerId + '|floor|last'
+    };
+
+    const beforeIds = {
+        layer: props.beforeId,
+        last: layerIds.layer
+    };
 
     return (
         <Source
-            id={props.sourceId}
+            id={sourceId}
             type="geojson"
             data={{
                 type: 'Feature',
@@ -32,15 +41,16 @@ export const GroundFloor = (props: Props) => {
             }}
         >
             <Layer
-                id={layerId}
-                beforeId={beforeId}
+                id={layerIds.layer}
+                beforeId={beforeIds.layer}
+                source={sourceId}
                 type="fill"
-                source={props.sourceId}
                 paint={{
                     'fill-color': props.color ?? '#fff',
                     'fill-opacity': props.color && props.hasFloor ? 1 : 0
                 }}
             />
+            <EmptyLayer id={layerIds.last} beforeId={beforeIds.last} />
         </Source>
     );
 };

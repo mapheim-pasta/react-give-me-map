@@ -13,7 +13,7 @@ export function useWorldMarkersV2Data(markers: IWorldV2Marker[]) {
             }
             if (marker.elementType === 'v2/wall') {
                 if (marker.elementData.line.isLine && marker.elementData.line.hasFloor) {
-                    return [id + '|layer', id + '|layer-floor'];
+                    return [id + '|layer', id + '|floor|layer'];
                 }
                 return [id + '|layer'];
             }
@@ -31,6 +31,7 @@ export function useWorldMarkersV2Data(markers: IWorldV2Marker[]) {
         })
         .flat()
         .concat('icons|clickable')
+        .concat('indoor_stands|clickable')
         .filter((val): val is string => {
             return val !== undefined;
         });

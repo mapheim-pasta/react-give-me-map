@@ -13,6 +13,7 @@ export { YoutubeWorld } from './items/YoutubeWorld';
 export { getSegmentsForDirectionMarker } from './items/v2/DirectionV2Marker';
 export { getSourceFeaturesForIcons } from './items/v2/IconV2Markers';
 export { getFlippedCoordinates } from './items/v2/ImageTextV2Marker';
+export { getSourceFeaturesForIndoorStands } from './items/v2/IndoorStandMarkers';
 export { transformLineCoordinatesIntoPolygonCoordinates } from './items/v2/WallV2Marker/MultiLineWall';
 export { ClickEventData } from './map/RegisterPropsToGlobalState';
 export { EMapStyle, ICoordinates, IViewportExtended } from './utils/map/mapTypes';
@@ -35,6 +36,8 @@ export {
     IImageV2WorldMarker,
     IImageWorld,
     IImageWorldMarker,
+    IIndoorStandWorld,
+    IIndoorStandWorldMarker,
     ILineV2World,
     ILineV2WorldMarker,
     ILinkWorld,

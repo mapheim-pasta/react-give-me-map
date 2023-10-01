@@ -6,7 +6,6 @@ import { ICoordinates } from '../../../utils/map/mapTypes';
 import { IWallV2WorldMarker } from '../../../utils/world/worldTypes';
 import { EmptyLayer } from '../EmptyLayer';
 import { automoveMarkers } from '../automoveMarkers';
-import { GroundFloor } from './GroundFloor';
 import { WallSegment } from './WallSegment';
 interface Props {
     marker: IWallV2WorldMarker;
@@ -91,22 +90,19 @@ export const MultiLineWall = (props: Props) => {
     const markerData = marker.elementData;
 
     const sourceIds = {
-        source: props.marker.id,
-        sourceFloor: `${props.marker.id}|source-floor`
+        source: props.marker.id
     };
 
     const layerId = `${props.marker.id}|layer`;
 
     const layerIds = {
         layer: `${props.marker.id}|layer`,
-        layerFloor: `${props.marker.id}|layer-floor`,
         last: `${props.marker.id}|last`
     };
 
     const beforeIds = {
         layer: props.beforeId,
-        layerFloor: layerIds.layer,
-        last: layerIds.layerFloor
+        last: layerIds.layer
     };
 
     const coordinates = [...marker.elementData.coordinates];
@@ -138,17 +134,6 @@ export const MultiLineWall = (props: Props) => {
                     opacity: markerData.wall.opacity,
                     height: markerData.wall.height
                 }}
-                orderIndex={props.orderIndex}
-                visible={marker.visible ?? false}
-            />
-            <GroundFloor
-                markerId={marker.id}
-                sourceId={sourceIds.sourceFloor}
-                layerId={layerIds.layerFloor}
-                beforeId={beforeIds.layerFloor}
-                coordinates={coordinates}
-                color={markerData.line.fillColor}
-                hasFloor={markerData.line.hasFloor}
                 orderIndex={props.orderIndex}
                 visible={marker.visible ?? false}
             />
