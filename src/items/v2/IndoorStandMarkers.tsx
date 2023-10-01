@@ -31,7 +31,9 @@ export function getSourceFeaturesForIndoorStands(
                         imageSrc: data.imageSrc ?? data.pinSrc,
                         textHaloBlur: isHighlighted ? 2 : 1,
                         textHaloColor: isHighlighted ? '#F8E71C' : data.textHaloColor,
-                        textHaloWidth: isHighlighted ? 1 : data.textHaloWidth
+                        textHaloWidth: isHighlighted ? 1 : data.textHaloWidth,
+                        fullScaleZoom: data.imageSrc ? 1.5 : 0.3,
+                        middleScaleZoom: data.imageSrc ? 0.5 : 0.2
                     },
                     geometry: {
                         type: 'Point' as const,
@@ -53,8 +55,8 @@ export const IndoorStandMarkers = (props: {
     const [areImagesLoaded, setAreImagesLoaded] = useState(false);
 
     const mapRef = props.mapRef.current;
-    const pinUrls = props.markers.map((marker) => marker.elementData.pinSrc);
-    const imageUrls = props.markers.map((marker) => marker.elementData.imageSrc);
+    const pinUrls = props.markers.map((marker) => marker.elementData.pinSrc).filter(Boolean);
+    const imageUrls = props.markers.map((marker) => marker.elementData.imageSrc).filter(Boolean);
 
     const layerIds = {
         layer: 'indoor_stands|layer',
@@ -99,6 +101,7 @@ export const IndoorStandMarkers = (props: {
         'text-padding': 2,
         'text-offset': [0, 0.3],
         'icon-anchor': 'bottom',
+        'text-font': ['Open Sans Semibold'],
         'text-anchor': 'top',
         'icon-image': [
             'step',
@@ -116,9 +119,9 @@ export const IndoorStandMarkers = (props: {
             ['linear'],
             ['zoom'],
             0,
-            12,
+            8,
             zoomStepMiddle - 1,
-            12,
+            8,
             zoomStepMiddle,
             12,
             zoomStepMax,
@@ -135,11 +138,13 @@ export const IndoorStandMarkers = (props: {
             zoomStepMiddle - 1,
             0.1,
             zoomStepMiddle,
-            0.15,
+            0.1,
             zoomStepMax,
-            0.15,
+            0.2,
+            23,
+            ['get', 'fullScaleZoom'],
             24,
-            1
+            ['get', 'fullScaleZoom']
         ]
     };
 
