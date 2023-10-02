@@ -111,8 +111,7 @@ export const IndoorStandMarkers = (props: {
             zoomStepMax,
             ['get', 'imageSrc']
         ],
-        // 'text-field': ['step', ['zoom'], '', zoomStepMiddle, ['get', 'text']],
-        'text-field': ['get', 'text'],
+        'text-field': ['step', ['zoom'], '', 16, ['get', 'text']],
         'text-size': [
             'interpolate',
             ['linear'],
