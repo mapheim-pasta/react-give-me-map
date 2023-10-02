@@ -14,11 +14,13 @@ interface Props {
     selected?: boolean;
     iconSVG?: React.ReactElement;
     onClick?: () => void;
+    className?: string;
 }
 
 export const WorldButton = (props: Props): JSX.Element => {
     return (
         <S_WorldButton
+            className={props.className}
             selected={props.selected}
             onClick={() => {
                 if (props.onClick) props.onClick();

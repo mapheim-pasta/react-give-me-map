@@ -32,8 +32,7 @@ export function getSourceFeaturesForIndoorStands(
                         textHaloBlur: isHighlighted ? 2 : 1,
                         textHaloColor: isHighlighted ? '#F8E71C' : data.textHaloColor,
                         textHaloWidth: isHighlighted ? 1 : data.textHaloWidth,
-                        fullScaleZoom: data.imageSrc ? 1.5 : 0.3,
-                        middleScaleZoom: data.imageSrc ? 0.5 : 0.2
+                        fullScaleZoom: data.imageSrc ? 1.5 : 0.2
                     },
                     geometry: {
                         type: 'Point' as const,
@@ -140,7 +139,7 @@ export const IndoorStandMarkers = (props: {
             zoomStepMiddle,
             0.1,
             zoomStepMax,
-            0.2,
+            0.1,
             23,
             ['get', 'fullScaleZoom'],
             24,
