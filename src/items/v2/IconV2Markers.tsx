@@ -128,7 +128,7 @@ export const IconV2Markers = (props: {
     };
 
     const globalLayoutProps = {
-        'text-font': ['Open Sans Bold'],
+        'text-font': ['Open Sans Semibold'],
         'text-allow-overlap': true,
         'icon-allow-overlap': true,
         ...(props.groupMarkerProps?.autoHideIcons ? autoHideIconsProps : {})
