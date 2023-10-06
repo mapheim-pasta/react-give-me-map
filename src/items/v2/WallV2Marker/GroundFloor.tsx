@@ -49,6 +49,9 @@ export const GroundFloor = (props: Props) => {
                     'fill-color': props.color ?? '#fff',
                     'fill-opacity': props.color && props.hasFloor ? 1 : 0
                 }}
+                layout={{
+                    visibility: props.visible ? 'visible' : 'none'
+                }}
             />
             <EmptyLayer id={layerIds.last} beforeId={beforeIds.last} />
         </Source>

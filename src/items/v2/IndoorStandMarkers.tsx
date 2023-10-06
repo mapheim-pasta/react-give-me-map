@@ -6,8 +6,8 @@ import { IIndoorStandWorldMarker } from '../../utils/world/worldTypes';
 import { EmptyLayer } from './EmptyLayer';
 import { automoveMarkers } from './automoveMarkers';
 
-const zoomStepMiddle = 19;
-const zoomStepMax = 20;
+const zoomStepMiddle = 18;
+const zoomStepMax = 19;
 
 export function getSourceFeaturesForIndoorStands(
     markers: IIndoorStandWorldMarker[],
@@ -139,8 +139,6 @@ export const IndoorStandMarkers = (props: {
             0.1,
             zoomStepMax,
             0.1,
-            23,
-            ['get', 'fullScaleZoom'],
             24,
             ['get', 'fullScaleZoom']
         ]
