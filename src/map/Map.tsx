@@ -300,6 +300,8 @@ export const Map = (props: IProps): JSX.Element => {
                                 ref={geoRef}
                                 style={{ display: 'none' }}
                                 trackUserLocation={true}
+                                showUserLocation={true}
+                                showUserHeading={true}
                             />
                         )}
                         {props.children}
