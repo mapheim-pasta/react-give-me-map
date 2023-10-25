@@ -1,17 +1,10 @@
 import { useRef } from 'react';
-import { MapRef } from 'react-map-gl';
-import { useCtx } from '../../context/dynamic/provider';
 import { IWorldMarker } from '../../utils/world/worldTypes';
-import { useContainComputation } from './useContainComputation';
 
 export const useMouseListener = (
     markers: IWorldMarker[],
-    mapRef: React.RefObject<MapRef>,
-    wrapperMapRef: React.RefObject<HTMLDivElement>
+    onMarkerSelected: (marker: IWorldMarker) => void
 ) => {
-    const containComputations = useContainComputation(markers, mapRef);
-    const { state } = useCtx();
-
     const startX = useRef<number>(0);
     const startY = useRef<number>(0);
     const delta = 6;
@@ -29,22 +22,16 @@ export const useMouseListener = (
         }
     }
 
-    function handleSingleClick(e: MouseEvent) {
-        const { finalMarker, marker, marker2 } = containComputations.computations(e);
+    function handleSingleClick(event: MouseEvent) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const path = (event as any).path || (event.composedPath && event.composedPath());
 
-        if (
-            wrapperMapRef?.current?.contains(e.target as any) ||
-            (finalMarker && markers.some((e) => e.id === finalMarker?.id))
-        ) {
-            if (marker && marker.selectable) {
-                state.callbacks.onMarkersSelected?.([marker.id]);
-            } else if (marker2 && marker2.selectable) {
-                state.callbacks.onMarkersSelected?.([marker2.id]);
-            } else {
-                state.callbacks.onMarkersSelected?.([]);
-            }
+        const marker = markers
+            .filter((e) => e.elementType === 'react')
+            .find((e) => 'ref' in e && path.includes(e.ref?.current));
+        if (marker) {
+            onMarkerSelected(marker);
         }
-        return;
     }
 
     function onMouseDown(e: MouseEvent) {
@@ -56,7 +43,7 @@ export const useMouseListener = (
     return {
         onMouseUp: (e: MouseEvent) => {
             if (detectAfterClick(e)) {
-                // handleSingleClick(e);
+                handleSingleClick(e);
             }
         },
         onMouseDown

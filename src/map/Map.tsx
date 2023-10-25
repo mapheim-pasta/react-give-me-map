@@ -135,7 +135,9 @@ export const Map = (props: IProps): JSX.Element => {
         }
     }
 
-    const mouseListener = useMouseListener(props.v1Markers, props.mapRef, wrapperMapRef);
+    const mouseListener = useMouseListener(props.v1Markers, (marker) => {
+        state.callbacks.onMarkersSelected?.([marker.id]);
+    });
 
     useEffect(() => {
         if (props.mapRef?.current && wrapperMapRef.current) {
@@ -169,6 +171,7 @@ export const Map = (props: IProps): JSX.Element => {
                     ...props.map.style
                 }}
                 onClick={(e) => {
+                    console.log('e', e);
                     const hasFeatures = e.features && e.features.length;
 
                     const clickData = { lat: e.lngLat.lat, lng: e.lngLat.lng };
