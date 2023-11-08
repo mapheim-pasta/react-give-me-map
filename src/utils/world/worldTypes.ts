@@ -72,6 +72,9 @@ interface BaseMarker {
 
     elementType: WorldElements;
     elementData: ICombinedWorld;
+
+    hasBookingConfiguration?: boolean;
+    isBookingAvailable?: boolean;
 }
 
 export interface ITextWorld {
