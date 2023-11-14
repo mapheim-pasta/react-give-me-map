@@ -11,19 +11,21 @@ import { PolygonV2Marker } from '../items/v2/PolygonV2Marker';
 import { RouteV2Marker } from '../items/v2/RouteMarker';
 import { WallV2Marker } from '../items/v2/WallV2Marker';
 import { GroundFloor } from '../items/v2/WallV2Marker/GroundFloor';
-import { GroupMarkerProps } from '../utils/map/mapTypes';
+import { CountriesFillProps, GroupMarkerProps } from '../utils/map/mapTypes';
 import {
     IIconV2WorldMarker,
     IIndoorStandWorldMarker,
     IWallV2WorldMarker,
     IWorldV2Marker
 } from '../utils/world/worldTypes';
+import { CountriesFillLayer } from './CountriesFillLayer';
 
 export interface IProps {
     mapRef: RefObject<MapRef>;
     markers: IWorldV2Marker[];
     highlightedMarkerIds?: string[];
     groupMarkerProps: GroupMarkerProps;
+    countriesFillConfig?: CountriesFillProps;
 }
 
 export const WorldMarkersV2 = (props: IProps): JSX.Element => {
@@ -193,6 +195,24 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                     />
                 );
             })}
+            <EmptyLayer
+                id={'afterFloorMarkers|last'}
+                beforeId={
+                    floorMarkers.length
+                        ? floorMarkers[floorMarkers.length - 1].id + '|floor||last'
+                        : 'nonIcons|last'
+                }
+            />
+            {props.countriesFillConfig ? (
+                <CountriesFillLayer
+                    sourceId="countries-fill"
+                    layerId="countries-fill|last"
+                    beforeId="afterFloorMarkers|last"
+                    countriesFillConfig={props.countriesFillConfig}
+                />
+            ) : (
+                <EmptyLayer id="countries-fill" />
+            )}
         </>
     );
 };

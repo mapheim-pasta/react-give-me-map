@@ -267,6 +267,7 @@ export const Map = (props: IProps): JSX.Element => {
                         />
                         <WorldMarkersV2
                             markers={props.v2Markers}
+                            countriesFillConfig={props.config?.countriesFill}
                             highlightedMarkerIds={props.highlightedMarkers}
                             mapRef={props.mapRef}
                             groupMarkerProps={props.config?.groupMarkerProps ?? {}}

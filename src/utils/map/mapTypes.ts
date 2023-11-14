@@ -39,11 +39,18 @@ export interface GroupMarkerProps {
     autoHideIcons?: boolean;
 }
 
+export interface CountriesFillProps {
+    color: string;
+    opacity: number;
+    countryCodes: string[];
+}
+
 export interface IMapConfig {
     availableStyles?: string[];
     geolocate?: boolean;
 
     groupMarkerProps?: GroupMarkerProps;
+    countriesFill?: CountriesFillProps;
 }
 
 export interface MarkerStyle {
