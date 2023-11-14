@@ -216,7 +216,7 @@ export const Map = (props: IProps): JSX.Element => {
                             { id: 'v2', layerId: 'icons|cluster', sourceId: 'icons' }
                         ];
 
-                        possibleClusters.forEach(({ layerId, sourceId }) => {
+                        const clusterHit = possibleClusters.some(({ layerId, sourceId }) => {
                             if (feature?.layer?.id === layerId) {
                                 const clusterId = feature?.properties?.cluster_id;
 
@@ -238,9 +238,14 @@ export const Map = (props: IProps): JSX.Element => {
                                         }
                                     );
 
-                                return;
+                                return true;
                             }
+                            return false;
                         });
+
+                        if (clusterHit) {
+                            return;
+                        }
                     }
                     state.callbacks.onMarkersSelected?.([]);
                     props.map.onClick?.(e);
