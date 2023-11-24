@@ -121,11 +121,11 @@ export const IndoorStandMarkers = (props: {
             zoomStepMiddle - 1,
             8,
             zoomStepMiddle,
-            12,
+            11,
             zoomStepMax,
-            12,
+            11,
             24,
-            24
+            22
         ],
         'icon-size': [
             'interpolate',
@@ -138,7 +138,7 @@ export const IndoorStandMarkers = (props: {
             zoomStepMiddle,
             0.1,
             zoomStepMax,
-            0.1,
+            0.12,
             24,
             ['get', 'fullScaleZoom']
         ]
