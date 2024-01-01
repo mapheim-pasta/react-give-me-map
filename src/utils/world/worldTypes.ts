@@ -69,6 +69,8 @@ interface BaseMarker {
     isGroupable?: boolean;
 
     category?: string[];
+    isRoomMarker?: boolean;
+    roomName?: string;
 
     elementType: WorldElements;
     elementData: ICombinedWorld;
