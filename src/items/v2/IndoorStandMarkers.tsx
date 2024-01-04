@@ -20,6 +20,18 @@ export function getSourceFeaturesForIndoorStands(
                 const data = marker.elementData;
                 const isHighlighted = highlightedMarkerIds?.includes(marker.id);
 
+                const getImageSrc = () => {
+                    if (data.logoGeneratedImageUrl) {
+                        return data.imageSrc;
+                    }
+                    if (data.imageSrc?.startsWith('temp-icon')) {
+                        return data.pinSrc;
+                    }
+                    return data.imageSrc ?? data.pinSrc;
+                };
+
+                const imageSrc = getImageSrc();
+
                 return {
                     type: 'Feature' as const,
                     properties: {
@@ -28,11 +40,11 @@ export function getSourceFeaturesForIndoorStands(
                         text: data.text,
                         textColor: data.textColor,
                         pinSrc: data.pinSrc,
-                        imageSrc: data.imageSrc ?? data.pinSrc,
+                        imageSrc,
                         textHaloBlur: isHighlighted ? 2 : 1,
                         textHaloColor: isHighlighted ? '#F8E71C' : data.textHaloColor,
                         textHaloWidth: isHighlighted ? 1 : data.textHaloWidth,
-                        fullScaleZoom: data.imageSrc ? 1.5 : 0.2
+                        fullScaleZoom: data.imageSrc && data.imageSrc === imageSrc ? 1.5 : 0.2
                     },
                     geometry: {
                         type: 'Point' as const,
