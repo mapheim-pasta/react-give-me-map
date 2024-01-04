@@ -54,8 +54,14 @@ export const IndoorStandMarkers = (props: {
     const [areImagesLoaded, setAreImagesLoaded] = useState(false);
 
     const mapRef = props.mapRef.current;
-    const pinUrls = props.markers.map((marker) => marker.elementData.pinSrc).filter(Boolean);
-    const imageUrls = props.markers.map((marker) => marker.elementData.imageSrc).filter(Boolean);
+    const pinUrls = props.markers
+        .map((marker) => marker.elementData.pinSrc)
+        .filter((e) => e && !e.startsWith('temp-icon'))
+        .filter(Boolean);
+    const imageUrls = props.markers
+        .map((marker) => marker.elementData.imageSrc)
+        .filter((e) => e && !e.startsWith('temp-icon'))
+        .filter(Boolean);
 
     const layerIds = {
         layer: 'indoor_stands|layer',

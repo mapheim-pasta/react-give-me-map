@@ -350,6 +350,12 @@ export interface IIndoorStandWorld {
     textHaloWidth: number;
     pinSrc: string;
     imageSrc: string;
+    pinGeneratedType: string;
+    pinGeneratedImageUrl: string;
+    pinGeneratedIconUrl: string;
+    pinGeneratedIconColor: string;
+    logoGeneratedImageUrl: string;
+    logoGeneratedStyleId: string;
 }
 
 export interface IIndoorStandWorldMarker extends BaseMarker {
