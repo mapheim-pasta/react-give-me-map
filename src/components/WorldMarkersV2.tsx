@@ -199,7 +199,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                 id={'afterFloorMarkers|last'}
                 beforeId={
                     floorMarkers.length
-                        ? floorMarkers[floorMarkers.length - 1].id + '|floor||last'
+                        ? floorMarkers[floorMarkers.length - 1].id + '|floor|last'
                         : 'nonIcons|last'
                 }
             />
