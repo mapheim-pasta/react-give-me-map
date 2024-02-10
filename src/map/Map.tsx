@@ -28,6 +28,7 @@ interface IProps {
     config?: IMapConfig;
     selectableMarkersStyle?: MarkerStyle;
     highlightedMarkers: string[];
+    orderedMarkerIds?: string[];
     highlightedMarkersStyle?: MarkerStyle;
     categories: string[];
     selectedCategories: string[];
@@ -276,6 +277,7 @@ export const Map = (props: IProps): JSX.Element => {
                             highlightedMarkerIds={props.highlightedMarkers}
                             mapRef={props.mapRef}
                             groupMarkerProps={props.config?.groupMarkerProps ?? {}}
+                            orderedMarkerIds={props.orderedMarkerIds ?? []}
                         />
                         <WorldMapControl
                             onGeoClick={() => {

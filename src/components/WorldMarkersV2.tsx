@@ -24,6 +24,7 @@ export interface IProps {
     mapRef: RefObject<MapRef>;
     markers: IWorldV2Marker[];
     highlightedMarkerIds?: string[];
+    orderedMarkerIds?: string[];
     groupMarkerProps: GroupMarkerProps;
     countriesFillConfig?: CountriesFillProps;
 }
@@ -93,6 +94,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                 mapRef={props.mapRef}
                 beforeId={'icons|last'}
                 highlightedMarkerIds={props.highlightedMarkerIds}
+                orderedMarkerIds={props.orderedMarkerIds}
             />
             {nonIconMarkers.map((marker, index) => {
                 const beforeMarkerId = layerOrder[index - 1];

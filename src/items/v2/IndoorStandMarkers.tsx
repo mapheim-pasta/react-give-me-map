@@ -11,8 +11,25 @@ const zoomStepMax = 19;
 
 export function getSourceFeaturesForIndoorStands(
     markers: IIndoorStandWorldMarker[],
-    highlightedMarkerIds?: string[]
+    highlightedMarkerIds?: string[],
+    orderedMarkerIds?: string[]
 ) {
+    console.log('Markers', markers);
+    function getMarkerSortKey(markerId: string) {
+        const isHighlighted = highlightedMarkerIds?.includes(markerId);
+        if (isHighlighted) {
+            return 1;
+        } else {
+            const orderedIndex = orderedMarkerIds?.indexOf(markerId);
+            if (orderedIndex !== -1) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                return (orderedIndex as any) + 2;
+            } else {
+                return 10000;
+            }
+        }
+    }
+
     return (
         markers
             .filter((e) => e.visible)
@@ -41,6 +58,7 @@ export function getSourceFeaturesForIndoorStands(
                         textColor: data.textColor,
                         pinSrc: data.pinSrc,
                         imageSrc,
+                        symbolSortKey: getMarkerSortKey(marker.id),
                         textHaloBlur: isHighlighted ? 2 : 1,
                         textHaloColor: isHighlighted ? '#F8E71C' : data.textHaloColor,
                         textHaloWidth: isHighlighted ? 1 : data.textHaloWidth,
@@ -62,6 +80,7 @@ export const IndoorStandMarkers = (props: {
     markers: IIndoorStandWorldMarker[];
     beforeId?: string;
     highlightedMarkerIds?: string[];
+    orderedMarkerIds?: string[];
 }) => {
     const [areImagesLoaded, setAreImagesLoaded] = useState(false);
 
@@ -107,10 +126,13 @@ export const IndoorStandMarkers = (props: {
 
     const sourceFeatures = getSourceFeaturesForIndoorStands(
         props.markers,
-        props.highlightedMarkerIds
+        props.highlightedMarkerIds,
+        props.orderedMarkerIds
     );
 
     const layout: SymbolLayout = {
+        'symbol-z-order': 'source',
+        'symbol-sort-key': ['get', 'symbolSortKey'],
         'text-allow-overlap': false,
         'text-optional': true,
         'icon-optional': false,

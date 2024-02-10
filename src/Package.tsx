@@ -22,6 +22,7 @@ interface IProps {
     selectableMarkersStyle?: MarkerStyle;
     highlightedMarkers?: string[];
     highlightedMarkersStyle?: MarkerStyle;
+    orderedMarkerIds?: string[];
     categories?: string[];
     selectedCategories?: string[];
     customBuilders?: CustomBuilders;
@@ -79,6 +80,7 @@ export const Package = (props: IProps): JSX.Element => {
                     highlightedMarkers={props.highlightedMarkers ?? []}
                     categories={props.categories ?? []}
                     selectedCategories={props.selectedCategories ?? []}
+                    orderedMarkerIds={props.orderedMarkerIds ?? []}
                 >
                     {props.children}
                 </Map>
