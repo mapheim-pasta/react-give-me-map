@@ -14,7 +14,6 @@ export function getSourceFeaturesForIndoorStands(
     highlightedMarkerIds?: string[],
     orderedMarkerIds?: string[]
 ) {
-    console.log('Markers', markers);
     function getMarkerSortKey(markerId: string) {
         const isHighlighted = highlightedMarkerIds?.includes(markerId);
         if (isHighlighted) {
