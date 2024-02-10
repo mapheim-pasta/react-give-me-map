@@ -1,5 +1,5 @@
 import turfBuffer from '@turf/buffer';
-import * as turf from '@turf/helpers';
+import { lineString as turfLineString, polygon as turfPolygon } from '@turf/helpers';
 import React, { RefObject, useEffect } from 'react';
 import { MapRef } from 'react-map-gl';
 import { ICoordinates } from '../../../utils/map/mapTypes';
@@ -49,18 +49,11 @@ export function transformLineCoordinatesIntoPolygonCoordinates(
         lon2: number,
         width: number
     ) {
-        // Convert latitude and longitude to Turf.js Points
-        // const point1 = turf.point([lon1, lat1]);
-        // const point2 = turf.point([lon2, lat2]);
-
-        // // Calculate the bearing (angle) between the two points
-        // const bearing = turf.bearing(point1, point2);
-
         // Calculate the half-width in meters
         const halfWidth = width / 2;
 
         // Create a Turf.js LineString
-        const line = turf.lineString([
+        const line = turfLineString([
             [lon1, lat1],
             [lon2, lat2]
         ]);
@@ -69,7 +62,7 @@ export function transformLineCoordinatesIntoPolygonCoordinates(
         const bufferedLine = turfBuffer(line, halfWidth, { units: 'meters' });
 
         // Convert the buffered line to a Polygon
-        const polygon = turf.polygon(bufferedLine.geometry.coordinates);
+        const polygon = turfPolygon(bufferedLine.geometry.coordinates);
 
         return polygon;
     }
