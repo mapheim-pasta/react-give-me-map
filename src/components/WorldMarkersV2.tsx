@@ -11,7 +11,11 @@ import { PolygonV2Marker } from '../items/v2/PolygonV2Marker';
 import { RouteV2Marker } from '../items/v2/RouteMarker';
 import { WallV2Marker } from '../items/v2/WallV2Marker';
 import { GroundFloor } from '../items/v2/WallV2Marker/GroundFloor';
-import { CountriesFillProps, GroupMarkerProps } from '../utils/map/mapTypes';
+import {
+    CountriesFillProps,
+    GroupMarkerProps,
+    MarkersCustomConfigProps
+} from '../utils/map/mapTypes';
 import {
     IIconV2WorldMarker,
     IIndoorStandWorldMarker,
@@ -27,6 +31,7 @@ export interface IProps {
     orderedMarkerIds?: string[];
     groupMarkerProps: GroupMarkerProps;
     countriesFillConfig?: CountriesFillProps;
+    markersCustomConfig: MarkersCustomConfigProps;
 }
 
 export const WorldMarkersV2 = (props: IProps): JSX.Element => {
@@ -95,6 +100,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                 beforeId={'icons|last'}
                 highlightedMarkerIds={props.highlightedMarkerIds}
                 orderedMarkerIds={props.orderedMarkerIds}
+                standScale={props.markersCustomConfig?.standScale ?? 1}
             />
             {nonIconMarkers.map((marker, index) => {
                 const beforeMarkerId = layerOrder[index - 1];

@@ -12,7 +12,8 @@ const zoomStepMax = 19;
 export function getSourceFeaturesForIndoorStands(
     markers: IIndoorStandWorldMarker[],
     highlightedMarkerIds?: string[],
-    orderedMarkerIds?: string[]
+    orderedMarkerIds?: string[],
+    standScale?: number
 ) {
     function getMarkerSortKey(markerId: string) {
         const isHighlighted = highlightedMarkerIds?.includes(markerId);
@@ -48,6 +49,9 @@ export function getSourceFeaturesForIndoorStands(
 
                 const imageSrc = getImageSrc();
 
+                const pinZoom = 1.5;
+                const logoZoom = 0.2 * (standScale ?? 1);
+
                 return {
                     type: 'Feature' as const,
                     properties: {
@@ -61,7 +65,8 @@ export function getSourceFeaturesForIndoorStands(
                         textHaloBlur: isHighlighted ? 2 : 1,
                         textHaloColor: isHighlighted ? '#F8E71C' : data.textHaloColor,
                         textHaloWidth: isHighlighted ? 1 : data.textHaloWidth,
-                        fullScaleZoom: data.imageSrc && data.imageSrc === imageSrc ? 1.5 : 0.2
+                        fullScaleZoom:
+                            data.imageSrc && data.imageSrc === imageSrc ? pinZoom : logoZoom
                     },
                     geometry: {
                         type: 'Point' as const,
@@ -79,6 +84,7 @@ export const IndoorStandMarkers = (props: {
     markers: IIndoorStandWorldMarker[];
     beforeId?: string;
     highlightedMarkerIds?: string[];
+    standScale: number;
     orderedMarkerIds?: string[];
 }) => {
     const [areImagesLoaded, setAreImagesLoaded] = useState(false);
@@ -126,7 +132,8 @@ export const IndoorStandMarkers = (props: {
     const sourceFeatures = getSourceFeaturesForIndoorStands(
         props.markers,
         props.highlightedMarkerIds,
-        props.orderedMarkerIds
+        props.orderedMarkerIds,
+        props.standScale
     );
 
     const layout: SymbolLayout = {
@@ -164,7 +171,7 @@ export const IndoorStandMarkers = (props: {
             zoomStepMax,
             11,
             24,
-            22
+            22 * props.standScale
         ],
         'icon-size': [
             'interpolate',

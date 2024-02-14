@@ -16,7 +16,12 @@ export { getFlippedCoordinates } from './items/v2/ImageTextV2Marker';
 export { getSourceFeaturesForIndoorStands } from './items/v2/IndoorStandMarkers';
 export { transformLineCoordinatesIntoPolygonCoordinates } from './items/v2/WallV2Marker/MultiLineWall';
 export { ClickEventData } from './map/RegisterPropsToGlobalState';
-export { EMapStyle, ICoordinates, IViewportExtended } from './utils/map/mapTypes';
+export {
+    EMapStyle,
+    ICoordinates,
+    IViewportExtended,
+    MarkersCustomConfigProps
+} from './utils/map/mapTypes';
 export { isMarkerElement } from './utils/marker/markerUtils';
 export { parseYoutubeSource } from './utils/marker/youtubeUtils';
 export {

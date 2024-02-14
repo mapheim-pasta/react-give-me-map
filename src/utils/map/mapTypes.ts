@@ -45,12 +45,17 @@ export interface CountriesFillProps {
     countryCodes: string[];
 }
 
+export interface MarkersCustomConfigProps {
+    standScale?: number;
+}
+
 export interface IMapConfig {
     availableStyles?: string[];
     geolocate?: boolean;
 
     groupMarkerProps?: GroupMarkerProps;
     countriesFill?: CountriesFillProps;
+    markersCustomConfig?: MarkersCustomConfigProps;
 }
 
 export interface MarkerStyle {

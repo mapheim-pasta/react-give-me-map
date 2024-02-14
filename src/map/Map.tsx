@@ -159,6 +159,8 @@ export const Map = (props: IProps): JSX.Element => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.map.mapStyle, props.config?.availableStyles?.length]);
 
+    console.log('mgfgfgfgf');
+
     return (
         <div ref={wrapperMapRef} style={{ width: '100%', height: '100%' }}>
             <ReactMapGL
@@ -278,6 +280,7 @@ export const Map = (props: IProps): JSX.Element => {
                             mapRef={props.mapRef}
                             groupMarkerProps={props.config?.groupMarkerProps ?? {}}
                             orderedMarkerIds={props.orderedMarkerIds ?? []}
+                            markersCustomConfig={props.config?.markersCustomConfig ?? {}}
                         />
                         <WorldMapControl
                             onGeoClick={() => {
