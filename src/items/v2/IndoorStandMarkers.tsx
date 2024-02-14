@@ -12,8 +12,7 @@ const zoomStepMax = 19;
 export function getSourceFeaturesForIndoorStands(
     markers: IIndoorStandWorldMarker[],
     highlightedMarkerIds?: string[],
-    orderedMarkerIds?: string[],
-    standScale?: number
+    orderedMarkerIds?: string[]
 ) {
     function getMarkerSortKey(markerId: string) {
         const isHighlighted = highlightedMarkerIds?.includes(markerId);
@@ -50,7 +49,7 @@ export function getSourceFeaturesForIndoorStands(
                 const imageSrc = getImageSrc();
 
                 const pinZoom = 1.5;
-                const logoZoom = 0.2 * (standScale ?? 1);
+                const logoZoom = 0.2;
 
                 return {
                     type: 'Feature' as const,
@@ -132,8 +131,7 @@ export const IndoorStandMarkers = (props: {
     const sourceFeatures = getSourceFeaturesForIndoorStands(
         props.markers,
         props.highlightedMarkerIds,
-        props.orderedMarkerIds,
-        props.standScale
+        props.orderedMarkerIds
     );
 
     const layout: SymbolLayout = {
@@ -186,7 +184,7 @@ export const IndoorStandMarkers = (props: {
             zoomStepMax,
             0.12,
             24,
-            ['get', 'fullScaleZoom']
+            ['*', ['get', 'fullScaleZoom'], props.standScale]
         ]
     };
 
