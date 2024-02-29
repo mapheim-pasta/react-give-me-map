@@ -1,3 +1,5 @@
+import { isNil, omitBy } from 'lodash';
+import { LinePaint } from 'mapbox-gl';
 import React, { RefObject, useEffect } from 'react';
 import { Layer, MapRef, Source } from 'react-map-gl';
 import { coordsToArrays } from '../../utils/geojson/coordsToArrays';
@@ -34,10 +36,10 @@ export const getSegmentsForDirectionMarker = (
 
 export const DirectionV2Marker = (props: Props): JSX.Element => {
     const mapRef = props.mapRef;
-    const elementData = props.marker.elementData;
+    const data = props.marker.elementData;
     const markerId = props.marker.id;
 
-    const segments = getSegmentsForDirectionMarker(elementData.coordinates, elementData.path);
+    const segments = getSegmentsForDirectionMarker(data.coordinates, data.path);
 
     const sourceIds = segments.map((_, i) => `${markerId}|${i}`);
 
@@ -53,7 +55,7 @@ export const DirectionV2Marker = (props: Props): JSX.Element => {
         last: layerIds[i].layerClick
     }));
 
-    const width = elementData.width ?? 5;
+    const width = data.width ?? 5;
 
     useEffect(() => {
         if (!props.mapRef.current) {
@@ -69,9 +71,15 @@ export const DirectionV2Marker = (props: Props): JSX.Element => {
         });
     }, [props.beforeId, props.mapRef?.current]);
 
-    if (elementData.coordinates.length < 2) {
+    if (data.coordinates.length < 2) {
         return <></>;
     }
+
+    const paintAttributes: LinePaint = {
+        'line-color': data.color,
+        'line-width': width,
+        'line-opacity': data.opacity ?? 1
+    };
 
     return (
         <>
@@ -98,11 +106,7 @@ export const DirectionV2Marker = (props: Props): JSX.Element => {
                             beforeId={beforeIds[i].layer}
                             source={sourceIds[i]}
                             type="line"
-                            paint={{
-                                'line-color': elementData.color,
-                                'line-width': width,
-                                'line-opacity': elementData.opacity ?? 1
-                            }}
+                            paint={{ ...omitBy(paintAttributes, isNil) }}
                             layout={{
                                 'line-cap': 'round',
                                 'line-join': 'round',

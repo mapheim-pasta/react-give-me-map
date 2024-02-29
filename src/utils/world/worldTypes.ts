@@ -172,6 +172,11 @@ export interface IRouteV2World {
     opacity: number;
     color: string;
     width: number;
+    dashed?: {
+        isDashed: boolean;
+        lineLength: number;
+        gapLength: number;
+    };
 }
 
 export interface IDrawWorld {
