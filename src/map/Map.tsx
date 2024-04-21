@@ -174,7 +174,6 @@ export const Map = (props: IProps): JSX.Element => {
                     ...props.map.style
                 }}
                 onClick={(e) => {
-                    console.log('e', e);
                     const hasFeatures = e.features && e.features.length;
 
                     const clickData = { lat: e.lngLat.lat, lng: e.lngLat.lng };
