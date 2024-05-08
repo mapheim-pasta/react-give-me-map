@@ -329,6 +329,9 @@ export interface IPolygonV2WorldMarker extends BaseMarker {
 
 export interface IWallV2World {
     coordinates: Array<{ lat: number; lng: number }>;
+    nonTransformedCoordinates: Array<{ lat: number; lng: number }>;
+    rotation: number;
+    scale: number;
     wall: {
         height: number;
         color: string;
