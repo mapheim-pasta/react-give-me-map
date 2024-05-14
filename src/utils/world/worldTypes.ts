@@ -336,6 +336,7 @@ export interface IWallV2World {
         height: number;
         color: string;
         opacity: number;
+        baseHeight: number;
     };
     line: {
         isLine: boolean;

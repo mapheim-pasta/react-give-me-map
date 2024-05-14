@@ -17,6 +17,7 @@ export interface WallProps {
     height: number;
     opacity: number;
     color: string;
+    baseHeight: number;
 }
 
 export const WallSegment = (props: Props) => {
@@ -52,7 +53,7 @@ export const WallSegment = (props: Props) => {
                 paint={{
                     'fill-extrusion-color': wallData.color,
                     'fill-extrusion-height': wallData.height,
-                    'fill-extrusion-base': 0,
+                    'fill-extrusion-base': wallData.baseHeight ?? 0,
                     'fill-extrusion-opacity': wallData.opacity
                 }}
                 layout={{

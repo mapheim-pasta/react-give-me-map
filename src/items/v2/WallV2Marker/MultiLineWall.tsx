@@ -125,7 +125,8 @@ export const MultiLineWall = (props: Props) => {
                 wallProps={{
                     color: markerData.wall.color,
                     opacity: markerData.wall.opacity,
-                    height: markerData.wall.height
+                    height: markerData.wall.height,
+                    baseHeight: markerData.wall.baseHeight
                 }}
                 orderIndex={props.orderIndex}
                 visible={marker.visible ?? false}
