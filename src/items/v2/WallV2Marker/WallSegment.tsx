@@ -52,8 +52,8 @@ export const WallSegment = (props: Props) => {
                 type="fill-extrusion"
                 paint={{
                     'fill-extrusion-color': wallData.color,
-                    'fill-extrusion-height': wallData.height,
-                    'fill-extrusion-base': wallData.baseHeight ?? 0,
+                    'fill-extrusion-height': (wallData.height ?? 0) + (wallData.baseHeight ?? 0),
+                    'fill-extrusion-base': wallData.baseHeight,
                     'fill-extrusion-opacity': wallData.opacity
                 }}
                 layout={{
