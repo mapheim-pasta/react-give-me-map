@@ -2,30 +2,53 @@ import React from 'react';
 import { Layer, Source } from 'react-map-gl';
 import { coordsToArrays } from '../../../utils/geojson/coordsToArrays';
 import { ICoordinates } from '../../../utils/map/mapTypes';
-interface Props {
-    sourceId: string;
-    layerId: string;
-    beforeId?: string;
-    coordinates: ICoordinates[][];
-    markerId: string;
-    wallProps: WallProps;
-    visible: boolean;
-    orderIndex: number;
-}
 
 export interface WallProps {
     height: number;
-    opacity: number;
     color: string;
     baseHeight: number;
 }
 
-export const WallSegment = (props: Props) => {
-    const wallData = props.wallProps;
+export interface GroupWallMarkerDataProps {
+    markerId: string;
+    coordinates: ICoordinates[];
+    isLine?: boolean;
+    wallProps: WallProps;
+    visible: boolean;
+    orderIndex: number;
+    selectable: boolean;
+}
 
-    const closedCoordinates = props.coordinates
-        .map((coordinates) => [...coordinates, coordinates[0]].filter(Boolean))
-        .map(coordsToArrays);
+interface Props {
+    sourceId: string;
+    layerId: string;
+    beforeId?: string;
+    markerData: GroupWallMarkerDataProps[];
+    opacity: number;
+}
+
+export const WallSegment = (props: Props) => {
+    const visibleMarkerData = props.markerData.filter((e) => e.visible);
+
+    function markerToFeature(m: GroupWallMarkerDataProps) {
+        const wallData = m.wallProps;
+
+        return {
+            type: 'Feature' as const,
+            properties: {
+                markerId: m.markerId,
+                color: wallData.color,
+                height: (wallData.height ?? 0) + (wallData.baseHeight ?? 0),
+                base: wallData.baseHeight ?? 0,
+                orderIndex: m.orderIndex,
+                clickable: m.selectable ? '1' : '0'
+            },
+            geometry: {
+                coordinates: [coordsToArrays(m.coordinates)],
+                type: 'Polygon' as const
+            }
+        };
+    }
 
     return (
         <Source
@@ -33,16 +56,7 @@ export const WallSegment = (props: Props) => {
             type="geojson"
             data={{
                 type: 'FeatureCollection',
-                features: closedCoordinates.map((c) => ({
-                    type: 'Feature',
-                    properties: {
-                        orderIndex: props.orderIndex
-                    },
-                    geometry: {
-                        coordinates: [c],
-                        type: 'Polygon'
-                    }
-                }))
+                features: visibleMarkerData.map(markerToFeature)
             }}
         >
             <Layer
@@ -51,13 +65,13 @@ export const WallSegment = (props: Props) => {
                 beforeId={props.beforeId}
                 type="fill-extrusion"
                 paint={{
-                    'fill-extrusion-color': wallData.color,
-                    'fill-extrusion-height': (wallData.height ?? 0) + (wallData.baseHeight ?? 0),
-                    'fill-extrusion-base': wallData.baseHeight ?? 0,
-                    'fill-extrusion-opacity': wallData.opacity
+                    'fill-extrusion-color': ['get', 'color'],
+                    'fill-extrusion-height': ['get', 'height'],
+                    'fill-extrusion-base': ['get', 'base'],
+                    'fill-extrusion-opacity': props.opacity
                 }}
                 layout={{
-                    visibility: props.visible ? 'visible' : 'none'
+                    visibility: 'visible'
                 }}
             />
         </Source>

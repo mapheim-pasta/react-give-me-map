@@ -120,16 +120,20 @@ export const MultiLineWall = (props: Props) => {
                 sourceId={sourceIds.source}
                 layerId={layerId}
                 beforeId={props.beforeId}
-                markerId={marker.id}
-                coordinates={rectangleCoords}
-                wallProps={{
-                    color: markerData.wall.color,
-                    opacity: markerData.wall.opacity,
-                    height: markerData.wall.height,
-                    baseHeight: markerData.wall.baseHeight
-                }}
-                orderIndex={props.orderIndex}
-                visible={marker.visible ?? false}
+                markerData={rectangleCoords.map((coordinates) => ({
+                    coordinates,
+                    wallProps: {
+                        color: markerData.wall.color,
+                        height: markerData.wall.height,
+                        baseHeight: markerData.wall.baseHeight
+                    },
+                    markerId: marker.id,
+                    selectable: marker.selectable ?? false,
+
+                    orderIndex: props.orderIndex,
+                    visible: marker.visible ?? false
+                }))}
+                opacity={markerData.wall.opacity}
             />
             <EmptyLayer id={marker.id + '|last'} beforeId={layerId} />
         </>

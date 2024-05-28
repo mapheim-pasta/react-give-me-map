@@ -26,6 +26,7 @@ interface IProps {
     categories?: string[];
     selectedCategories?: string[];
     customBuilders?: CustomBuilders;
+    isEditMode?: boolean;
 }
 
 export const isV2Marker = (marker: IWorldMarker): marker is IWorldV2Marker =>
@@ -71,6 +72,7 @@ export const Package = (props: IProps): JSX.Element => {
                 <Map
                     mapRef={props.mapRef}
                     map={props.map}
+                    isEditMode={props.isEditMode ?? false}
                     v1Markers={v1Markers}
                     v2Markers={v2Markers}
                     selectedIds={props.selectedIds ?? []}

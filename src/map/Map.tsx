@@ -15,11 +15,13 @@ import { useCtx } from '../context/dynamic/provider';
 import { useMouseListener } from '../hooks/mouse/useMouseListener';
 import { EMapStyle, IMapConfig, IMapProps, MarkerStyle } from '../utils/map/mapTypes';
 import { IWorldMarker, IWorldV1Marker, IWorldV2Marker } from '../utils/world/worldTypes';
+import { divideMarkersV2 } from './divideMarkersV2';
 import { useWorldMarkersV1Data } from './useWorldMarkersV1Data';
 import { useWorldMarkersV2Data } from './useWorldMarkersV2Data';
 
 interface IProps {
     map: IMapProps;
+    isEditMode: boolean;
     mapRef: React.RefObject<MapRef>;
     v1Markers: IWorldV1Marker[];
     v2Markers: IWorldV2Marker[];
@@ -58,7 +60,12 @@ export const Map = (props: IProps): JSX.Element => {
     const [geoShow, setGeoShow] = useState(true);
 
     const v1MarkersData = useWorldMarkersV1Data(props.v1Markers);
-    const v2MarkersData = useWorldMarkersV2Data(props.v2Markers);
+
+    const dividedMarkersV2 = divideMarkersV2(props.v2Markers, {
+        isEditMode: props.isEditMode,
+        selectedIds: state.selectedIds
+    });
+    const v2MarkersData = useWorldMarkersV2Data(dividedMarkersV2);
 
     const clickableLayersRef = useRef(new Set<string>());
     const currentHoveredRef = useRef(new Set<string>());
@@ -192,6 +199,18 @@ export const Map = (props: IProps): JSX.Element => {
                             (e) => e.selectable
                         );
 
+                        // This needs to be handled first for the group wall markers
+                        if (feature?.properties?.markerId) {
+                            const marker = [...selectableMarkersV1, ...selectableMarkersV2].find(
+                                (marker) => marker.id === feature?.properties?.markerId
+                            );
+                            if (marker) {
+                                state.callbacks.onMarkersSelected?.([marker.id], clickData);
+                                props.map.onClick?.(e);
+                                return;
+                            }
+                        }
+
                         const marker = [...selectableMarkersV1, ...selectableMarkersV2].find(
                             (marker) => marker.id === source
                         );
@@ -271,7 +290,8 @@ export const Map = (props: IProps): JSX.Element => {
                             groupMarkerProps={props.config?.groupMarkerProps ?? {}}
                         />
                         <WorldMarkersV2
-                            markers={props.v2Markers}
+                            dividedMarkersV2={dividedMarkersV2}
+                            isEditMode={props.isEditMode}
                             countriesFillConfig={props.config?.countriesFill}
                             highlightedMarkerIds={props.highlightedMarkers}
                             mapRef={props.mapRef}

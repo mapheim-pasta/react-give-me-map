@@ -10,7 +10,6 @@ interface Props {
 
     beforeId?: string;
 
-    isHighlighted?: boolean;
     orderIndex: number;
 }
 
@@ -33,7 +32,6 @@ export const WallV2Marker = (props: Props): JSX.Element => {
             mapRef={props.mapRef}
             marker={props.marker}
             beforeId={props.beforeId}
-            isHighlighted={props.isHighlighted}
             orderIndex={props.orderIndex}
         />
     );

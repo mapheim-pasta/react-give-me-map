@@ -11,7 +11,6 @@ interface Props {
 
     beforeId?: string;
 
-    isHighlighted?: boolean;
     orderIndex: number;
 }
 
@@ -33,17 +32,33 @@ export const PolygonWall = (props: Props): JSX.Element => {
         automoveMarkers({ layerIds, beforeIds, mapRef });
     }, [props.beforeId, props.mapRef?.current]);
 
+    const closedCoordinates = [
+        ...props.marker.elementData.coordinates,
+        props.marker.elementData.coordinates[0]
+    ].filter(Boolean);
+
     return (
         <>
             <WallSegment
                 sourceId={props.marker.id}
                 layerId={layerIds.layer}
                 beforeId={beforeIds.layer}
-                markerId={props.marker.id}
-                coordinates={[props.marker.elementData.coordinates]}
-                wallProps={markerData.wall}
-                visible={props.marker.visible ?? false}
-                orderIndex={props.orderIndex}
+                markerData={[
+                    {
+                        coordinates: closedCoordinates,
+                        wallProps: {
+                            color: markerData.wall.color,
+                            height: markerData.wall.height,
+                            baseHeight: markerData.wall.baseHeight
+                        },
+                        markerId: props.marker.id,
+                        selectable: props.marker.selectable ?? false,
+
+                        orderIndex: props.orderIndex,
+                        visible: props.marker.visible ?? false
+                    }
+                ]}
+                opacity={markerData.wall.opacity}
             />
             <EmptyLayer id={layerIds.last} beforeId={beforeIds.last} />
         </>

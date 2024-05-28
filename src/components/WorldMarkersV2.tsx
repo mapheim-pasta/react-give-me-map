@@ -1,4 +1,3 @@
-import { orderBy } from 'lodash';
 import React, { RefObject, useEffect } from 'react';
 import { MapRef, Source } from 'react-map-gl';
 import { DirectionV2Marker } from '../items/v2/DirectionV2Marker';
@@ -11,22 +10,19 @@ import { PolygonV2Marker } from '../items/v2/PolygonV2Marker';
 import { RouteV2Marker } from '../items/v2/RouteMarker';
 import { WallV2Marker } from '../items/v2/WallV2Marker';
 import { GroundFloor } from '../items/v2/WallV2Marker/GroundFloor';
+import { GroupWallMarkers } from '../items/v2/WallV2Marker/GroupWallMarkers';
+import { DividedMarkersV2 } from '../map/divideMarkersV2';
 import {
     CountriesFillProps,
     GroupMarkerProps,
     MarkersCustomConfigProps
 } from '../utils/map/mapTypes';
-import {
-    IIconV2WorldMarker,
-    IIndoorStandWorldMarker,
-    IWallV2WorldMarker,
-    IWorldV2Marker
-} from '../utils/world/worldTypes';
 import { CountriesFillLayer } from './CountriesFillLayer';
 
 export interface IProps {
     mapRef: RefObject<MapRef>;
-    markers: IWorldV2Marker[];
+    dividedMarkersV2: DividedMarkersV2;
+    isEditMode: boolean;
     highlightedMarkerIds?: string[];
     orderedMarkerIds?: string[];
     groupMarkerProps: GroupMarkerProps;
@@ -35,34 +31,20 @@ export interface IProps {
 }
 
 export const WorldMarkersV2 = (props: IProps): JSX.Element => {
-    const nonIconMarkers = orderBy(
-        props.markers.filter(
-            (e) => e.elementType !== 'v2/icon' && e.elementType !== 'indoor_stand'
-        ),
-        'order',
-        'desc'
-    );
-    const iconMarkers = orderBy(
-        props.markers.filter((e): e is IIconV2WorldMarker => e.elementType === 'v2/icon'),
-        'order',
-        'desc'
-    );
-    const indoorStandMarkers = orderBy(
-        props.markers.filter((e): e is IIndoorStandWorldMarker => e.elementType === 'indoor_stand'),
-        'order',
-        'desc'
-    );
-
-    const floorMarkers = nonIconMarkers.filter<IWallV2WorldMarker>(
-        (e): e is IWallV2WorldMarker =>
-            e.elementType === 'v2/wall' && e.elementData.line.isLine && e.elementData.line.hasFloor
-    );
+    const {
+        iconMarkers,
+        indoorStandMarkers,
+        floorMarkers,
+        markers: markerGroups
+    } = props.dividedMarkersV2;
 
     const highlightedMarkerIds = props.highlightedMarkerIds ?? [];
 
-    const layerOrder = nonIconMarkers
-        .map((e) => e.id)
-        .concat(floorMarkers.map((e) => e.id + '|floor'));
+    const layerOrderMarkerGroups = markerGroups.map((e) =>
+        e.type === 'wallGroup' ? 'wall_group|' + e.id : e.id
+    );
+
+    const layerOrder = layerOrderMarkerGroups.concat(floorMarkers.map((e) => e.id + '|floor'));
 
     useEffect(() => {
         const mapRef = props.mapRef.current;
@@ -102,11 +84,25 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                 orderedMarkerIds={props.orderedMarkerIds}
                 standScale={props.markersCustomConfig?.standScale ?? 1}
             />
-            {nonIconMarkers.map((marker, index) => {
+
+            {markerGroups.map((markerGroup, index) => {
                 const beforeMarkerId = layerOrder[index - 1];
                 const beforeId = beforeMarkerId ? beforeMarkerId + '|last' : 'indoor_stands|last';
-                const orderIndex = nonIconMarkers.length - index;
+                const orderIndex = markerGroups.length - index;
 
+                if (markerGroup.type === 'wallGroup') {
+                    const groupWallMarkers = markerGroup.markers;
+                    return (
+                        <GroupWallMarkers
+                            key={markerGroup.id}
+                            id={markerGroup.id}
+                            markers={groupWallMarkers}
+                            beforeId={beforeId}
+                        />
+                    );
+                }
+
+                const marker = markerGroup.marker;
                 switch (marker.elementType) {
                     case 'v2/line':
                         return (
@@ -138,7 +134,6 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                                 beforeId={beforeId}
                                 mapRef={props.mapRef}
                                 orderIndex={orderIndex}
-                                isHighlighted={highlightedMarkerIds.includes(marker.id)}
                             />
                         );
                     case 'v2/image':
@@ -180,15 +175,15 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
             <EmptyLayer
                 id={'nonIcons|last'}
                 beforeId={
-                    nonIconMarkers.length
-                        ? nonIconMarkers[nonIconMarkers.length - 1].id + '|last'
+                    layerOrderMarkerGroups.length
+                        ? layerOrderMarkerGroups[layerOrderMarkerGroups.length - 1] + '|last'
                         : 'icons|last'
                 }
             />
             {floorMarkers.map((marker, index) => {
                 const beforeMarkerId = floorMarkers[index - 1]?.id;
                 const beforeId = beforeMarkerId ? beforeMarkerId + '|floor|last' : 'nonIcons|last';
-                const orderIndex = nonIconMarkers.length + index;
+                const orderIndex = markerGroups.length + index;
 
                 return (
                     <GroundFloor
