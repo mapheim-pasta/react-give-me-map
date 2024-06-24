@@ -71,6 +71,7 @@ interface BaseMarker {
     category?: string[];
     isRoomMarker?: boolean;
     roomName?: string;
+    isGlobalPoint: boolean;
 
     elementType: WorldElements;
     elementData: ICombinedWorld;

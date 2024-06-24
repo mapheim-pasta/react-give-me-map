@@ -1,6 +1,6 @@
 {
     "name": "react-give-me-map",
-    "version": "1.0.4179",
+    "version": "1.0.4180",
     "description": "React wrapper for Mapbox with predefined markers and other quick actions",
     "main": "dist/index.js",
     "module": "dist/index.js",
