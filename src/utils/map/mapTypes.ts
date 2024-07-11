@@ -56,6 +56,7 @@ export interface IMapConfig {
     groupMarkerProps?: GroupMarkerProps;
     countriesFill?: CountriesFillProps;
     markersCustomConfig?: MarkersCustomConfigProps;
+    resizeOnRender?: boolean;
 }
 
 export interface MarkerStyle {

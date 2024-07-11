@@ -273,7 +273,9 @@ export const Map = (props: IProps): JSX.Element => {
                     setLoaded(true);
                 }}
                 onRender={(event) => {
-                    event.target.resize();
+                    if (props.config?.resizeOnRender) {
+                        event.target.resize();
+                    }
                     props.map.onRender?.(event);
                 }}
                 interactiveLayerIds={interactiveLayerIds}

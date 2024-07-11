@@ -76,7 +76,10 @@ export const Package = (props: IProps): JSX.Element => {
                     v1Markers={v1Markers}
                     v2Markers={v2Markers}
                     selectedIds={props.selectedIds ?? []}
-                    config={props.config}
+                    config={{
+                        resizeOnRender: true,
+                        ...props.config
+                    }}
                     selectableMarkersStyle={props.selectableMarkersStyle}
                     highlightedMarkersStyle={props.highlightedMarkersStyle}
                     highlightedMarkers={props.highlightedMarkers ?? []}
