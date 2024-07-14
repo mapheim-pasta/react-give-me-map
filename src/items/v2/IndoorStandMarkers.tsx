@@ -1,5 +1,5 @@
 import { SymbolLayout, SymbolPaint } from 'mapbox-gl';
-import React, { RefObject, useEffect, useState } from 'react';
+import React, { RefObject, useEffect } from 'react';
 import { Layer, LayerProps, MapRef, Source } from 'react-map-gl';
 import { useLoadMapImages } from '../../hooks/map/useLoadMapImages';
 import { IIndoorStandWorldMarker } from '../../utils/world/worldTypes';
@@ -86,8 +86,6 @@ export const IndoorStandMarkers = (props: {
     standScale: number;
     orderedMarkerIds?: string[];
 }) => {
-    const [areImagesLoaded, setAreImagesLoaded] = useState(false);
-
     const mapRef = props.mapRef.current;
     const pinUrls = props.markers
         .map((marker) => marker.elementData.pinSrc)
@@ -117,15 +115,9 @@ export const IndoorStandMarkers = (props: {
         }
     }, [props.beforeId, props.mapRef?.current]);
 
-    useLoadMapImages({
+    const { isLoaded: areImagesLoaded } = useLoadMapImages({
         mapRef: props.mapRef,
-        imageUrls: [...pinUrls, ...imageUrls],
-        hash: props.markers.length,
-        onLoad: () => {
-            if (props.markers?.length) {
-                setAreImagesLoaded(true);
-            }
-        }
+        imageUrls: [...pinUrls, ...imageUrls]
     });
 
     const sourceFeatures = getSourceFeaturesForIndoorStands(

@@ -67,7 +67,6 @@ export const IconV2Markers = (props: {
     beforeId?: string;
     highlightedMarkerIds?: string[];
 }) => {
-    const [areImagesLoaded, setAreImagesLoaded] = useState(false);
     const [temporaryEmptyRender, setTemporaryEmptyRender] = useState(false);
 
     const mapRef = props.mapRef.current;
@@ -98,15 +97,9 @@ export const IconV2Markers = (props: {
         }
     }, [props.beforeId, props.mapRef?.current]);
 
-    useLoadMapImages({
+    const { isLoaded: areImagesLoaded } = useLoadMapImages({
         mapRef: props.mapRef,
-        imageUrls,
-        hash: props.markers.length,
-        onLoad: () => {
-            if (props.markers?.length) {
-                setAreImagesLoaded(true);
-            }
-        }
+        imageUrls
     });
 
     useUpdateEffect(() => {

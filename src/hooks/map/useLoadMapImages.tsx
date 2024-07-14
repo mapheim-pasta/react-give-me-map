@@ -1,5 +1,6 @@
 import { uniq } from 'lodash';
-import { RefObject, useEffect } from 'react';
+import mapboxgl from 'mapbox-gl';
+import { RefObject, useEffect, useState } from 'react';
 import { MapRef } from 'react-map-gl';
 
 type UseMapImageOptions = {
@@ -9,45 +10,44 @@ type UseMapImageOptions = {
     hash?: string | number;
 };
 
-const imageLoadedRef = new Set();
-
-export function loadMapImages(mapRef: MapRef, imageUrls: string[], onLoad: () => void) {
-    const map = mapRef.getMap();
-
+export function loadMapImages(map: mapboxgl.Map, imageUrls: string[], onLoad: () => void) {
     imageUrls.forEach((imageUrl) => {
+        if (map.hasImage(imageUrl)) {
+            return onLoad();
+        }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         map.loadImage(imageUrl, (error: unknown, image: any) => {
-            if (error) throw error;
-            if (!map.hasImage(imageUrl)) {
-                map.addImage(imageUrl, image, { sdf: false });
+            if (error) {
+                throw error;
             }
+
+            map.addImage(imageUrl, image, { sdf: false });
             onLoad();
         });
     });
 }
 
-export function useLoadMapImages({ mapRef, imageUrls, onLoad, hash }: UseMapImageOptions) {
+export function useLoadMapImages({ mapRef, imageUrls }: UseMapImageOptions) {
     const imageHash = imageUrls.join(';');
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
+        const map = mapRef.current?.getMap();
+        if (!map) {
+            return;
+        }
+
         let loadedCount = 0;
 
-        if (mapRef.current) {
-            const uniqueImages = uniq(imageUrls).filter((e) => !imageLoadedRef.has(e));
+        const uniqueImages = uniq(imageUrls);
 
-            uniqueImages.forEach((image) => imageLoadedRef.add(image));
-
-            if (uniqueImages.length === 0) {
-                onLoad?.();
-                return;
+        loadMapImages(map, uniqueImages, () => {
+            loadedCount += 1;
+            if (uniqueImages.length === loadedCount) {
+                setIsLoaded(true);
             }
+        });
+    }, [imageHash, mapRef.current]);
 
-            loadMapImages(mapRef.current, uniqueImages, () => {
-                loadedCount += 1;
-                if (uniqueImages.length === loadedCount) {
-                    onLoad?.();
-                }
-            });
-        }
-    }, [mapRef.current, imageHash, hash]);
+    return { isLoaded };
 }

@@ -1,4 +1,4 @@
-import React, { RefObject, useState } from 'react';
+import React, { RefObject } from 'react';
 import { Layer, LayerProps, MapRef, Source } from 'react-map-gl';
 import { useLoadMapImages } from '../hooks/map/useLoadMapImages';
 import { GroupMarkerProps } from '../utils/map/mapTypes';
@@ -10,18 +10,13 @@ export const GroupMarkers = (props: {
     selectedMarkers: string[];
     groupMarkerProps: GroupMarkerProps;
 }) => {
-    const [areImagesLoaded, setAreImagesLoaded] = useState(false);
-
     const imageUrls = props.groupableMarkers
         .filter((marker): marker is IImageWorldMarker => marker.elementType === 'image')
         .map((marker) => marker.elementData.src);
 
-    useLoadMapImages({
+    const { isLoaded: areImagesLoaded } = useLoadMapImages({
         mapRef: props.mapRef,
-        imageUrls,
-        onLoad: () => {
-            setAreImagesLoaded(true);
-        }
+        imageUrls
     });
 
     if (!areImagesLoaded) {
