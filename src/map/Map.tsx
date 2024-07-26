@@ -1,12 +1,6 @@
 import _, { orderBy } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
-import ReactMapGL, {
-    GeolocateControl,
-    GeolocateControlRef,
-    ImmutableLike,
-    MapRef,
-    MapboxStyle
-} from 'react-map-gl';
+import ReactMapGL, { GeolocateControl, MapRef } from 'react-map-gl';
 import { WorldMapControl } from '../components/WorldMapControl';
 import { WorldMarkersV1 } from '../components/WorldMarkersV1';
 import { WorldMarkersV2 } from '../components/WorldMarkersV2';
@@ -49,11 +43,9 @@ export const Map = (props: IProps): JSX.Element => {
     const [loaded, setLoaded] = useState<boolean>(props.mapRef?.current?.loaded() ?? false);
     const actions = useActions();
     const { state } = useCtx();
-    const geoRef = useRef<GeolocateControlRef>(null);
+    const geoRef = useRef(null);
     const wrapperMapRef = useRef<HTMLDivElement>(null);
-    const [selectedMapStyle, setSelectedMapStyle] = useState<
-        MapboxStyle | string | ImmutableLike | EMapStyle
-    >(getInitMapStyle());
+    const [selectedMapStyle, setSelectedMapStyle] = useState<string>(getInitMapStyle());
     const mapRef = props.mapRef?.current;
 
     const [geoTriggered, setGeoTriggered] = useState<boolean>(false);
@@ -76,7 +68,7 @@ export const Map = (props: IProps): JSX.Element => {
 
     useEffect(() => {
         if (props.map.mapStyle) {
-            setSelectedMapStyle(props.map.mapStyle);
+            setSelectedMapStyle(props.map.mapStyle as string);
         }
     }, [props.map.mapStyle]);
 
@@ -135,7 +127,7 @@ export const Map = (props: IProps): JSX.Element => {
 
     function getInitMapStyle() {
         if (props.map.mapStyle) {
-            return props.map.mapStyle;
+            return props.map.mapStyle as string;
         } else if (props.config?.availableStyles?.[0]) {
             return props.config.availableStyles[0];
         } else {
@@ -306,7 +298,7 @@ export const Map = (props: IProps): JSX.Element => {
                                 if (!geoTriggered) {
                                     setGeoShow(true);
                                     setTimeout(() => {
-                                        geoRef?.current?.trigger();
+                                        (geoRef?.current as any).trigger?.();
                                         setGeoTriggered(true);
                                     }, 250);
                                 } else {

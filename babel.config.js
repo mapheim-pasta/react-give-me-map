@@ -55,7 +55,7 @@ module.exports = function (babelApi) {
                 }
             ],
             '@babel/plugin-syntax-dynamic-import',
-            '@babel/plugin-proposal-class-properties',
+            '@babel/plugin-transform-class-properties',
             [
                 'module-resolver',
                 {
@@ -64,7 +64,7 @@ module.exports = function (babelApi) {
                     alias: {}
                 }
             ],
-            ['@babel/plugin-proposal-optional-chaining']
+            ['@babel/plugin-transform-optional-chaining']
         ]
     };
 };

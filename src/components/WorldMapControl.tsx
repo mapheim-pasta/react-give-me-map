@@ -1,13 +1,11 @@
 import React from 'react';
-import { ImmutableLike, MapboxStyle } from 'react-map-gl';
 
 import styled from 'styled-components';
 import { WorldButton } from '../elements/button/WorldButton';
 import { WorldMapStyle } from '../elements/map/WorldMapStyle';
-import { EMapStyle } from '../utils/map/mapTypes';
 
 interface Props {
-    selectedMapStyle: MapboxStyle | string | ImmutableLike | EMapStyle;
+    selectedMapStyle: string;
     mapStyles: string[];
     geolocate?: boolean;
     onStyleChange: (style: string) => void;

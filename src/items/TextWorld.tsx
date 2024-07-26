@@ -63,7 +63,7 @@ const S_TextWorld = styled.div<{
     ${(props) => {
         if (props.fill === 'true') {
             return css`
-                background-color: ${(props: { color: string }) => props.color};
+                background-color: ${() => props.color};
                 padding: 20px;
                 > pre {
                     color: ${props.textColor};
