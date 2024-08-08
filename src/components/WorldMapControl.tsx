@@ -46,9 +46,7 @@ export const WorldMapControl = (props: Props): JSX.Element => {
     );
 };
 
-const S_WorldMapControl = styled.div.attrs(() => ({
-    style: {}
-}))`
+const S_WorldMapControl = styled.div`
     position: absolute;
     bottom: 0;
     right: 0;
