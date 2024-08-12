@@ -5,6 +5,7 @@ import { AvailableSymbolLayoutKeys, AvailableSymbolPaintKeys } from './propertie
 
 interface Props {
     globalLayoutProps: SymbolLayout;
+    source: string;
     layerIds: {
         icons: string;
         iconsClickable: string;
@@ -32,16 +33,16 @@ export const IconLayers = (props: Props) => {
     const iconsLayer: LayerProps = {
         id: props.layerIds.icons,
         type: 'symbol' as const,
-        source: 'icons',
+        source: props.source,
         filter: ['all', ['!', ['has', 'point_count']], ['==', ['get', 'clickable'], '0']],
         layout,
         paint
     };
 
     const clickableLayer: LayerProps = {
-        id: 'icons|clickable',
+        id: props.layerIds.iconsClickable,
         type: 'symbol' as const,
-        source: 'icons',
+        source: props.source,
         filter: ['all', ['!', ['has', 'point_count']], ['==', ['get', 'clickable'], '1']],
         layout,
         paint

@@ -345,6 +345,7 @@ export interface IWallV2World {
         fillColor: string;
         width: number;
     };
+    label: string;
 }
 
 export interface IWallV2WorldMarker extends BaseMarker {

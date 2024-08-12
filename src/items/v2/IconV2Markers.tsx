@@ -157,6 +157,7 @@ export const IconV2Markers = (props: {
                 {areImagesLoaded && (
                     <>
                         <IconLayers
+                            source={'icons'}
                             layerIds={{
                                 icons: layerIds.icons,
                                 iconsClickable: layerIds.iconsClickable

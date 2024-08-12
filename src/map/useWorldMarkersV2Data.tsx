@@ -47,6 +47,7 @@ export function useWorldMarkersV2Data(markers: DividedMarkersV2) {
         })
         .flat()
         .concat('icons|clickable')
+        .concat('wall_labels|clickable')
         .concat('indoor_stands|clickable')
         .filter((val): val is string => {
             return val !== undefined;

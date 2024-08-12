@@ -190,7 +190,7 @@ export const IndoorStandMarkers = (props: {
     const layer: LayerProps = {
         id: layerIds.layer,
         type: 'symbol' as const,
-        source: 'icons',
+        source: 'indoor_stands',
         filter: ['==', ['get', 'clickable'], '0'],
         layout,
         paint
@@ -199,7 +199,7 @@ export const IndoorStandMarkers = (props: {
     const clickableLayer: LayerProps = {
         id: layerIds.layerClickable,
         type: 'symbol' as const,
-        source: 'icons',
+        source: 'indoor_stands',
         filter: ['==', ['get', 'clickable'], '1'],
         layout,
         paint

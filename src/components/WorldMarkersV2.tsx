@@ -8,6 +8,7 @@ import { IndoorStandMarkers } from '../items/v2/IndoorStandMarkers';
 import { LineV2Marker } from '../items/v2/LineV2Marker';
 import { PolygonV2Marker } from '../items/v2/PolygonV2Marker';
 import { RouteV2Marker } from '../items/v2/RouteMarker';
+import { WallLabelMarkers } from '../items/v2/WallLabelMarkers';
 import { WallV2Marker } from '../items/v2/WallV2Marker';
 import { GroundFloor } from '../items/v2/WallV2Marker/GroundFloor';
 import { GroupWallMarkers } from '../items/v2/WallV2Marker/GroupWallMarkers';
@@ -35,7 +36,8 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
         iconMarkers,
         indoorStandMarkers,
         floorMarkers,
-        markers: markerGroups
+        markers: markerGroups,
+        wallMarkerLabels
     } = props.dividedMarkersV2;
 
     const highlightedMarkerIds = props.highlightedMarkerIds ?? [];
@@ -76,10 +78,15 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                 groupMarkerProps={props.groupMarkerProps}
                 highlightedMarkerIds={props.highlightedMarkerIds}
             />
+            <WallLabelMarkers
+                dataPoints={wallMarkerLabels}
+                beforeId="icons_last"
+                highlightedMarkerIds={props.highlightedMarkerIds ?? []}
+            />
             <IndoorStandMarkers
                 markers={indoorStandMarkers}
                 mapRef={props.mapRef}
-                beforeId={'icons|last'}
+                beforeId={'wall_labels|last'}
                 highlightedMarkerIds={props.highlightedMarkerIds}
                 orderedMarkerIds={props.orderedMarkerIds}
                 standScale={props.markersCustomConfig?.standScale ?? 1}

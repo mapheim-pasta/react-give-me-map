@@ -1,4 +1,5 @@
 import { orderBy } from 'lodash';
+import { WallLabelDataPoint } from '../items/v2/WallLabelMarkers';
 import {
     IIconV2WorldMarker,
     IIndoorStandWorldMarker,
@@ -22,6 +23,7 @@ export interface DividedMarkersV2 {
     indoorStandMarkers: IIndoorStandWorldMarker[];
     floorMarkers: IWallV2WorldMarker[];
     markers: MarkerGroup[];
+    wallMarkerLabels: WallLabelDataPoint[];
 }
 
 export function divideMarkersV2(
@@ -41,6 +43,19 @@ export function divideMarkersV2(
         'order',
         'desc'
     );
+
+    const wallMarkerLabels = markers
+        .filter((e): e is IWallV2WorldMarker => e.elementType === 'v2/wall')
+        .filter((e) => Boolean(e.elementData.label?.trim()))
+        .map<WallLabelDataPoint>((e) => ({
+            id: 'wall_label_' + e.id,
+            wallMarkerId: e.id,
+            lat: e.lat,
+            lng: e.lng,
+            label: e.elementData.label,
+            visible: e.visible ?? false
+        }));
+
     const indoorStandMarkers = orderBy(
         markers.filter((e): e is IIndoorStandWorldMarker => e.elementType === 'indoor_stand'),
         'order',
@@ -80,5 +95,11 @@ export function divideMarkersV2(
         });
     }
 
-    return { iconMarkers, indoorStandMarkers, floorMarkers, markers: markerGroups };
+    return {
+        iconMarkers,
+        indoorStandMarkers,
+        floorMarkers,
+        markers: markerGroups,
+        wallMarkerLabels
+    };
 }
