@@ -76,7 +76,7 @@ export const WallLabelMarkers = (props: {
         'text-font': ['Open Sans Semibold'],
         'text-allow-overlap': false,
         'text-optional': true,
-        'text-padding': 2
+        'text-padding': 0
     };
 
     const sourceFeatures = getSourceFeaturesForWallLabels(
@@ -93,7 +93,7 @@ export const WallLabelMarkers = (props: {
                     type: 'FeatureCollection' as const,
                     features: sourceFeatures
                 }}
-                cluster={true}
+                cluster={false}
             >
                 <IconLayers
                     source={'wall_labels'}
