@@ -80,7 +80,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
             />
             <WallLabelMarkers
                 dataPoints={wallMarkerLabels}
-                beforeId="icons_last"
+                beforeId="icons|last"
                 highlightedMarkerIds={props.highlightedMarkerIds ?? []}
             />
             <IndoorStandMarkers
