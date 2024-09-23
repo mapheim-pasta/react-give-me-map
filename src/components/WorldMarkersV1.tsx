@@ -1,5 +1,4 @@
 import { orderBy } from 'lodash';
-import mapboxgl from 'mapbox-gl';
 import React, { CSSProperties, RefObject, useEffect, useState } from 'react';
 import { MapRef, Marker } from 'react-map-gl';
 import { useCtx } from '../context/dynamic/provider';
@@ -36,7 +35,7 @@ export const WorldMarkersV1 = (props: IProps): JSX.Element => {
     const { state } = useCtx();
 
     useEffect(() => {
-        function onZoom(e: mapboxgl.MapboxEvent<MouseEvent> & mapboxgl.EventData) {
+        function onZoom() {
             const newZoom = props.mapRef?.current?.getZoom() ?? 1;
             props.markers?.forEach((marker) => {
                 const adjustedScale = marker.scalable

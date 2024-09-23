@@ -1,5 +1,4 @@
 import { uniq } from 'lodash';
-import mapboxgl from 'mapbox-gl';
 import { RefObject, useEffect, useState } from 'react';
 import { MapRef } from 'react-map-gl';
 
@@ -10,7 +9,7 @@ type UseMapImageOptions = {
     hash?: string | number;
 };
 
-export function loadMapImages(map: mapboxgl.Map, imageUrls: string[], onLoad: () => void) {
+export function loadMapImages(map: MapRef, imageUrls: string[], onLoad: () => void) {
     imageUrls.forEach((imageUrl) => {
         if (map.hasImage(imageUrl)) {
             return onLoad();
@@ -32,7 +31,7 @@ export function useLoadMapImages({ mapRef, imageUrls }: UseMapImageOptions) {
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-        const map = mapRef.current?.getMap();
+        const map = mapRef.current;
         if (!map) {
             return;
         }

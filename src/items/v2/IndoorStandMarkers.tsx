@@ -1,4 +1,4 @@
-import { SymbolLayout, SymbolPaint } from 'mapbox-gl';
+import { SymbolLayerSpecification } from 'mapbox-gl';
 import React, { RefObject, useEffect } from 'react';
 import { Layer, LayerProps, MapRef, Source } from 'react-map-gl';
 import { useLoadMapImages } from '../../hooks/map/useLoadMapImages';
@@ -126,7 +126,7 @@ export const IndoorStandMarkers = (props: {
         props.orderedMarkerIds
     );
 
-    const layout: SymbolLayout = {
+    const layout: SymbolLayerSpecification['layout'] = {
         'symbol-z-order': 'source',
         'symbol-sort-key': ['get', 'symbolSortKey'],
         'text-allow-overlap': false,
@@ -180,7 +180,7 @@ export const IndoorStandMarkers = (props: {
         ]
     };
 
-    const paint: SymbolPaint = {
+    const paint: SymbolLayerSpecification['paint'] = {
         'text-color': ['get', 'textColor'],
         'text-halo-color': ['get', 'textHaloColor'],
         'text-halo-width': ['get', 'textHaloWidth'],

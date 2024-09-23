@@ -1,12 +1,8 @@
 import _, { orderBy } from 'lodash';
+import { MapEvent, MapMouseEvent, StyleSpecification } from 'mapbox-gl';
 import React, { useEffect, useRef, useState } from 'react';
-import ReactMapGL, {
-    GeolocateControl,
-    GeolocateControlRef,
-    ImmutableLike,
-    MapRef,
-    MapboxStyle
-} from 'react-map-gl';
+import ReactMapGL, { GeolocateControl, MapRef } from 'react-map-gl';
+import { ImmutableLike } from 'react-map-gl/dist/esm/types';
 import { WorldMapControl } from '../components/WorldMapControl';
 import { WorldMarkersV1 } from '../components/WorldMarkersV1';
 import { WorldMarkersV2 } from '../components/WorldMarkersV2';
@@ -49,10 +45,10 @@ export const Map = (props: IProps): JSX.Element => {
     const [loaded, setLoaded] = useState<boolean>(props.mapRef?.current?.loaded() ?? false);
     const actions = useActions();
     const { state } = useCtx();
-    const geoRef = useRef<GeolocateControlRef>(null);
+    const geoRef = useRef<mapboxgl.GeolocateControl>(null);
     const wrapperMapRef = useRef<HTMLDivElement>(null);
     const [selectedMapStyle, setSelectedMapStyle] = useState<
-        MapboxStyle | string | ImmutableLike | EMapStyle
+        string | ImmutableLike<StyleSpecification> | StyleSpecification
     >(getInitMapStyle());
     const mapRef = props.mapRef?.current;
 
@@ -178,7 +174,7 @@ export const Map = (props: IProps): JSX.Element => {
                     height: '100%',
                     ...props.map.style
                 }}
-                onClick={(e) => {
+                onClick={(e: MapMouseEvent) => {
                     const hasFeatures = e.features && e.features.length;
 
                     const clickData = { lat: e.lngLat.lat, lng: e.lngLat.lng };
@@ -246,14 +242,16 @@ export const Map = (props: IProps): JSX.Element => {
                                         clusterId,
                                         99999,
                                         0,
-                                        (err, leaves) => {
-                                            const markerIds = leaves.map(
+                                        (err: unknown, leaves) => {
+                                            const markerIds = leaves?.map(
                                                 (e) => e.properties?.markerId
                                             );
-                                            state.callbacks.onMarkersSelected?.(
-                                                markerIds,
-                                                clickData
-                                            );
+                                            if (markerIds?.length) {
+                                                state.callbacks.onMarkersSelected?.(
+                                                    markerIds,
+                                                    clickData
+                                                );
+                                            }
                                         }
                                     );
 
@@ -272,7 +270,7 @@ export const Map = (props: IProps): JSX.Element => {
                 onLoad={() => {
                     setLoaded(true);
                 }}
-                onRender={(event) => {
+                onRender={(event: MapEvent) => {
                     if (props.config?.resizeOnRender) {
                         event.target.resize();
                     }
