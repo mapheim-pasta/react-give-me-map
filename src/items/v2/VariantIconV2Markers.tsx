@@ -18,9 +18,13 @@ export const VariantIconV2Markers = (props: Props) => {
 
     const markers = useMemo(() => props.markers.filter((e) => e.visible), [props.markers]);
 
+    // Don't animate the markers when they are highlighted becaus of a click
+    const highlightedMarkerIds =
+        props.highlightedMarkerIds?.length === 1 ? props.highlightedMarkerIds : [];
+
     const markerSizes = useComputeMarkerSizes({
         markers: markers,
-        highlightedMarkerIds: props.highlightedMarkerIds,
+        highlightedMarkerIds,
         mapRef: props.mapRef
     });
 
@@ -43,7 +47,7 @@ export const VariantIconV2Markers = (props: Props) => {
 
     useEffect(() => {
         markerSizes.triggerUpdateImmediately();
-    }, [props.highlightedMarkerIds?.join(';')]);
+    }, [highlightedMarkerIds?.join(';')]);
 
     return (
         <>
@@ -62,7 +66,7 @@ export const VariantIconV2Markers = (props: Props) => {
                     };
                 }
 
-                const isActive = props.highlightedMarkerIds?.includes(marker.id) ?? false;
+                const isActive = highlightedMarkerIds?.includes(marker.id) ?? false;
 
                 return (
                     <VariantIconV2Marker
