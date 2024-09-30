@@ -130,7 +130,6 @@ const S_ImageMarker = styled(motion.div)<{ $isActive: boolean; $selectable: bool
     justify-content: center;
     align-items: center;
     transform: scale(0);
-    pointer-events: all;
     display: none;
     padding: 2px;
     ${(props) =>
