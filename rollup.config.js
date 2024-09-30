@@ -6,6 +6,7 @@ import globals from 'rollup-plugin-node-globals';
 import nodePolyfills from 'rollup-plugin-node-polyfills';
 import typescript from 'rollup-plugin-typescript2';
 
+import json from '@rollup/plugin-json';
 import packageJson from './package.json';
 
 export default {
@@ -39,6 +40,7 @@ export default {
         }),
         nodePolyfills(),
         globals(),
+        json(),
         svgr({
             svgoConfig: {
                 plugins: [

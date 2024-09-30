@@ -3,6 +3,7 @@ import { WallLabelDataPoint } from '../items/v2/WallLabelMarkers';
 import {
     IIconV2WorldMarker,
     IIndoorStandWorldMarker,
+    IVariantIconV2WorldMarker,
     IWallV2WorldMarker,
     IWorldV2Marker
 } from '../utils/world/worldTypes';
@@ -20,6 +21,7 @@ type MarkerGroup =
 
 export interface DividedMarkersV2 {
     iconMarkers: IIconV2WorldMarker[];
+    variantIconMarkers: IVariantIconV2WorldMarker[];
     indoorStandMarkers: IIndoorStandWorldMarker[];
     floorMarkers: IWallV2WorldMarker[];
     markers: MarkerGroup[];
@@ -32,7 +34,11 @@ export function divideMarkersV2(
 ): DividedMarkersV2 {
     const nonGroupMarkers = orderBy(
         markers.filter((e) => {
-            return e.elementType !== 'v2/icon' && e.elementType !== 'indoor_stand';
+            return (
+                e.elementType !== 'v2/icon' &&
+                e.elementType !== 'v2/variant_icon' &&
+                e.elementType !== 'indoor_stand'
+            );
         }),
         'order',
         'desc'
@@ -40,6 +46,12 @@ export function divideMarkersV2(
 
     const iconMarkers = orderBy(
         markers.filter((e): e is IIconV2WorldMarker => e.elementType === 'v2/icon'),
+        'order',
+        'desc'
+    );
+
+    const variantIconMarkers = orderBy(
+        markers.filter((e): e is IVariantIconV2WorldMarker => e.elementType === 'v2/variant_icon'),
         'order',
         'desc'
     );
@@ -100,6 +112,7 @@ export function divideMarkersV2(
         indoorStandMarkers,
         floorMarkers,
         markers: markerGroups,
-        wallMarkerLabels
+        wallMarkerLabels,
+        variantIconMarkers
     };
 }

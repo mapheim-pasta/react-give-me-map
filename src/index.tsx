@@ -1,4 +1,3 @@
-export { Package as GiveMeMap, isV1Marker, isV2Marker } from './Package';
 export { CustomMarkerBuilders, PinIconBuilder } from './context/dynamic/actions';
 export { loadMapImages, useLoadMapImages } from './hooks/map/useLoadMapImages';
 export { useContainComputation } from './hooks/mouse/useContainComputation';
@@ -9,13 +8,14 @@ export { PinWorld, S_DotPin } from './items/PinWorld';
 export { PolygonWorld } from './items/PolygonWorld';
 export { ReactWorld } from './items/ReactWorld';
 export { TextWorld } from './items/TextWorld';
-export { YoutubeWorld } from './items/YoutubeWorld';
 export { getSegmentsForDirectionMarker } from './items/v2/DirectionV2Marker';
 export { getSourceFeaturesForIcons } from './items/v2/IconV2Markers';
 export { getFlippedCoordinates } from './items/v2/ImageTextV2Marker';
 export { getSourceFeaturesForIndoorStands } from './items/v2/IndoorStandMarkers';
 export { transformLineCoordinatesIntoPolygonCoordinates } from './items/v2/WallV2Marker/MultiLineWall';
+export { YoutubeWorld } from './items/YoutubeWorld';
 export { ClickEventData } from './map/RegisterPropsToGlobalState';
+export { Package as GiveMeMap, isV1Marker, isV2Marker } from './Package';
 export {
     EMapStyle,
     ICoordinates,
@@ -63,6 +63,8 @@ export {
     ITextV2WorldMarker,
     ITextWorld,
     ITextWorldMarker,
+    IVariantIconV2World,
+    IVariantIconV2WorldMarker,
     IWallV2World,
     IWallV2WorldMarker,
     IWorldMarker,

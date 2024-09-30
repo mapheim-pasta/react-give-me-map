@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react';
 import { MapRef } from 'react-map-gl';
-import { CustomBuilders } from './context/dynamic/actions';
+import { CustomBuilders, Fonts } from './context/dynamic/actions';
 import { ContextProvider } from './context/dynamic/provider';
 import { reducer } from './context/dynamic/reducer';
 import { initialState } from './context/dynamic/state';
@@ -16,6 +16,7 @@ interface IProps {
     children?: React.ReactNode;
     callbacks?: ICallbacks;
     selectedIds?: string[];
+    fonts?: Fonts;
 
     config?: IMapConfig;
 
@@ -27,6 +28,7 @@ interface IProps {
     selectedCategories?: string[];
     customBuilders?: CustomBuilders;
     isEditMode?: boolean;
+    isWide?: boolean;
 }
 
 export const isV2Marker = (marker: IWorldMarker): marker is IWorldV2Marker =>
@@ -38,7 +40,8 @@ export const isV2Marker = (marker: IWorldMarker): marker is IWorldV2Marker =>
     marker.elementType === 'direction' ||
     marker.elementType === 'v2/text' ||
     marker.elementType === 'v2/route' ||
-    marker.elementType === 'indoor_stand';
+    marker.elementType === 'indoor_stand' ||
+    marker.elementType === 'v2/variant_icon';
 
 export const isV1Marker = (marker: IWorldMarker): marker is IWorldV1Marker => !isV2Marker(marker);
 
@@ -68,6 +71,8 @@ export const Package = (props: IProps): JSX.Element => {
                 <RegisterPropsToGlobalState
                     callbacks={props.callbacks}
                     customBuilders={props.customBuilders}
+                    fonts={props.fonts}
+                    isWide={props.isWide}
                 />
                 <Map
                     mapRef={props.mapRef}

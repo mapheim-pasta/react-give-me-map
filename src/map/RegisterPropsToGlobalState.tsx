@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { CustomBuilders, useActions } from '../context/dynamic/actions';
+import { CustomBuilders, Fonts, useActions } from '../context/dynamic/actions';
 
 export interface ClickEventData {
     lat: number;
@@ -14,6 +14,8 @@ export interface ICallbacks {
 interface IProps {
     callbacks?: ICallbacks;
     customBuilders?: CustomBuilders;
+    fonts?: Fonts;
+    isWide?: boolean;
 }
 
 export const RegisterPropsToGlobalState = (props: IProps) => {
@@ -31,5 +33,8 @@ export const RegisterPropsToGlobalState = (props: IProps) => {
         actions.setCustomBuilders(props.customBuilders ?? {});
     }, [props.customBuilders]);
 
+    useEffect(() => {
+        actions.setFonts(props.fonts ?? { regular: 'InterRegular', semiBold: 'InterSemiBold' });
+    }, [props.fonts]);
     return <></>;
 };

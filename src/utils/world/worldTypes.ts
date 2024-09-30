@@ -22,7 +22,8 @@ export type WorldV2Elements =
     | 'direction'
     | 'v2/text'
     | 'v2/route'
-    | 'indoor_stand';
+    | 'indoor_stand'
+    | 'v2/variant_icon';
 
 export type WorldElements = WorldV1Elements | WorldV2Elements;
 
@@ -46,7 +47,8 @@ export type ICombinedV2World =
     | ITextV2World
     | IImageV2World
     | IRouteV2World
-    | IIndoorStandWorld;
+    | IIndoorStandWorld
+    | IVariantIconV2World;
 
 export type ICombinedWorld = ICombinedV1World | ICombinedV2World;
 
@@ -399,6 +401,22 @@ export interface IIconV2WorldMarker extends BaseMarker {
     ref?: RefObject<HTMLDivElement>;
 }
 
+export interface IVariantIconV2World {
+    color: string;
+    text: string;
+    imageUrl: string;
+    circleText: string;
+    withStar: boolean;
+    storyImageUrl: string;
+    useStoryImage: boolean;
+}
+
+export interface IVariantIconV2WorldMarker extends BaseMarker {
+    elementType: 'v2/variant_icon';
+    elementData: IVariantIconV2World;
+    ref?: RefObject<HTMLDivElement>;
+}
+
 export interface IImageV2World {
     imageUrl: string;
     coordinates: Array<{ lat: number; lng: number }>;
@@ -461,6 +479,7 @@ export type IWorldV2Marker =
     | IDirectionWorldMarker
     | ITextV2WorldMarker
     | IRouteV2WorldMarker
-    | IIndoorStandWorldMarker;
+    | IIndoorStandWorldMarker
+    | IVariantIconV2WorldMarker;
 
 export type IWorldMarker = IWorldV1Marker | IWorldV2Marker;

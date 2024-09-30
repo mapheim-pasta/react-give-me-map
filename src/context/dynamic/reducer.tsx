@@ -20,6 +20,16 @@ export const reducer = (state: IState, action: { type: Actions; value: unknown }
                 ...state,
                 customBuilders: value as CustomBuilders
             };
+        case Actions.SET_FONTS:
+            return {
+                ...state,
+                fonts: value as IState['fonts']
+            };
+        case Actions.SET_IS_WIDE:
+            return {
+                ...state,
+                isWide: value as boolean
+            };
         default:
             return state;
     }

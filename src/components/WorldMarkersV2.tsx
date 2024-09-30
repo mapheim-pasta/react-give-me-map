@@ -8,6 +8,7 @@ import { IndoorStandMarkers } from '../items/v2/IndoorStandMarkers';
 import { LineV2Marker } from '../items/v2/LineV2Marker';
 import { PolygonV2Marker } from '../items/v2/PolygonV2Marker';
 import { RouteV2Marker } from '../items/v2/RouteMarker';
+import { VariantIconV2Markers } from '../items/v2/VariantIconV2Markers';
 import { WallLabelMarkers } from '../items/v2/WallLabelMarkers';
 import { WallV2Marker } from '../items/v2/WallV2Marker';
 import { GroundFloor } from '../items/v2/WallV2Marker/GroundFloor';
@@ -37,7 +38,8 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
         indoorStandMarkers,
         floorMarkers,
         markers: markerGroups,
-        wallMarkerLabels
+        wallMarkerLabels,
+        variantIconMarkers
     } = props.dividedMarkersV2;
 
     const highlightedMarkerIds = props.highlightedMarkerIds ?? [];
@@ -64,6 +66,8 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
         }
     }, [layerOrder.join(';')]);
 
+    console.log('variantIconMarkers', variantIconMarkers);
+
     return (
         <>
             <Source
@@ -77,6 +81,12 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                 beforeId={undefined}
                 groupMarkerProps={props.groupMarkerProps}
                 highlightedMarkerIds={props.highlightedMarkerIds}
+            />
+            <VariantIconV2Markers
+                markers={variantIconMarkers}
+                mapRef={props.mapRef}
+                highlightedMarkerIds={props.highlightedMarkerIds}
+                isEditMode={props.isEditMode}
             />
             <WallLabelMarkers
                 dataPoints={wallMarkerLabels}
