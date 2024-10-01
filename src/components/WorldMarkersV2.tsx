@@ -66,8 +66,6 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
         }
     }, [layerOrder.join(';')]);
 
-    console.log('variantIconMarkers', variantIconMarkers);
-
     return (
         <>
             <Source

@@ -33,8 +33,6 @@ interface Props {
 const VariantIconV2MarkerComponent = (props: Props) => {
     const { markerId, text, lat, lng, isActive, size, color, isWide } = props;
 
-    console.log('rerendeeeer', props.selectable);
-
     return (
         <S_VariantIconV2Marker
             className={props.className}
