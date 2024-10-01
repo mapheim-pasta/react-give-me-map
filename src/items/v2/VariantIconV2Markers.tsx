@@ -73,6 +73,7 @@ export const VariantIconV2Markers = (props: Props) => {
                         isActive={isActive}
                         image={getImage()}
                         isWide={state.isWide}
+                        isEditMode={props.isEditMode}
                         key={marker.id}
                         isDraggable={isActive && props.isEditMode}
                         lat={marker.lat}

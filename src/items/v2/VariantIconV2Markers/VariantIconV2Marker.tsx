@@ -1,4 +1,5 @@
 import { AnimatePresence } from 'framer-motion';
+import { isEqual } from 'lodash';
 import React, { memo } from 'react';
 import { Marker } from 'react-map-gl';
 import styled from 'styled-components';
@@ -25,6 +26,7 @@ interface Props {
     text: string;
     className?: string;
     isWide: boolean;
+    isEditMode: boolean;
     fonts: Fonts;
     onClick?: (markerId: string) => void;
     selectable: boolean;
@@ -55,34 +57,39 @@ const VariantIconV2MarkerComponent = (props: Props) => {
                     zIndex: size
                 }}
             >
-                <AnimatePresence>
-                    {size === 1 && (
-                        <S_DotMarker
-                            fonts={props.fonts}
-                            isActive={isActive}
-                            color={color}
-                            markerId={markerId}
-                            orderNumber={props.orderNumber}
-                            selectable={props.selectable}
-                        />
-                    )}
-                </AnimatePresence>
-                <AnimatePresence>
-                    {(size === 2 || size === 3) && (
-                        <ImageMarker
-                            fonts={props.fonts}
-                            isActive={isActive}
-                            color={color}
-                            size={size}
-                            text={text}
-                            withStar={props.withStar}
-                            image={props.image}
-                            markerId={markerId}
-                            orderNumber={props.orderNumber}
-                            selectable={props.selectable}
-                        />
-                    )}
-                </AnimatePresence>
+                <div
+                    // aria-label is required for moving the marker in real-time in the editor
+                    aria-label={markerId}
+                >
+                    <AnimatePresence>
+                        {size === 1 && (
+                            <S_DotMarker
+                                fonts={props.fonts}
+                                isActive={isActive}
+                                color={color}
+                                markerId={markerId}
+                                orderNumber={props.orderNumber}
+                                selectable={props.selectable}
+                            />
+                        )}
+                    </AnimatePresence>
+                    <AnimatePresence>
+                        {(size === 2 || size === 3) && (
+                            <ImageMarker
+                                fonts={props.fonts}
+                                isActive={isActive}
+                                color={color}
+                                size={size}
+                                text={text}
+                                withStar={props.withStar}
+                                image={props.image}
+                                markerId={markerId}
+                                orderNumber={props.orderNumber}
+                                selectable={props.selectable}
+                            />
+                        )}
+                    </AnimatePresence>
+                </div>
             </Marker>
         </S_VariantIconV2Marker>
     );
@@ -103,14 +110,15 @@ const S_DotMarker = styled(DotMarker)`
 `;
 
 // Check only props that can change!
-export const VariantIconV2Marker = memo(VariantIconV2MarkerComponent);
-
-//     (prev, next) => {
-//     return (
-//         prev.isActive === next.isActive &&
-//         prev.size === next.size &&
-//         prev.color === next.color &&
-//         prev.image.url === next.image.url &&
-//         prev.image.type === next.image.type
-//     );
-// });
+export const VariantIconV2Marker = memo(VariantIconV2MarkerComponent, (prev, next) => {
+    if (!prev.isEditMode) {
+        return (
+            prev.isActive === next.isActive &&
+            prev.size === next.size &&
+            prev.selectable &&
+            next.selectable
+        );
+    } else {
+        return isEqual(prev, next);
+    }
+});
