@@ -71,6 +71,7 @@ export const ImageMarker = (props: Props): JSX.Element => {
             >
                 {imageStyle ? (
                     <S_ImageLarge
+                        $selectable={props.selectable}
                         style={{
                             ...getImageStyle(),
                             backgroundPosition: 'center bottom',
@@ -165,7 +166,10 @@ const shakeAnimation = keyframes`
     100% { transform: translate(1px, 1px) rotate(0deg); }
 `;
 
-const S_ImageLarge = styled.div``;
+const S_ImageLarge = styled.div<{ $selectable: boolean }>`
+    pointer-events: all;
+    cursor: pointer;
+`;
 
 const S_Text = styled(motion.div)<{ $font: string; $selectable: boolean }>`
     max-width: 130px;
