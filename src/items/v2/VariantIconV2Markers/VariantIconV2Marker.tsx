@@ -57,7 +57,7 @@ const VariantIconV2MarkerComponent = (props: Props) => {
                     zIndex: size
                 }}
             >
-                <div
+                <S_MarkerChild
                     // aria-label is required for moving the marker in real-time in the editor
                     aria-label={markerId}
                 >
@@ -89,7 +89,7 @@ const VariantIconV2MarkerComponent = (props: Props) => {
                             />
                         )}
                     </AnimatePresence>
-                </div>
+                </S_MarkerChild>
             </Marker>
         </S_VariantIconV2Marker>
     );
@@ -122,3 +122,10 @@ export const VariantIconV2Marker = memo(VariantIconV2MarkerComponent, (prev, nex
         return isEqual(prev, next);
     }
 });
+
+const S_MarkerChild = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
