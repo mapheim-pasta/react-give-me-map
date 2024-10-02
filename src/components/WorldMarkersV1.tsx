@@ -24,6 +24,7 @@ export interface IProps {
     selectableMarkersStyle?: MarkerStyle;
     highlightedMarkers: string[];
     highlightedMarkersStyle?: MarkerStyle;
+    forceHighlightSelectableMarkers: boolean;
 
     groupMarkerProps: GroupMarkerProps;
     mapRef: RefObject<MapRef>;
@@ -79,9 +80,11 @@ export const WorldMarkersV1 = (props: IProps): JSX.Element => {
         return <></>;
     }
 
-    function isMarkerHighlighted(markerId: string): boolean {
-        const found = props.highlightedMarkers.find((id) => id === markerId);
-        return !!found;
+    function isMarkerHighlighted(marker: IWorldV1Marker): boolean {
+        if (props.forceHighlightSelectableMarkers) {
+            return marker.selectable ?? false;
+        }
+        return props.highlightedMarkers.includes(marker.id);
     }
 
     const getMarkerStyle = (style?: MarkerStyle): CSSProperties =>
@@ -159,7 +162,7 @@ export const WorldMarkersV1 = (props: IProps): JSX.Element => {
                                     ...(marker.selectable
                                         ? getMarkerStyle(props.selectableMarkersStyle)
                                         : {}),
-                                    ...(isMarkerHighlighted(marker.id)
+                                    ...(isMarkerHighlighted(marker)
                                         ? getMarkerStyle(props.highlightedMarkersStyle)
                                         : {})
                                 }}
@@ -199,7 +202,7 @@ export const WorldMarkersV1 = (props: IProps): JSX.Element => {
                                     ...(!isDrawOrPolygon && marker.selectable
                                         ? getMarkerStyle(props.selectableMarkersStyle)
                                         : {}),
-                                    ...(!isDrawOrPolygon && isMarkerHighlighted(marker.id)
+                                    ...(!isDrawOrPolygon && isMarkerHighlighted(marker)
                                         ? getMarkerStyle(props.highlightedMarkersStyle)
                                         : {})
                                 }}
@@ -224,7 +227,7 @@ export const WorldMarkersV1 = (props: IProps): JSX.Element => {
                                     <PolygonWorld
                                         markerId={marker.id}
                                         nativeMarkerIdsOrder={nativeMarkerIdsOrder}
-                                        isHighlighted={isMarkerHighlighted(marker.id)}
+                                        isHighlighted={isMarkerHighlighted(marker)}
                                         selectable={marker.selectable ?? false}
                                         elementData={marker.elementData}
                                         adjustedScale={adjustedScale}

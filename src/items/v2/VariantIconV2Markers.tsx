@@ -9,6 +9,7 @@ import { useComputeMarkerSizes } from './VariantIconV2Markers/useComputeMarkerSi
 interface Props {
     markers: IVariantIconV2WorldMarker[];
     highlightedMarkerIds?: string[];
+    forceHighlightSelectableMarkers?: boolean;
     mapRef: React.RefObject<MapRef>;
     isEditMode: boolean;
 }
@@ -18,13 +19,9 @@ export const VariantIconV2Markers = (props: Props) => {
 
     const markers = useMemo(() => props.markers.filter((e) => e.visible), [props.markers]);
 
-    // Don't animate the markers when they are highlighted becaus of a click
-    const highlightedMarkerIds =
-        props.highlightedMarkerIds?.length === 1 ? props.highlightedMarkerIds : [];
-
     const markerSizes = useComputeMarkerSizes({
         markers: markers,
-        highlightedMarkerIds,
+        highlightedMarkerIds: props.highlightedMarkerIds,
         mapRef: props.mapRef
     });
 
@@ -47,7 +44,7 @@ export const VariantIconV2Markers = (props: Props) => {
 
     useEffect(() => {
         markerSizes.triggerUpdateImmediately();
-    }, [highlightedMarkerIds?.join(';')]);
+    }, [props.highlightedMarkerIds?.join(';'), markers.length]);
 
     return (
         <>
@@ -66,16 +63,19 @@ export const VariantIconV2Markers = (props: Props) => {
                     };
                 }
 
-                const isActive = highlightedMarkerIds?.includes(marker.id) ?? false;
+                const isActive = props.highlightedMarkerIds?.includes(marker.id) ?? false;
 
                 return (
                     <VariantIconV2Marker
                         isActive={isActive}
+                        forceHighlightSelectableMarkers={
+                            props.forceHighlightSelectableMarkers ?? false
+                        }
                         image={getImage()}
                         isWide={state.isWide}
+                        mapRef={props.mapRef}
                         isEditMode={props.isEditMode}
                         key={marker.id}
-                        isDraggable={isActive && props.isEditMode}
                         lat={marker.lat}
                         lng={marker.lng}
                         withStar={marker.elementData.withStar}

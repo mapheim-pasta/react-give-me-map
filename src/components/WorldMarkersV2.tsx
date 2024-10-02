@@ -19,6 +19,7 @@ import {
     GroupMarkerProps,
     MarkersCustomConfigProps
 } from '../utils/map/mapTypes';
+import { IWorldMarker } from '../utils/world/worldTypes';
 import { CountriesFillLayer } from './CountriesFillLayer';
 
 export interface IProps {
@@ -26,6 +27,7 @@ export interface IProps {
     dividedMarkersV2: DividedMarkersV2;
     isEditMode: boolean;
     highlightedMarkerIds?: string[];
+    forceHighlightSelectableMarkers: boolean;
     orderedMarkerIds?: string[];
     groupMarkerProps: GroupMarkerProps;
     countriesFillConfig?: CountriesFillProps;
@@ -66,6 +68,12 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
         }
     }, [layerOrder.join(';')]);
 
+    function getHighlightedMarkersForArray<T extends IWorldMarker>(markers: T[]) {
+        return props.forceHighlightSelectableMarkers
+            ? markers.filter((e) => e.selectable).map((e) => e.id)
+            : props.highlightedMarkerIds ?? [];
+    }
+
     return (
         <>
             <Source
@@ -78,24 +86,27 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                 mapRef={props.mapRef}
                 beforeId={undefined}
                 groupMarkerProps={props.groupMarkerProps}
-                highlightedMarkerIds={props.highlightedMarkerIds}
+                highlightedMarkerIds={getHighlightedMarkersForArray(iconMarkers)}
             />
             <VariantIconV2Markers
                 markers={variantIconMarkers}
                 mapRef={props.mapRef}
                 highlightedMarkerIds={props.highlightedMarkerIds}
+                forceHighlightSelectableMarkers={props.forceHighlightSelectableMarkers}
                 isEditMode={props.isEditMode}
             />
             <WallLabelMarkers
                 dataPoints={wallMarkerLabels}
                 beforeId="icons|last"
-                highlightedMarkerIds={props.highlightedMarkerIds ?? []}
+                highlightedMarkerIds={getHighlightedMarkersForArray(
+                    markerGroups.flatMap((e) => (e.type === 'wallGroup' ? e.markers : [e.marker]))
+                )}
             />
             <IndoorStandMarkers
                 markers={indoorStandMarkers}
                 mapRef={props.mapRef}
                 beforeId={'wall_labels|last'}
-                highlightedMarkerIds={props.highlightedMarkerIds}
+                highlightedMarkerIds={getHighlightedMarkersForArray(indoorStandMarkers)}
                 orderedMarkerIds={props.orderedMarkerIds}
                 standScale={props.markersCustomConfig?.standScale ?? 1}
             />
@@ -118,6 +129,10 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                 }
 
                 const marker = markerGroup.marker;
+                const isHighlighted =
+                    (props.forceHighlightSelectableMarkers && marker.selectable) ||
+                    highlightedMarkerIds.includes(marker.id);
+
                 switch (marker.elementType) {
                     case 'v2/line':
                         return (
@@ -127,7 +142,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                                 beforeId={beforeId}
                                 mapRef={props.mapRef}
                                 orderIndex={orderIndex}
-                                isHighlighted={highlightedMarkerIds.includes(marker.id)}
+                                isHighlighted={isHighlighted}
                             />
                         );
                     case 'v2/polygon':
@@ -138,7 +153,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                                 beforeId={beforeId}
                                 mapRef={props.mapRef}
                                 orderIndex={orderIndex}
-                                isHighlighted={highlightedMarkerIds.includes(marker.id)}
+                                isHighlighted={isHighlighted}
                             />
                         );
                     case 'v2/wall':
@@ -160,7 +175,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                                 beforeId={beforeId}
                                 mapRef={props.mapRef}
                                 orderIndex={orderIndex}
-                                isHighlighted={highlightedMarkerIds.includes(marker.id)}
+                                isHighlighted={isHighlighted}
                             />
                         );
                     case 'direction':

@@ -26,6 +26,7 @@ interface IProps {
     config?: IMapConfig;
     selectableMarkersStyle?: MarkerStyle;
     highlightedMarkers: string[];
+    forceHighlightSelectableMarkers: boolean;
     orderedMarkerIds?: string[];
     highlightedMarkersStyle?: MarkerStyle;
     categories: string[];
@@ -286,6 +287,7 @@ export const Map = (props: IProps): JSX.Element => {
                             markers={props.v1Markers}
                             selectableMarkersStyle={props.selectableMarkersStyle}
                             highlightedMarkers={props.highlightedMarkers}
+                            forceHighlightSelectableMarkers={props.forceHighlightSelectableMarkers}
                             highlightedMarkersStyle={props.highlightedMarkersStyle}
                             groupMarkerProps={props.config?.groupMarkerProps ?? {}}
                         />
@@ -297,6 +299,7 @@ export const Map = (props: IProps): JSX.Element => {
                             mapRef={props.mapRef}
                             groupMarkerProps={props.config?.groupMarkerProps ?? {}}
                             orderedMarkerIds={props.orderedMarkerIds ?? []}
+                            forceHighlightSelectableMarkers={props.forceHighlightSelectableMarkers}
                             markersCustomConfig={props.config?.markersCustomConfig ?? {}}
                         />
                         <WorldMapControl

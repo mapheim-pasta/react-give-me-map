@@ -23,6 +23,7 @@ interface IProps {
     selectableMarkersStyle?: MarkerStyle;
     highlightedMarkers?: string[];
     highlightedMarkersStyle?: MarkerStyle;
+    forceHighlightSelectableMarkers?: boolean;
     orderedMarkerIds?: string[];
     categories?: string[];
     selectedCategories?: string[];
@@ -88,6 +89,7 @@ export const Package = (props: IProps): JSX.Element => {
                     selectableMarkersStyle={props.selectableMarkersStyle}
                     highlightedMarkersStyle={props.highlightedMarkersStyle}
                     highlightedMarkers={props.highlightedMarkers ?? []}
+                    forceHighlightSelectableMarkers={props.forceHighlightSelectableMarkers ?? false}
                     categories={props.categories ?? []}
                     selectedCategories={props.selectedCategories ?? []}
                     orderedMarkerIds={props.orderedMarkerIds ?? []}
