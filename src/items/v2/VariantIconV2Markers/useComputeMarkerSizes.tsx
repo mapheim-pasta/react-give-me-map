@@ -7,6 +7,8 @@ interface Params {
     markers: IVariantIconV2WorldMarker[];
     highlightedMarkerIds?: string[];
     mapRef: React.RefObject<MapRef>;
+    collisionPaddingMiddle: number;
+    collisionPaddingLarge: number;
 }
 
 interface TakenCoordinate {
@@ -15,14 +17,11 @@ interface TakenCoordinate {
     markerId: string;
 }
 
-const DISTANCE_MIDDLE = 60;
-const DISTANCE_LARGE = 100;
-
 // TOOD: Use rbush for better performance
 // https://github.com/mourner/rbush/
 
 export const useComputeMarkerSizes = (params: Params) => {
-    const { markers, highlightedMarkerIds } = params;
+    const { markers, highlightedMarkerIds, collisionPaddingLarge, collisionPaddingMiddle } = params;
 
     const sortedIconMarkers = useMemo(() => {
         return markers.sort((a, b) => a.lat - b.lat);
@@ -88,8 +87,8 @@ export const useComputeMarkerSizes = (params: Params) => {
 
         const takenCoordinates: { markerId: string; x: number; y: number }[] = [...coordinates];
 
-        const distanceMiddleSquared = DISTANCE_MIDDLE * DISTANCE_MIDDLE;
-        const distanceLargeSquared = DISTANCE_LARGE * DISTANCE_LARGE;
+        const distanceMiddleSquared = collisionPaddingMiddle * collisionPaddingMiddle;
+        const distanceLargeSquared = collisionPaddingLarge * collisionPaddingLarge;
 
         const handledMarkerIds = new Set<string>();
 

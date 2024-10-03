@@ -20,6 +20,7 @@ export {
     EMapStyle,
     ICoordinates,
     IViewportExtended,
+    MarkerGlobalSettings,
     MarkersCustomConfigProps
 } from './utils/map/mapTypes';
 export { isMarkerElement } from './utils/marker/markerUtils';

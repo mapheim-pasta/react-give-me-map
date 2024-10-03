@@ -4,6 +4,18 @@ export type IMapProps = OriginalMapProps & {
     onLoad?: (mapRef: MapRef | null) => void;
 };
 
+export interface MarkerGlobalSettings {
+    'v2/variant_icon': {
+        storyImageWidth: number;
+        storyImageHeight: number;
+        regularImageWidth: number;
+        regularImageHeight: number;
+        collisionPaddingMiddle: number;
+        collisionPaddingLarge: number;
+        enableOrderNumberInDot: boolean;
+    };
+}
+
 export interface IViewportExtended {
     latitude?: number;
     longitude?: number;

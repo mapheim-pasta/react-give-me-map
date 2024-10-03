@@ -9,7 +9,13 @@ import { WorldMarkersV2 } from '../components/WorldMarkersV2';
 import { useActions } from '../context/dynamic/actions';
 import { useCtx } from '../context/dynamic/provider';
 import { useMouseListener } from '../hooks/mouse/useMouseListener';
-import { EMapStyle, IMapConfig, IMapProps, MarkerStyle } from '../utils/map/mapTypes';
+import {
+    EMapStyle,
+    IMapConfig,
+    IMapProps,
+    MarkerGlobalSettings,
+    MarkerStyle
+} from '../utils/map/mapTypes';
 import { IWorldMarker, IWorldV1Marker, IWorldV2Marker } from '../utils/world/worldTypes';
 import { divideMarkersV2 } from './divideMarkersV2';
 import { useWorldMarkersV1Data } from './useWorldMarkersV1Data';
@@ -31,6 +37,7 @@ interface IProps {
     highlightedMarkersStyle?: MarkerStyle;
     categories: string[];
     selectedCategories: string[];
+    markerGlobalSettings: MarkerGlobalSettings;
 }
 
 const defaults: Partial<IMapProps> = {
@@ -301,6 +308,7 @@ export const Map = (props: IProps): JSX.Element => {
                             orderedMarkerIds={props.orderedMarkerIds ?? []}
                             forceHighlightSelectableMarkers={props.forceHighlightSelectableMarkers}
                             markersCustomConfig={props.config?.markersCustomConfig ?? {}}
+                            markerGlobalSettings={props.markerGlobalSettings}
                         />
                         <WorldMapControl
                             onGeoClick={() => {

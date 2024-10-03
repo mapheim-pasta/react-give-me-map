@@ -1,12 +1,14 @@
+import { merge } from 'lodash';
 import React, { useReducer } from 'react';
 import { MapRef } from 'react-map-gl';
+import { PartialDeep } from 'type-fest';
 import { CustomBuilders, Fonts } from './context/dynamic/actions';
 import { ContextProvider } from './context/dynamic/provider';
 import { reducer } from './context/dynamic/reducer';
 import { initialState } from './context/dynamic/state';
 import { Map } from './map/Map';
 import { ICallbacks, RegisterPropsToGlobalState } from './map/RegisterPropsToGlobalState';
-import { IMapConfig, IMapProps, MarkerStyle } from './utils/map/mapTypes';
+import { IMapConfig, IMapProps, MarkerGlobalSettings, MarkerStyle } from './utils/map/mapTypes';
 import { IWorldMarker, IWorldV1Marker, IWorldV2Marker } from './utils/world/worldTypes';
 
 interface IProps {
@@ -28,9 +30,22 @@ interface IProps {
     categories?: string[];
     selectedCategories?: string[];
     customBuilders?: CustomBuilders;
+    markerGlobalSettings?: PartialDeep<MarkerGlobalSettings>;
     isEditMode?: boolean;
     isWide?: boolean;
 }
+
+const globalMarkerSettingsDefault: MarkerGlobalSettings = {
+    'v2/variant_icon': {
+        storyImageWidth: 94,
+        storyImageHeight: 70,
+        regularImageWidth: 50,
+        regularImageHeight: 50,
+        collisionPaddingMiddle: 60,
+        collisionPaddingLarge: 100,
+        enableOrderNumberInDot: true
+    }
+};
 
 export const isV2Marker = (marker: IWorldMarker): marker is IWorldV2Marker =>
     marker.elementType === 'v2/line' ||
@@ -93,6 +108,11 @@ export const Package = (props: IProps): JSX.Element => {
                     categories={props.categories ?? []}
                     selectedCategories={props.selectedCategories ?? []}
                     orderedMarkerIds={props.orderedMarkerIds ?? []}
+                    markerGlobalSettings={merge(
+                        {},
+                        globalMarkerSettingsDefault,
+                        props.markerGlobalSettings
+                    )}
                 >
                     {props.children}
                 </Map>

@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { Fonts } from '../../../context/dynamic/actions';
+import { MarkerGlobalSettings } from '../../../utils/map/mapTypes';
 import { DotMarker, S_DotMarker } from './DotMarker';
 
 interface Props {
@@ -21,6 +22,7 @@ interface Props {
     color: string;
     className?: string;
     selectable: boolean;
+    markerGlobalSettings: MarkerGlobalSettings['v2/variant_icon'];
 }
 
 export const ImageMarker = (props: Props): JSX.Element => {
@@ -29,8 +31,8 @@ export const ImageMarker = (props: Props): JSX.Element => {
             return {
                 border: '3px solid #fff',
                 borderRadius: '10px',
-                width: '94px',
-                height: '70px',
+                width: props.markerGlobalSettings.storyImageWidth + 'px',
+                height: props.markerGlobalSettings.storyImageHeight + 'px',
                 backgroundColor: '#fff',
                 backgroundImage: `url(${props.image.url})`,
                 backgroundSize: 'cover',
@@ -40,8 +42,8 @@ export const ImageMarker = (props: Props): JSX.Element => {
 
         if (props.image.url) {
             return {
-                width: '50px',
-                height: '50px',
+                width: props.markerGlobalSettings.regularImageWidth + 'px',
+                height: props.markerGlobalSettings.regularImageHeight + 'px',
                 backgroundImage: `url(${props.image.url})`,
                 backgroundSize: 'contain'
             };
@@ -84,6 +86,7 @@ export const ImageMarker = (props: Props): JSX.Element => {
                         isActive={props.isActive}
                         markerId={props.markerId}
                         orderNumber={props.orderNumber}
+                        markerGlobalSettings={props.markerGlobalSettings}
                         fonts={props.fonts}
                         selectable={props.selectable}
                     />
@@ -169,6 +172,8 @@ const shakeAnimation = keyframes`
 const S_ImageLarge = styled.div<{ $selectable: boolean }>`
     pointer-events: all;
     cursor: pointer;
+    position: relative;
+    z-index: 1;
 `;
 
 const S_Text = styled(motion.div)<{ $font: string; $selectable: boolean }>`
@@ -183,6 +188,8 @@ const S_Text = styled(motion.div)<{ $font: string; $selectable: boolean }>`
     font-family: ${(props) => props.$font};
     font-size: 13px;
     word-break: break-word;
+    position: relative;
+    z-index: 2;
     ${(props) =>
         props.$selectable &&
         css`
@@ -199,6 +206,7 @@ const S_Star = styled.div<{ $selectable: boolean }>`
     height: 30px;
     background-image: url('https://dvtqxks0zalev.cloudfront.net/8480b398-03a0-4372-b46e-bab3a8cd6946.png');
     background-size: contain;
+    z-index: 2;
     filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.2));
     ${(props) =>
         props.$selectable &&
@@ -210,14 +218,17 @@ const S_Star = styled.div<{ $selectable: boolean }>`
 
 const S_OrderNumber = styled.div<{ $font: string; $selectable: boolean }>`
     position: absolute;
+    z-index: 2;
     top: -10px;
     left: -10px;
-    width: 30px;
+    min-width: 30px;
+    padding-left: 5px;
+    padding-right: 5px;
     height: 30px;
     line-height: 30px;
     text-align: center;
     vertical-align: middle;
-    border-radius: 50%;
+    border-radius: 15px;
     background: #fff;
     font-family: ${(props) => props.$font};
     filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.2));

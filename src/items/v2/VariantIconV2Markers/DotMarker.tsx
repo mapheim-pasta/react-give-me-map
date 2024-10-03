@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { Fonts } from '../../../context/dynamic/actions';
+import { MarkerGlobalSettings } from '../../../utils/map/mapTypes';
 
 interface Props {
     isActive: boolean;
@@ -11,6 +12,7 @@ interface Props {
     orderNumber: string | null;
     fonts: Fonts;
     selectable: boolean;
+    markerGlobalSettings: MarkerGlobalSettings['v2/variant_icon'];
 }
 
 export const DotMarker = (props: Props): JSX.Element => {
@@ -23,7 +25,7 @@ export const DotMarker = (props: Props): JSX.Element => {
             animate={{ transform: 'scale(1)', display: 'flex' }}
             exit={{ transform: 'scale(0)', display: 'none', transition: { duration: 0 } }}
         >
-            {props.orderNumber ? (
+            {props.orderNumber && props.markerGlobalSettings.enableOrderNumberInDot ? (
                 <S_OrderNumber $font={props.fonts.semiBold}>{props.orderNumber}</S_OrderNumber>
             ) : (
                 <S_Dot>

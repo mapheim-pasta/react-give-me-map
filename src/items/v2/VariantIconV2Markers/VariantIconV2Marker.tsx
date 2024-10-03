@@ -7,6 +7,7 @@ import { MapRef } from 'react-map-gl';
 import styled from 'styled-components';
 import { Fonts } from '../../../context/dynamic/actions';
 import { useUpdateEffect } from '../../../hooks/general/useUpdateEffect';
+import { MarkerGlobalSettings } from '../../../utils/map/mapTypes';
 import { DotMarker } from './DotMarker';
 import { ImageMarker } from './ImageMarker';
 
@@ -34,6 +35,7 @@ interface Props {
     onClick?: (markerId: string) => void;
     selectable: boolean;
     forceHighlightSelectableMarkers: boolean;
+    markerGlobalSettings: MarkerGlobalSettings['v2/variant_icon'];
 }
 
 const VariantIconV2MarkerComponent = (props: Props) => {
@@ -68,6 +70,7 @@ const VariantIconV2MarkerComponent = (props: Props) => {
                             isActive={isActive}
                             color={color}
                             markerId={markerId}
+                            markerGlobalSettings={props.markerGlobalSettings}
                             orderNumber={props.orderNumber}
                             selectable={props.selectable}
                         />
@@ -80,6 +83,7 @@ const VariantIconV2MarkerComponent = (props: Props) => {
                             isActive={isActive}
                             color={color}
                             size={size}
+                            markerGlobalSettings={props.markerGlobalSettings}
                             text={text}
                             withStar={props.withStar}
                             image={props.image}

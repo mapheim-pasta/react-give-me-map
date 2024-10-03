@@ -2,6 +2,7 @@ import { reverse } from 'lodash';
 import React, { useEffect, useMemo } from 'react';
 import { MapRef } from 'react-map-gl';
 import { useCtx } from '../../context/dynamic/provider';
+import { MarkerGlobalSettings } from '../../utils/map/mapTypes';
 import { IVariantIconV2WorldMarker } from '../../utils/world/worldTypes';
 import { VariantIconV2Marker } from './VariantIconV2Markers/VariantIconV2Marker';
 import { useComputeMarkerSizes } from './VariantIconV2Markers/useComputeMarkerSizes';
@@ -9,6 +10,7 @@ import { useComputeMarkerSizes } from './VariantIconV2Markers/useComputeMarkerSi
 interface Props {
     markers: IVariantIconV2WorldMarker[];
     highlightedMarkerIds?: string[];
+    markerGlobalSettings: MarkerGlobalSettings['v2/variant_icon'];
     forceHighlightSelectableMarkers?: boolean;
     mapRef: React.RefObject<MapRef>;
     isEditMode: boolean;
@@ -22,7 +24,9 @@ export const VariantIconV2Markers = (props: Props) => {
     const markerSizes = useComputeMarkerSizes({
         markers: markers,
         highlightedMarkerIds: props.highlightedMarkerIds,
-        mapRef: props.mapRef
+        mapRef: props.mapRef,
+        collisionPaddingLarge: props.markerGlobalSettings.collisionPaddingLarge,
+        collisionPaddingMiddle: props.markerGlobalSettings.collisionPaddingMiddle
     });
 
     useEffect(() => {
@@ -83,6 +87,7 @@ export const VariantIconV2Markers = (props: Props) => {
                         selectable={marker.selectable ?? false}
                         size={markerSizes.sizes.get(marker.id)}
                         markerId={marker.id}
+                        markerGlobalSettings={props.markerGlobalSettings}
                         fonts={state.fonts}
                         text={marker.elementData.text}
                         color={marker.elementData.color}
