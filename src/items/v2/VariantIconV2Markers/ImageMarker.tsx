@@ -31,8 +31,14 @@ export const ImageMarker = (props: Props): JSX.Element => {
             return {
                 border: '3px solid #fff',
                 borderRadius: '10px',
-                width: props.markerGlobalSettings.storyImageWidth + 'px',
-                height: props.markerGlobalSettings.storyImageHeight + 'px',
+                width:
+                    (props.size === 2
+                        ? props.markerGlobalSettings.mediumImageWidth
+                        : props.markerGlobalSettings.largeStoryImageWidth) + 'px',
+                height:
+                    (props.size === 2
+                        ? props.markerGlobalSettings.mediumImageHeight
+                        : props.markerGlobalSettings.largeStoryImageHeight) + 'px',
                 backgroundColor: '#fff',
                 backgroundImage: `url(${props.image.url})`,
                 backgroundSize: 'cover',
@@ -42,8 +48,8 @@ export const ImageMarker = (props: Props): JSX.Element => {
 
         if (props.image.url) {
             return {
-                width: props.markerGlobalSettings.regularImageWidth + 'px',
-                height: props.markerGlobalSettings.regularImageHeight + 'px',
+                width: props.markerGlobalSettings.mediumImageWidth + 'px',
+                height: props.markerGlobalSettings.mediumImageHeight + 'px',
                 backgroundImage: `url(${props.image.url})`,
                 backgroundSize: 'contain'
             };
@@ -86,17 +92,24 @@ export const ImageMarker = (props: Props): JSX.Element => {
                         isActive={props.isActive}
                         markerId={props.markerId}
                         orderNumber={props.orderNumber}
-                        markerGlobalSettings={props.markerGlobalSettings}
+                        enableOrderNumber={
+                            props.size === 2
+                                ? props.markerGlobalSettings.enableOrderNumberInMedium
+                                : true
+                        }
                         fonts={props.fonts}
                         selectable={props.selectable}
                     />
                 )}
                 {props.withStar && <S_Star $selectable={props.selectable} />}
-                {props.orderNumber && imageStyle && (
-                    <S_OrderNumber $selectable={props.selectable} $font={props.fonts.semiBold}>
-                        {props.orderNumber}
-                    </S_OrderNumber>
-                )}
+                {(props.size === 3 ||
+                    (props.size === 2 && props.markerGlobalSettings.enableOrderNumberInMedium)) &&
+                    props.orderNumber &&
+                    imageStyle && (
+                        <S_OrderNumber $selectable={props.selectable} $font={props.fonts.semiBold}>
+                            {props.orderNumber}
+                        </S_OrderNumber>
+                    )}
             </S_ImageLargeContainer>
             {props.size === 3 && (
                 <S_Text

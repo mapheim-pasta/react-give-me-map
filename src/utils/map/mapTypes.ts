@@ -6,13 +6,14 @@ export type IMapProps = OriginalMapProps & {
 
 export interface MarkerGlobalSettings {
     'v2/variant_icon': {
-        storyImageWidth: number;
-        storyImageHeight: number;
-        regularImageWidth: number;
-        regularImageHeight: number;
+        largeStoryImageWidth: number;
+        largeStoryImageHeight: number;
+        mediumImageWidth: number;
+        mediumImageHeight: number;
         collisionPaddingMiddle: number;
         collisionPaddingLarge: number;
-        enableOrderNumberInDot: boolean;
+        enableOrderNumberInSmall: boolean;
+        enableOrderNumberInMedium: boolean;
     };
 }
 

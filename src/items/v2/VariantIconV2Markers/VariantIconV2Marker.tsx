@@ -70,7 +70,7 @@ const VariantIconV2MarkerComponent = (props: Props) => {
                             isActive={isActive}
                             color={color}
                             markerId={markerId}
-                            markerGlobalSettings={props.markerGlobalSettings}
+                            enableOrderNumber={props.markerGlobalSettings.enableOrderNumberInSmall}
                             orderNumber={props.orderNumber}
                             selectable={props.selectable}
                         />

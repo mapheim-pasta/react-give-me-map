@@ -37,13 +37,14 @@ interface IProps {
 
 const globalMarkerSettingsDefault: MarkerGlobalSettings = {
     'v2/variant_icon': {
-        storyImageWidth: 94,
-        storyImageHeight: 70,
-        regularImageWidth: 50,
-        regularImageHeight: 50,
+        largeStoryImageWidth: 94,
+        largeStoryImageHeight: 70,
+        mediumImageWidth: 50,
+        mediumImageHeight: 50,
         collisionPaddingMiddle: 60,
         collisionPaddingLarge: 100,
-        enableOrderNumberInDot: true
+        enableOrderNumberInSmall: true,
+        enableOrderNumberInMedium: true
     }
 };
 
