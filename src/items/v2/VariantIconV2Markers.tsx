@@ -2,6 +2,7 @@ import { reverse } from 'lodash';
 import React, { useEffect, useMemo } from 'react';
 import { MapRef } from 'react-map-gl';
 import { useCtx } from '../../context/dynamic/provider';
+import { ICallbacks } from '../../map/RegisterPropsToGlobalState';
 import { MarkerGlobalSettings } from '../../utils/map/mapTypes';
 import { IVariantIconV2WorldMarker } from '../../utils/world/worldTypes';
 import { VariantIconV2Marker } from './VariantIconV2Markers/VariantIconV2Marker';
@@ -14,6 +15,7 @@ interface Props {
     forceHighlightSelectableMarkers?: boolean;
     mapRef: React.RefObject<MapRef>;
     isEditMode: boolean;
+    callbacks: ICallbacks;
 }
 
 export const VariantIconV2Markers = (props: Props) => {
@@ -91,7 +93,7 @@ export const VariantIconV2Markers = (props: Props) => {
                         fonts={state.fonts}
                         text={marker.elementData.text}
                         color={marker.elementData.color}
-                        onClick={(id) => state.callbacks.onMarkersSelected?.([id])}
+                        onClick={(id) => props.callbacks.onMarkersSelected?.([id])}
                     />
                 );
             })}

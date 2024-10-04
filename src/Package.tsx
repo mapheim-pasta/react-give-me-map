@@ -86,7 +86,6 @@ export const Package = (props: IProps): JSX.Element => {
         <>
             <ContextProvider reducer={{ state, dispatch }}>
                 <RegisterPropsToGlobalState
-                    callbacks={props.callbacks}
                     customBuilders={props.customBuilders}
                     fonts={props.fonts}
                     isWide={props.isWide}
@@ -109,6 +108,7 @@ export const Package = (props: IProps): JSX.Element => {
                     categories={props.categories ?? []}
                     selectedCategories={props.selectedCategories ?? []}
                     orderedMarkerIds={props.orderedMarkerIds ?? []}
+                    callbacks={props.callbacks ?? {}}
                     markerGlobalSettings={merge(
                         {},
                         globalMarkerSettingsDefault,

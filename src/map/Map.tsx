@@ -18,6 +18,7 @@ import {
 } from '../utils/map/mapTypes';
 import { IWorldMarker, IWorldV1Marker, IWorldV2Marker } from '../utils/world/worldTypes';
 import { divideMarkersV2 } from './divideMarkersV2';
+import { ICallbacks } from './RegisterPropsToGlobalState';
 import { useWorldMarkersV1Data } from './useWorldMarkersV1Data';
 import { useWorldMarkersV2Data } from './useWorldMarkersV2Data';
 
@@ -38,6 +39,7 @@ interface IProps {
     categories: string[];
     selectedCategories: string[];
     markerGlobalSettings: MarkerGlobalSettings;
+    callbacks: ICallbacks;
 }
 
 const defaults: Partial<IMapProps> = {
@@ -148,7 +150,7 @@ export const Map = (props: IProps): JSX.Element => {
     }
 
     const mouseListener = useMouseListener(props.v1Markers, (marker) => {
-        state.callbacks.onMarkersSelected?.([marker.id]);
+        props.callbacks.onMarkersSelected?.([marker.id]);
     });
 
     useEffect(() => {
@@ -209,7 +211,7 @@ export const Map = (props: IProps): JSX.Element => {
                                 (marker) => marker.id === feature?.properties?.markerId
                             );
                             if (marker) {
-                                state.callbacks.onMarkersSelected?.([marker.id], clickData);
+                                props.callbacks.onMarkersSelected?.([marker.id], clickData);
                                 props.map.onClick?.(e);
                                 return;
                             }
@@ -220,13 +222,13 @@ export const Map = (props: IProps): JSX.Element => {
                         );
 
                         if (marker) {
-                            state.callbacks.onMarkersSelected?.([marker.id], clickData);
+                            props.callbacks.onMarkersSelected?.([marker.id], clickData);
                             props.map.onClick?.(e);
                             return;
                         }
 
                         if (feature?.properties?.markerId) {
-                            state.callbacks.onMarkersSelected?.(
+                            props.callbacks.onMarkersSelected?.(
                                 [feature?.properties?.markerId],
                                 clickData
                             );
@@ -255,7 +257,7 @@ export const Map = (props: IProps): JSX.Element => {
                                                 (e) => e.properties?.markerId
                                             );
                                             if (markerIds?.length) {
-                                                state.callbacks.onMarkersSelected?.(
+                                                props.callbacks.onMarkersSelected?.(
                                                     markerIds,
                                                     clickData
                                                 );
@@ -272,7 +274,7 @@ export const Map = (props: IProps): JSX.Element => {
                             return;
                         }
                     }
-                    state.callbacks.onMarkersSelected?.([]);
+                    props.callbacks.onMarkersSelected?.([]);
                     props.map.onClick?.(e);
                 }}
                 onLoad={() => {
@@ -297,6 +299,7 @@ export const Map = (props: IProps): JSX.Element => {
                             forceHighlightSelectableMarkers={props.forceHighlightSelectableMarkers}
                             highlightedMarkersStyle={props.highlightedMarkersStyle}
                             groupMarkerProps={props.config?.groupMarkerProps ?? {}}
+                            callbacks={props.callbacks}
                         />
                         <WorldMarkersV2
                             dividedMarkersV2={dividedMarkersV2}
@@ -309,6 +312,7 @@ export const Map = (props: IProps): JSX.Element => {
                             forceHighlightSelectableMarkers={props.forceHighlightSelectableMarkers}
                             markersCustomConfig={props.config?.markersCustomConfig ?? {}}
                             markerGlobalSettings={props.markerGlobalSettings}
+                            callbacks={props.callbacks}
                         />
                         <WorldMapControl
                             onGeoClick={() => {
@@ -334,7 +338,7 @@ export const Map = (props: IProps): JSX.Element => {
                             }
                             onStyleChange={(style) => {
                                 setSelectedMapStyle(style);
-                                state.callbacks.onStyleChanged?.(style);
+                                props.callbacks.onStyleChanged?.(style);
                             }}
                         />
                         {props.config?.geolocate && geoShow && (

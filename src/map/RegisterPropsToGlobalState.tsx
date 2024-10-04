@@ -12,7 +12,6 @@ export interface ICallbacks {
 }
 
 interface IProps {
-    callbacks?: ICallbacks;
     customBuilders?: CustomBuilders;
     fonts?: Fonts;
     isWide?: boolean;
@@ -20,15 +19,6 @@ interface IProps {
 
 export const RegisterPropsToGlobalState = (props: IProps) => {
     const actions = useActions();
-    useEffect(() => {
-        actions.setCallbacks({
-            callbacks: {
-                onMarkersSelected: props.callbacks?.onMarkersSelected,
-                onStyleChanged: props.callbacks?.onStyleChanged
-            }
-        });
-    }, [props.callbacks?.onMarkersSelected, props.callbacks?.onStyleChanged]);
-
     useEffect(() => {
         actions.setCustomBuilders(props.customBuilders ?? {});
     }, [props.customBuilders]);

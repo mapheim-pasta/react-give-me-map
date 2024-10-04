@@ -14,6 +14,7 @@ import { WallV2Marker } from '../items/v2/WallV2Marker';
 import { GroundFloor } from '../items/v2/WallV2Marker/GroundFloor';
 import { GroupWallMarkers } from '../items/v2/WallV2Marker/GroupWallMarkers';
 import { DividedMarkersV2 } from '../map/divideMarkersV2';
+import { ICallbacks } from '../map/RegisterPropsToGlobalState';
 import {
     CountriesFillProps,
     GroupMarkerProps,
@@ -34,6 +35,7 @@ export interface IProps {
     countriesFillConfig?: CountriesFillProps;
     markersCustomConfig: MarkersCustomConfigProps;
     markerGlobalSettings: MarkerGlobalSettings;
+    callbacks: ICallbacks;
 }
 
 export const WorldMarkersV2 = (props: IProps): JSX.Element => {
@@ -97,6 +99,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                 forceHighlightSelectableMarkers={props.forceHighlightSelectableMarkers}
                 isEditMode={props.isEditMode}
                 markerGlobalSettings={props.markerGlobalSettings['v2/variant_icon']}
+                callbacks={props.callbacks}
             />
             <WallLabelMarkers
                 dataPoints={wallMarkerLabels}

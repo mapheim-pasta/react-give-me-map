@@ -13,6 +13,7 @@ import { ReactWorld } from '../items/ReactWorld';
 import { RouteWorld } from '../items/RouteWorld';
 import { TextWorld } from '../items/TextWorld';
 import { YoutubeWorld } from '../items/YoutubeWorld';
+import { ICallbacks } from '../map/RegisterPropsToGlobalState';
 import { GroupMarkerProps, MarkerStyle } from '../utils/map/mapTypes';
 import { isMarkerElement } from '../utils/marker/markerUtils';
 import { ORIGIN_ZOOM } from '../utils/world/worldConfig';
@@ -28,6 +29,7 @@ export interface IProps {
 
     groupMarkerProps: GroupMarkerProps;
     mapRef: RefObject<MapRef>;
+    callbacks: ICallbacks;
 }
 
 export const WorldMarkersV1 = (props: IProps): JSX.Element => {
@@ -137,7 +139,7 @@ export const WorldMarkersV1 = (props: IProps): JSX.Element => {
 
                 const onClick = (e: React.MouseEvent | MouseEvent) => {
                     if (marker.selectable) {
-                        state.callbacks.onMarkersSelected?.([marker.id]);
+                        props.callbacks.onMarkersSelected?.([marker.id]);
                         e.preventDefault();
                         e.stopPropagation();
                     }
