@@ -21,6 +21,7 @@ export const initialState: IState = {
     isWide: true,
     fonts: {
         regular: 'InterRegular',
-        semiBold: 'InterSemiBold'
+        semiBold: 'InterSemiBold',
+        bold: 'InterBold'
     }
 };

@@ -36,6 +36,7 @@ export interface IProps {
     markersCustomConfig: MarkersCustomConfigProps;
     markerGlobalSettings: MarkerGlobalSettings;
     callbacks: ICallbacks;
+    language: string;
 }
 
 export const WorldMarkersV2 = (props: IProps): JSX.Element => {
@@ -100,6 +101,7 @@ export const WorldMarkersV2 = (props: IProps): JSX.Element => {
                 isEditMode={props.isEditMode}
                 markerGlobalSettings={props.markerGlobalSettings['v2/variant_icon']}
                 callbacks={props.callbacks}
+                language={props.language}
             />
             <WallLabelMarkers
                 dataPoints={wallMarkerLabels}

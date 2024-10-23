@@ -39,6 +39,7 @@ interface IProps {
     categories: string[];
     selectedCategories: string[];
     markerGlobalSettings: MarkerGlobalSettings;
+    language: string;
     callbacks: ICallbacks;
 }
 
@@ -313,6 +314,7 @@ export const Map = (props: IProps): JSX.Element => {
                             markersCustomConfig={props.config?.markersCustomConfig ?? {}}
                             markerGlobalSettings={props.markerGlobalSettings}
                             callbacks={props.callbacks}
+                            language={props.language}
                         />
                         <WorldMapControl
                             onGeoClick={() => {

@@ -33,6 +33,7 @@ interface IProps {
     markerGlobalSettings?: PartialDeep<MarkerGlobalSettings>;
     isEditMode?: boolean;
     isWide?: boolean;
+    language?: string;
 }
 
 const globalMarkerSettingsDefault: MarkerGlobalSettings = {
@@ -96,6 +97,7 @@ export const Package = (props: IProps): JSX.Element => {
                     isEditMode={props.isEditMode ?? false}
                     v1Markers={v1Markers}
                     v2Markers={v2Markers}
+                    language={props.language ?? 'en'}
                     selectedIds={props.selectedIds ?? []}
                     config={{
                         resizeOnRender: true,
