@@ -25,6 +25,8 @@ interface Props {
     orderNumber: string | null;
     lat: number;
     lng: number;
+    eventDate: string | null;
+    language: string;
     markerId: string;
     withStar: boolean;
     text: string;
@@ -39,7 +41,7 @@ interface Props {
 }
 
 const VariantIconV2MarkerComponent = (props: Props) => {
-    const { markerId, text, size, color, isWide } = props;
+    const { markerId, text, size, color, eventDate, isWide } = props;
 
     const isActive = props.isActive || props.forceHighlightSelectableMarkers;
 
@@ -83,6 +85,8 @@ const VariantIconV2MarkerComponent = (props: Props) => {
                             isActive={isActive}
                             color={color}
                             size={size}
+                            eventDate={eventDate}
+                            language={props.language}
                             markerGlobalSettings={props.markerGlobalSettings}
                             text={text}
                             withStar={props.withStar}

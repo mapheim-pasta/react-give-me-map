@@ -409,6 +409,7 @@ export interface IVariantIconV2World {
     withStar: boolean;
     storyImageUrl: string;
     useStoryImage: boolean;
+    eventDate: string;
 }
 
 export interface IVariantIconV2WorldMarker extends BaseMarker {

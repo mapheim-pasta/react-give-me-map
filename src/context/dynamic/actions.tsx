@@ -19,6 +19,7 @@ export type CustomBuilders = {
 export type Fonts = {
     regular: string;
     semiBold: string;
+    bold: string;
 };
 
 export const useActions = (): IReturnUseActions => {

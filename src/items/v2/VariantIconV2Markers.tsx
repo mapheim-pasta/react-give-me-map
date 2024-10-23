@@ -16,6 +16,7 @@ interface Props {
     mapRef: React.RefObject<MapRef>;
     isEditMode: boolean;
     callbacks: ICallbacks;
+    language: string;
 }
 
 export const VariantIconV2Markers = (props: Props) => {
@@ -80,6 +81,8 @@ export const VariantIconV2Markers = (props: Props) => {
                         image={getImage()}
                         isWide={state.isWide}
                         mapRef={props.mapRef}
+                        eventDate={marker.elementData.eventDate}
+                        language={props.language}
                         isEditMode={props.isEditMode}
                         key={marker.id}
                         lat={marker.lat}

@@ -5,11 +5,20 @@ import { Fonts } from '../../../context/dynamic/actions';
 import { MarkerGlobalSettings } from '../../../utils/map/mapTypes';
 import { DotMarker, S_DotMarker } from './DotMarker';
 
+const MONTHS_STRINGS: Record<string, string[]> = {
+    en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    nb: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Des'],
+    cs: ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čvn', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'],
+    sk: ['Jan', 'Feb', 'Mar', 'Apr', 'Máj', 'Jún', 'Júl', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec']
+};
+
 interface Props {
     isActive: boolean;
     size: number;
     markerId: string;
     withStar: boolean;
+    eventDate: string | null;
+    language: string;
     orderNumber: string | null;
     image:
         | {
@@ -27,6 +36,14 @@ interface Props {
 
 export const ImageMarker = (props: Props): JSX.Element => {
     function getImageStyle() {
+        if (props.eventDate != null) {
+            return {
+                width: props.markerGlobalSettings.mediumImageWidth + 'px',
+                height: props.markerGlobalSettings.mediumImageHeight + 'px',
+                backgroundImage: `url(https://dvtqxks0zalev.cloudfront.net/f7836dea-6699-48c6-bc52-240fd4e7a265.png)`,
+                backgroundSize: 'contain'
+            };
+        }
         if (props.image.type === 'story' && props.image.url) {
             return {
                 border: '3px solid #fff',
@@ -58,7 +75,30 @@ export const ImageMarker = (props: Props): JSX.Element => {
         return null;
     }
 
+    function getDate() {
+        const [year, month, day] = props.eventDate?.split('-') ?? [];
+
+        if (!year || !month || !day) {
+            return null;
+        }
+
+        const monthNumber = Number(month);
+        const dayNumber = Number(day);
+
+        if (isNaN(monthNumber) || isNaN(dayNumber)) {
+            return null;
+        }
+
+        const monthsStrings = MONTHS_STRINGS[props.language] ?? MONTHS_STRINGS.en;
+
+        return {
+            day,
+            month: monthsStrings[monthNumber - 1]
+        };
+    }
+
     const imageStyle = getImageStyle();
+    const date = getDate();
 
     return (
         <S_ImageMarker
@@ -77,6 +117,8 @@ export const ImageMarker = (props: Props): JSX.Element => {
                     ease: 'easeInOut'
                 }}
             >
+                {date && <S_Month $font={props.fonts.bold}>{date.month}</S_Month>}
+                {date && <S_Day $font={props.fonts.bold}>{date.day}</S_Day>}
                 {imageStyle ? (
                     <S_ImageLarge
                         $selectable={props.selectable}
@@ -251,4 +293,29 @@ const S_OrderNumber = styled.div<{ $font: string; $selectable: boolean }>`
             pointer-events: all;
             cursor: pointer;
         `}
+`;
+
+const S_Month = styled.div<{ $font: string }>`
+    position: absolute;
+    color: white;
+    text-transform: uppercase;
+    left: 0;
+    right: 0;
+    top: -1px;
+    font-size: 10px;
+    text-align: center;
+    z-index: 2;
+    font-family: ${(props) => props.$font};
+`;
+
+const S_Day = styled.div<{ $font: string }>`
+    position: absolute;
+    color: #2a2a2a;
+    left: 0;
+    right: 0;
+    top: 22px;
+    font-size: 22px;
+    text-align: center;
+    z-index: 2;
+    font-family: ${(props) => props.$font};
 `;
