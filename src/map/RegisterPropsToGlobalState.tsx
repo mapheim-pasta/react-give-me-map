@@ -24,7 +24,9 @@ export const RegisterPropsToGlobalState = (props: IProps) => {
     }, [props.customBuilders]);
 
     useEffect(() => {
-        actions.setFonts(props.fonts ?? { regular: 'InterRegular', semiBold: 'InterSemiBold' });
+        actions.setFonts(
+            props.fonts ?? { regular: 'InterRegular', semiBold: 'InterSemiBold', bold: 'InterBold' }
+        );
     }, [props.fonts]);
     return <></>;
 };

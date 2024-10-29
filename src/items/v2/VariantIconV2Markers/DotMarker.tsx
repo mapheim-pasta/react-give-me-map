@@ -5,7 +5,6 @@ import { Fonts } from '../../../context/dynamic/actions';
 
 interface Props {
     isActive: boolean;
-    markerId: string;
     color: string;
     className?: string;
     orderNumber: string | null;
@@ -25,7 +24,9 @@ export const DotMarker = (props: Props): JSX.Element => {
             exit={{ transform: 'scale(0)', display: 'none', transition: { duration: 0 } }}
         >
             {props.orderNumber && props.enableOrderNumber ? (
-                <S_OrderNumber $font={props.fonts.semiBold}>{props.orderNumber}</S_OrderNumber>
+                <S_OrderNumber $color={props.color} $font={props.fonts.semiBold}>
+                    {props.orderNumber}
+                </S_OrderNumber>
             ) : (
                 <S_Dot>
                     <S_DotInner $color={props.color} />
@@ -54,7 +55,7 @@ const S_DotInner = styled.div<{ $color: string }>`
     border-radius: 100%;
 `;
 
-const S_OrderNumber = styled.div<{ $font: string }>`
+const S_OrderNumber = styled.div<{ $font: string; $color: string }>`
     width: 30px;
     height: 30px;
     display: flex;
@@ -62,7 +63,7 @@ const S_OrderNumber = styled.div<{ $font: string }>`
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    background: #fff;
+    background: ${(props) => props.$color ?? '#fff'};
     font-family: ${(props) => props.$font};
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
 `;

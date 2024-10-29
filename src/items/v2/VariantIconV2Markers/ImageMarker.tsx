@@ -132,7 +132,6 @@ export const ImageMarker = (props: Props): JSX.Element => {
                     <DotMarker
                         color={props.color}
                         isActive={props.isActive}
-                        markerId={props.markerId}
                         orderNumber={props.orderNumber}
                         enableOrderNumber={
                             props.size === 2
