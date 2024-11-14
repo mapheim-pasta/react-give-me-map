@@ -152,6 +152,7 @@ export const ImageMarker = (props: Props): JSX.Element => {
                         <S_OrderNumber
                             $selectable={props.selectable}
                             $textColor={textColor}
+                            $color={props.color}
                             $font={props.fonts.semiBold}
                         >
                             {props.orderNumber}
@@ -276,7 +277,12 @@ const S_Star = styled.div<{ $selectable: boolean }>`
         `}
 `;
 
-const S_OrderNumber = styled.div<{ $font: string; $selectable: boolean; $textColor: string }>`
+const S_OrderNumber = styled.div<{
+    $font: string;
+    $selectable: boolean;
+    $color: string;
+    $textColor: string;
+}>`
     position: absolute;
     z-index: 2;
     top: -10px;
@@ -291,6 +297,7 @@ const S_OrderNumber = styled.div<{ $font: string; $selectable: boolean; $textCol
     border-radius: 15px;
     background: #fff;
     color: ${(props) => props.$textColor};
+    background-color: ${(props) => props.$color};
     font-family: ${(props) => props.$font};
     filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.2));
     ${(props) =>
