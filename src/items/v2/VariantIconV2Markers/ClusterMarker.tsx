@@ -39,7 +39,7 @@ const ClusterMarkerComponent = (props: Props) => {
             <DotMarker
                 key={props.clusterId}
                 className={props.className}
-                color="#ccc"
+                color="#e6e6e6"
                 enableOrderNumber
                 orderNumber={props.pointCount}
                 isActive={props.isActive}

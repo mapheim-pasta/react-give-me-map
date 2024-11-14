@@ -1,3 +1,4 @@
+import Color from 'color';
 import { motion } from 'framer-motion';
 import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
@@ -99,6 +100,7 @@ export const ImageMarker = (props: Props): JSX.Element => {
 
     const imageStyle = getImageStyle();
     const date = getDate();
+    const textColor = Color(props.color).isLight() ? '#000' : '#fff';
 
     return (
         <S_ImageMarker
@@ -147,7 +149,11 @@ export const ImageMarker = (props: Props): JSX.Element => {
                     (props.size === 2 && props.markerGlobalSettings.enableOrderNumberInMedium)) &&
                     props.orderNumber &&
                     imageStyle && (
-                        <S_OrderNumber $selectable={props.selectable} $font={props.fonts.semiBold}>
+                        <S_OrderNumber
+                            $selectable={props.selectable}
+                            $textColor={textColor}
+                            $font={props.fonts.semiBold}
+                        >
                             {props.orderNumber}
                         </S_OrderNumber>
                     )}
@@ -270,7 +276,7 @@ const S_Star = styled.div<{ $selectable: boolean }>`
         `}
 `;
 
-const S_OrderNumber = styled.div<{ $font: string; $selectable: boolean }>`
+const S_OrderNumber = styled.div<{ $font: string; $selectable: boolean; $textColor: string }>`
     position: absolute;
     z-index: 2;
     top: -10px;
@@ -284,6 +290,7 @@ const S_OrderNumber = styled.div<{ $font: string; $selectable: boolean }>`
     vertical-align: middle;
     border-radius: 15px;
     background: #fff;
+    color: ${(props) => props.$textColor};
     font-family: ${(props) => props.$font};
     filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.2));
     ${(props) =>

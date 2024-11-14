@@ -1,3 +1,4 @@
+import Color from 'color';
 import { motion } from 'framer-motion';
 import React from 'react';
 import styled, { css } from 'styled-components';
@@ -14,6 +15,8 @@ interface Props {
 }
 
 export const DotMarker = (props: Props): JSX.Element => {
+    const textColor = Color(props.color).isLight() ? '#000' : '#fff';
+
     return (
         <S_DotMarker
             $isActive={props.isActive}
@@ -24,7 +27,11 @@ export const DotMarker = (props: Props): JSX.Element => {
             exit={{ transform: 'scale(0)', display: 'none', transition: { duration: 0 } }}
         >
             {props.orderNumber && props.enableOrderNumber ? (
-                <S_OrderNumber $color={props.color} $font={props.fonts.semiBold}>
+                <S_OrderNumber
+                    $color={props.color}
+                    $textColor={textColor}
+                    $font={props.fonts.semiBold}
+                >
                     {props.orderNumber}
                 </S_OrderNumber>
             ) : (
@@ -55,7 +62,7 @@ const S_DotInner = styled.div<{ $color: string }>`
     border-radius: 100%;
 `;
 
-const S_OrderNumber = styled.div<{ $font: string; $color: string }>`
+const S_OrderNumber = styled.div<{ $font: string; $color: string; $textColor: string }>`
     width: 30px;
     height: 30px;
     display: flex;
@@ -64,6 +71,7 @@ const S_OrderNumber = styled.div<{ $font: string; $color: string }>`
     align-items: center;
     border-radius: 50%;
     background: ${(props) => props.$color ?? '#fff'};
+    color: ${(props) => props.$textColor};
     font-family: ${(props) => props.$font};
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
 `;
