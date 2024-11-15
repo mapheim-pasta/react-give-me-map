@@ -40,6 +40,11 @@ export function useLoadMapImages({ mapRef, imageUrls }: UseMapImageOptions) {
 
         const uniqueImages = uniq(imageUrls);
 
+        if (uniqueImages.length === 0) {
+            setIsLoaded(true);
+            return;
+        }
+
         loadMapImages(map, uniqueImages, () => {
             loadedCount += 1;
             if (uniqueImages.length === loadedCount) {
